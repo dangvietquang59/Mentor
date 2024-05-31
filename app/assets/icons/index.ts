@@ -9,6 +9,9 @@ import hashTag from './hash.svg'
 import xCircle from './x-circle.svg'
 import code from './code.svg'
 import briefcase from './briefcase.svg'
+import chat from './comment-alt.svg'
+import heart from './heart.svg'
+import moreInfo from './circle-ellipsis.svg'
 
 const icons = {
     search,
@@ -21,7 +24,10 @@ const icons = {
     hashTag,
     xCircle,
     code,
-    briefcase
+    briefcase,
+    chat,
+    heart,
+    moreInfo
 };
 
 export default icons;

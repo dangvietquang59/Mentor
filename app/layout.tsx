@@ -20,9 +20,9 @@ export default function RootLayout({
         <html lang="en">
             <body className={inter.className}>
                 <Header />
-                <div className="flex">
+                <div className="flex pt-[8rem]">
                     <Sider />
-                    <div className="p-[2rem]"> {children}</div>
+                    <div className="w-full px-[2rem]"> {children}</div>
                 </div>
             </body>
         </html>

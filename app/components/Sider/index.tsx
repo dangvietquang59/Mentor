@@ -48,7 +48,7 @@ function Sider() {
     };
 
     return (
-        <div className="w-[10rem] p-[1rem]">
+        <div className="w-[10rem] px-[1rem]">
             {arraySider.length > 0 &&
                 arraySider.map((item, index) => (
                     <SiderItem
