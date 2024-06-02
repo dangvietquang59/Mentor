@@ -22,7 +22,9 @@ export default function RootLayout({
                 <Header />
                 <div className="flex pt-[8rem]">
                     <Sider />
-                    <div className="w-full px-[2rem]"> {children}</div>
+                    <div className="w-full pl-[10rem] pr-[1rem]">
+                        {children}
+                    </div>
                 </div>
             </body>
         </html>

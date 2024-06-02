@@ -72,7 +72,7 @@ function Mentors() {
                 <Tabs arrayTabs={optionsTab} onSelectTab={setIsSelectedTab} />
             </div>
             {isSelectedTab === 0 && (
-                <div className="grid grid-cols-4 gap-[2.4rem]">
+                <div className="grid grid-cols-4 gap-[1.2rem]">
                     {arrayMentor &&
                         arrayMentor.map((item, index) => (
                             <MentorItem

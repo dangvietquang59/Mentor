@@ -25,7 +25,7 @@ const Header = () => {
         setIsOpenNotification(!isOpenNotification);
     };
     return (
-        <div className="fixed flex h-[8rem] w-full items-center justify-between border-b bg-white p-[1rem]">
+        <div className="fixed z-[100] flex h-[8rem] w-full items-center justify-between border-b bg-white p-[1rem]">
             <Image
                 src={logo}
                 alt="logo"

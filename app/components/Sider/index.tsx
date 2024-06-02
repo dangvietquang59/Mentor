@@ -37,7 +37,7 @@ function Sider() {
                 router.push('/mentors');
                 break;
             case 2:
-                router.push('/message');
+                router.push('/messages');
                 break;
             case 3:
                 router.push('/booking');
@@ -48,7 +48,7 @@ function Sider() {
     };
 
     return (
-        <div className="w-[10rem] px-[1rem]">
+        <div className="fixed w-[10rem] px-[1rem]">
             {arraySider.length > 0 &&
                 arraySider.map((item, index) => (
                     <SiderItem

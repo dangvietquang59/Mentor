@@ -1,6 +1,7 @@
 import icons from '@/app/assets/icons';
 import { AttributeMentorItem, MentorItemType } from '@/app/types/mentor';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const InfoItem = ({ title, icon }: AttributeMentorItem) => (
     <div className="flex items-center gap-[0.8rem]">
@@ -10,7 +11,10 @@ const InfoItem = ({ title, icon }: AttributeMentorItem) => (
 );
 function MentorItem({ name, url, attributes }: MentorItemType) {
     return (
-        <div className="w-[32rem] cursor-pointer rounded-[0.8rem] border-[0.2rem] p-[1rem] duration-300 hover:border-[0.2rem] hover:border-[#5b8c00]">
+        <Link
+            href={'/profiles'}
+            className="cursor-pointer rounded-[0.8rem] border-[0.2rem] p-[1rem] duration-300 hover:border-[0.2rem] hover:border-[#5b8c00]"
+        >
             <picture>
                 <img
                     src={url}
@@ -29,7 +33,7 @@ function MentorItem({ name, url, attributes }: MentorItemType) {
                         />
                     ))}
             </div>
-        </div>
+        </Link>
     );
 }
 

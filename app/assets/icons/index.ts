@@ -12,6 +12,8 @@ import briefcase from './briefcase.svg'
 import chat from './comment-alt.svg'
 import heart from './heart.svg'
 import moreInfo from './circle-ellipsis.svg'
+import squarePlus from './square-plus.svg'
+import menuDotsVertical from './menu-dots-vertical.svg'
 
 const icons = {
     search,
@@ -27,7 +29,9 @@ const icons = {
     briefcase,
     chat,
     heart,
-    moreInfo
+    moreInfo,
+    squarePlus,
+    menuDotsVertical
 };
 
 export default icons;
