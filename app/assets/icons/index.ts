@@ -14,6 +14,11 @@ import heart from './heart.svg'
 import moreInfo from './circle-ellipsis.svg'
 import squarePlus from './square-plus.svg'
 import menuDotsVertical from './menu-dots-vertical.svg'
+import paperPlane from './paper-plane.svg'
+import picture from './picture.svg'
+import camera from './camera.svg'
+import appAdd from './apps-add.svg'
+import share from './share.svg'
 
 const icons = {
     search,
@@ -31,7 +36,12 @@ const icons = {
     heart,
     moreInfo,
     squarePlus,
-    menuDotsVertical
+    menuDotsVertical,
+    paperPlane,
+    picture,
+    camera,
+    appAdd,
+    share
 };
 
 export default icons;
