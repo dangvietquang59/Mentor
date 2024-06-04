@@ -19,6 +19,10 @@ import picture from './picture.svg'
 import camera from './camera.svg'
 import appAdd from './apps-add.svg'
 import share from './share.svg'
+import homeGreen from './homeGreen.svg'
+import monitorGreen from './monitorGreen.svg'
+import clipboardGreen from './clipboardGreen.svg'
+import messageGreen from './message-circle-green.svg'
 
 const icons = {
     search,
@@ -41,7 +45,11 @@ const icons = {
     picture,
     camera,
     appAdd,
-    share
+    share,
+    homeGreen,
+    monitorGreen,
+    messageGreen,
+    clipboardGreen
 };
 
 export default icons;

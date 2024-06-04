@@ -1,9 +1,13 @@
 import icons from '@/app/assets/icons';
 import ActionButtonBlog from './ActionButtonBlog';
+import Link from 'next/link';
 
 function BlogItem() {
     return (
-        <div className="w-[50rem] cursor-pointer rounded-[0.8rem] border-[0.1rem] border-[#ccc] p-[1rem]">
+        <Link
+            href={'/blog'}
+            className="flex w-[50rem] cursor-pointer flex-col justify-between rounded-[0.8rem] border-[0.1rem] border-[#ccc] p-[1rem]"
+        >
             <div className="flex items-center gap-[0.8rem]">
                 <picture>
                     <img
@@ -22,8 +26,8 @@ function BlogItem() {
                 </div>
             </div>
 
-            <div className="my-[2.4rem]">
-                <p className="text-justify text-[1.4rem]">
+            <div>
+                <p className="text-justify text-[1.4rem] leading-[2.5rem]">
                     Sukuna là một đấu sĩ cận chiến cực kỳ điêu luyện và mạnh mẽ.
                     Hắn thể hiện sự áp đảo trước Megumi với những đòn vật lý
                     mạnh mẽ. Sukuna có thể kết hợp thuật thức và sức mạnh tay
@@ -37,7 +41,7 @@ function BlogItem() {
                 <ActionButtonBlog icon={icons.message} title="Comments" />
                 <ActionButtonBlog icon={icons.share} title="Share" />
             </div>
-        </div>
+        </Link>
     );
 }
 
