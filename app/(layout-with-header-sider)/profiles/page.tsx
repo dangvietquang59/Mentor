@@ -75,7 +75,7 @@ function Profiles() {
 
             <div className="mt-[7rem] flex w-full gap-[2.4rem]">
                 <div className="flex w-[60%] flex-col gap-[2.4rem]">
-                    <div className="flex items-center">
+                    <div className="flex items-center border-b-[0.1rem] border-b-[#ccc]">
                         <Tabs
                             arrayTabs={arrayTabs}
                             onSelectTab={setSelectedTab}

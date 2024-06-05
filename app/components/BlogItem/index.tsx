@@ -6,7 +6,7 @@ function BlogItem() {
     return (
         <Link
             href={'/blog'}
-            className="flex w-[50rem] cursor-pointer flex-col justify-between rounded-[0.8rem] border-[0.1rem] border-[#ccc] p-[1rem]"
+            className="flex max-h-[25rem] w-[50rem] cursor-pointer flex-col rounded-[0.8rem] border-[0.1rem] border-[#ccc] p-[1rem]"
         >
             <div className="flex items-center gap-[0.8rem]">
                 <picture>
@@ -26,7 +26,7 @@ function BlogItem() {
                 </div>
             </div>
 
-            <div>
+            <div className="my-[1.2rem]">
                 <p className="text-justify text-[1.4rem] leading-[2.5rem]">
                     Sukuna là một đấu sĩ cận chiến cực kỳ điêu luyện và mạnh mẽ.
                     Hắn thể hiện sự áp đảo trước Megumi với những đòn vật lý

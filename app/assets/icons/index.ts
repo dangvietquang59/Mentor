@@ -23,6 +23,7 @@ import homeGreen from './homeGreen.svg'
 import monitorGreen from './monitorGreen.svg'
 import clipboardGreen from './clipboardGreen.svg'
 import messageGreen from './message-circle-green.svg'
+import calendar from './calendar-day.svg'
 
 const icons = {
     search,
@@ -49,7 +50,8 @@ const icons = {
     homeGreen,
     monitorGreen,
     messageGreen,
-    clipboardGreen
+    clipboardGreen,
+    calendar
 };
 
 export default icons;
