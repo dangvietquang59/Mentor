@@ -43,7 +43,7 @@ function Login() {
                             value={password}
                         />
                     </div>
-                    <Link href={'/'}>
+                    <Link href={'/dashboard'}>
                         <button className="h-[4rem] w-full rounded-[0.8rem] bg-[#254000] p-[1rem] text-[1.4rem] font-bold text-white duration-300 hover:opacity-70">
                             Sign in
                         </button>

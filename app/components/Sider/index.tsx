@@ -35,7 +35,7 @@ function Sider() {
 
     const getPathIndex = (path: string): number => {
         switch (path) {
-            case '/':
+            case '/dashboard':
                 return 0;
             case '/mentors':
                 return 1;
@@ -56,7 +56,7 @@ function Sider() {
         setSelectedSider(index);
         switch (index) {
             case 0:
-                router.push('/');
+                router.push('/dashboard');
                 break;
             case 1:
                 router.push('/mentors');

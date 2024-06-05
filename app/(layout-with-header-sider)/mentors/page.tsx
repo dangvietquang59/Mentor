@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
-import icons from '../assets/icons';
-import MentorItem from '../components/MentorItem';
-import Tabs from '../components/Tabs';
-import { AttributeMentorItem, MentorItemType } from '../types/mentor';
-import { TabType } from '../types/tab';
+import icons from '../../assets/icons';
+import MentorItem from '../../components/MentorItem';
+import Tabs from '../../components/Tabs';
+import { AttributeMentorItem, MentorItemType } from '../../types/mentor';
+import { TabType } from '../../types/tab';
 
 function Mentors() {
     const attributes: AttributeMentorItem[] = [
