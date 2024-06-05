@@ -1,6 +1,6 @@
 function Comments() {
     return (
-        <div>
+        <div className="w-[70%]">
             <div className="flex items-center gap-[0.8rem]">
                 <picture>
                     <img
@@ -16,12 +16,12 @@ function Comments() {
                     <span className="text-[1.4rem] text-[#6B7B8A]">Mentee</span>
                 </div>
             </div>
-            <p className="mt-[1.2rem] rounded-[0.8rem] bg-[rgba(0,0,0,0.1)] p-[1rem] text-[1.4rem]">
+            <p className="mt-[1.2rem] rounded-[0.8rem] p-[1rem] text-[1.4rem]">
                 Alo alo 1 2 3 4 hehehe Alo alo 1 2 3 4 hehehe Alo alo 1 2 3 4
                 hehehe Alo alo 1 2 3 4 hehehe Alo alo 1 2 3 4 hehehe Alo alo 1 2
                 3 4 hehehe Alo alo 1 2 3 4 hehehe
             </p>
-            <div className="flex items-center gap-[1.2rem]">
+            <div className="flex items-center gap-[1.2rem] p-[1rem]">
                 <span className="text-[1.2rem] text-[#6B7B8A]">
                     2 giờ trước
                 </span>

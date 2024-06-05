@@ -9,7 +9,7 @@ import FooterActionChat from '../components/Chat/FooterActionChat';
 function Messages() {
     return (
         <div className="flex w-full">
-            <div className="h-[65rem] w-[25%] rounded border-r border-r-[#ccc] p-[1rem] pt-[1rem]">
+            <div className="h-[65rem] w-[30%] rounded border-r border-r-[#ccc] p-[1rem] pt-[1rem]">
                 <ActionChat />
                 <SearchInput />
                 <div className="flex flex-col gap-[0.8rem]">

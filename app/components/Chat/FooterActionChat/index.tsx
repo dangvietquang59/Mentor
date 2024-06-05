@@ -32,7 +32,9 @@ function FooterActionChat() {
                     placeholder="texting with mentor..."
                     className="h-full grow bg-transparent text-[1.4rem] focus-within:outline-none"
                 />
-                <Image src={icons.paperPlane} alt="send message" />
+                <button>
+                    <Image src={icons.paperPlane} alt="send message" />
+                </button>
             </div>
         </div>
     );

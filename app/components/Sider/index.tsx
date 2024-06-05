@@ -4,6 +4,7 @@ import SiderItem from './SiderItem';
 import { SiderType } from '@/app/types/sider';
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import dynamic from 'next/dynamic';
 
 function Sider() {
     const arraySider: SiderType[] = [
@@ -43,7 +44,7 @@ function Sider() {
             case '/booking':
                 return 3;
             default:
-                return -1; // Return -1 for unmatched paths
+                return -1;
         }
     };
 
@@ -71,7 +72,6 @@ function Sider() {
         }
     };
 
-    // Ensure selectedSider updates if the pathname changes
     useEffect(() => {
         setSelectedSider(getPathIndex(pathname));
     }, [pathname]);
@@ -81,7 +81,7 @@ function Sider() {
             {arraySider.length > 0 &&
                 arraySider.map((item, index) => (
                     <SiderItem
-                        key={index} // Add key prop to avoid warnings
+                        key={index}
                         icon={item.icon}
                         activeIcon={item.activeIcon}
                         title={item.title}
@@ -93,4 +93,4 @@ function Sider() {
     );
 }
 
-export default Sider;
+export default dynamic(() => Promise.resolve(Sider), { ssr: false });

@@ -17,6 +17,7 @@ const Home = () => {
         border: `1px solid ${token.colorBorderSecondary}`,
         borderRadius: token.borderRadiusLG,
     };
+
     return (
         <div className="flex gap-[2.4rem]">
             <div className="mt-[2rem] flex max-w-[75%] flex-wrap gap-[2.4rem]">

@@ -6,6 +6,8 @@ import { useState } from 'react';
 import Wrapper from '../Wrapper';
 import CategoryItem from '../CategoryItem';
 import NotificationItem from '../NotificationItem';
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
 
 const Header = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
@@ -72,7 +74,7 @@ const Header = () => {
                 </div>
             </div>
             <div className="flex items-center">
-                <div
+                {/* <div
                     className="relative mr-[2.4rem] cursor-pointer p-[0.5rem]"
                     onClick={() => handleToggleNotification()}
                 >
@@ -85,8 +87,8 @@ const Header = () => {
                         <NotificationItem />
                         <NotificationItem />
                     </Wrapper>
-                )}
-                <picture
+                )} */}
+                {/* <picture
                     className="relative cursor-pointer"
                     onClick={() => handleToggleInfo()}
                 >
@@ -107,9 +109,17 @@ const Header = () => {
                             </p>
                         </div>
                     </Wrapper>
-                )}
+                )} */}
+                <div className="flex gap-[1.2rem]">
+                    <button className="rounded-[0.8rem] p-[1.5rem] text-[1.6rem] font-bold text-[#254000]">
+                        <Link href={'/login'}>Sign in</Link>
+                    </button>
+                    <button className="rounded-[0.8rem] bg-[#254000] p-[1.5rem] text-[1.6rem] font-bold text-white">
+                        Sign up
+                    </button>
+                </div>
             </div>
         </div>
     );
 };
-export default Header;
+export default dynamic(() => Promise.resolve(Header), { ssr: false });
