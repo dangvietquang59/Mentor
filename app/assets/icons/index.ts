@@ -24,6 +24,8 @@ import monitorGreen from './monitorGreen.svg'
 import clipboardGreen from './clipboardGreen.svg'
 import messageGreen from './message-circle-green.svg'
 import calendar from './calendar-day.svg'
+import github from './github.svg'
+import google from './google.svg'
 
 const icons = {
     search,
@@ -51,7 +53,9 @@ const icons = {
     monitorGreen,
     messageGreen,
     clipboardGreen,
-    calendar
+    calendar,
+    github,
+    google
 };
 
 export default icons;

@@ -4,12 +4,13 @@ import images from '../../assets/img';
 import Input from '../../components/Input';
 import { useState } from 'react';
 import Link from 'next/link';
+import icons from '@/app/assets/icons';
 function Login() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
     return (
-        <div className="mx-auto mt-[10rem] flex w-[40rem] flex-col">
+        <div className="mx-auto mt-[10rem] flex w-[50rem] flex-col rounded-[0.8rem] border-[0.1rem] border-[#ccc] p-[3rem]">
             <div className="flex items-center justify-center">
                 <Image
                     src={images.logo}
@@ -48,6 +49,29 @@ function Login() {
                             Sign in
                         </button>
                     </Link>
+                    <div>
+                        <p className="text-center text-[1.6rem] font-bold">
+                            Or sign in with
+                        </p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <button className="flex items-center gap-[0.8rem] rounded-[0.8rem] bg-black p-[1rem]">
+                            <Image src={icons.github} alt="icon" />
+                            <span className="text-[1.6rem] font-bold text-white">
+                                Sign in with github
+                            </span>
+                        </button>
+                        <button className=" flex items-center gap-[0.8rem] rounded-[0.8rem] border-[0.1rem] border-[#ccc] p-[1rem]">
+                            <Image
+                                src={images.google}
+                                alt="icon"
+                                className="h-[2.4rem] w-[2.4rem]"
+                            />
+                            <span className="font-bol text-[1.6rem]">
+                                Sign in with google
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

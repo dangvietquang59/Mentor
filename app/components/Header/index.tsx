@@ -112,10 +112,10 @@ const Header = () => {
                 )} */}
                 <div className="flex gap-[1.2rem]">
                     <button className="rounded-[0.8rem] p-[1.5rem] text-[1.6rem] font-bold text-[#254000]">
-                        <Link href={'/login'}>Sign in</Link>
+                        <Link href={'/signin'}>Sign in</Link>
                     </button>
                     <button className="rounded-[0.8rem] bg-[#254000] p-[1.5rem] text-[1.6rem] font-bold text-white">
-                        Sign up
+                        <Link href={'/signup'}>Sign up</Link>
                     </button>
                 </div>
             </div>
