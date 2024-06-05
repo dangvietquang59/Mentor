@@ -1,10 +1,10 @@
 'use client';
 import Image from 'next/image';
-import icons from '../assets/icons';
+import icons from '../../assets/icons';
 import { useState } from 'react';
-import { TabType } from '../types/tab';
-import Tabs from '../components/Tabs';
-import BookingTime from '../components/BookingTime';
+import { TabType } from '../../types/tab';
+import Tabs from '../../components/Tabs';
+import BookingTime from '../../components/BookingTime';
 
 const BlockInformation = ({
     title,

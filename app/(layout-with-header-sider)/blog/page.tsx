@@ -1,9 +1,9 @@
 'use client';
 import Image from 'next/image';
-import icons from '../assets/icons';
-import ActionButtonBlog from '../components/BlogItem/ActionButtonBlog';
+import icons from '../../assets/icons';
+import ActionButtonBlog from '../../components/BlogItem/ActionButtonBlog';
 import { useState } from 'react';
-import Comments from '../components/Comment';
+import Comments from '../../components/Comment';
 
 function Blog() {
     const [comment, setComment] = useState<string>('');
