@@ -65,9 +65,6 @@ function Mentors() {
 
     return (
         <div>
-            <h2 className="mb-[2.4rem] text-[2rem] font-bold">
-                Find your mentors
-            </h2>
             <div className="mb-[2.4rem] border-b-[0.1rem] border-b-[#ccc]">
                 <Tabs arrayTabs={optionsTab} onSelectTab={setIsSelectedTab} />
             </div>
