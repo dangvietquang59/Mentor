@@ -11,9 +11,9 @@ function BlogItem() {
             <div className="flex items-center gap-[0.8rem]">
                 <picture>
                     <img
-                        src="https://avatars.githubusercontent.com/u/167729556?v=4"
+                        src="https://film.org.pl/wp-content/uploads/2021/01/John-Wick-Keanu-Reeves-830x475.jpeg"
                         alt="avatar"
-                        className="h-[4rem] w-[4rem] rounded-full"
+                        className="h-[4rem] w-[4rem] rounded-full object-cover"
                     />
                 </picture>
                 <div className="flex flex-col gap-[0.2rem]">

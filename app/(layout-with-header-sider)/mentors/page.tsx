@@ -1,26 +1,11 @@
 'use client';
 import { useState } from 'react';
-import icons from '../../assets/icons';
-import MentorItem from '../../components/MentorItem';
 import Tabs from '../../components/Tabs';
-import { AttributeMentorItem, MentorItemType } from '../../types/mentor';
 import { TabType } from '../../types/tab';
+import SlideImageMentor from '@/app/components/SlideImageMentor';
+import { MentorItemType } from '@/app/types/mentor';
 
 function Mentors() {
-    const attributes: AttributeMentorItem[] = [
-        {
-            title: 'Technical Program Manager at TDMU',
-            icon: icons.briefcase,
-        },
-        {
-            title: '12 sessions (4 reviews)',
-            icon: icons.message,
-        },
-        {
-            title: 'experience 9 years',
-            icon: icons.code,
-        },
-    ];
     const optionsTab: TabType[] = [
         {
             title: 'All',
@@ -40,45 +25,84 @@ function Mentors() {
     ];
     const arrayMentor: MentorItemType[] = [
         {
-            name: 'Gojo Satoru',
-            url: 'https://minhtuanmobile.com/uploads/blog/tai-sao-gojo-van-chua-chet-phan-tich-chap-236-jujutsu-kaisen-230922023358.jpg',
-            attributes: attributes,
+            name: 'Nicolas Cage',
+            url: 'https://cand.com.vn/Files/Image/thanhbinh/2019/11/18/ea2d44b5-1bff-4edb-84c7-6a3d253f2803.jpg',
+            position: 'Frontend Developer',
+            attributes: [
+                {
+                    title: '9 years',
+                },
+            ],
         },
         {
-            name: 'Geto Suguru',
-            url: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2023/09/playing-with-the-death-jujutsu-kaisen.jpg',
-            attributes: attributes,
+            name: 'Bruce Willis',
+            url: 'https://media-cdn-v2.laodong.vn/storage/newsportal/2022/2/13/1013837/The-Rock-1710-1.jpeg?w=526&h=314&crop=auto&scale=both',
+            position: 'Backend Developer',
+            attributes: [
+                {
+                    title: '2 years',
+                },
+            ],
         },
         {
-            name: 'Okkotsu Yuta',
-            url: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/05/yuta-gojo-body-jjk.jpg',
-            attributes: attributes,
+            name: 'Jason Statham',
+            url: 'https://ddk.1cdn.vn/2024/01/06/image006.jpg',
+            position: 'Dev ops',
+            attributes: [
+                {
+                    title: '15 years',
+                },
+            ],
         },
         {
-            name: 'Yuki Tsukumo',
-            url: 'https://preview.redd.it/yuki-will-return-as-a-vengeful-spirit-and-yujis-power-up-v0-res6xprzhxma1.jpg?width=785&format=pjpg&auto=webp&s=fd9401b709057654a25debf95f45170b98dd7147',
-            attributes: attributes,
+            name: 'Cristiano Ronaldo',
+            url: 'https://nld.mediacdn.vn/2020/10/3/tai-xuong-16017123610432098033804.jpg',
+            position: 'Dev ops',
+            attributes: [
+                {
+                    title: '15 years',
+                },
+            ],
+        },
+        {
+            name: 'John Wick',
+            url: 'https://vcdn1-giaitri.vnecdn.net/2023/08/31/372264938691962012859421184825-3290-7471-1693478844.jpg?w=500&h=300&q=100&dpr=2&fit=crop&s=hdCTVclDOaAOu1rInN283A',
+            position: 'Dev ops',
+            attributes: [
+                {
+                    title: '15 years',
+                },
+            ],
+        },
+        {
+            name: 'John Wick',
+            url: 'https://pagesix.com/wp-content/uploads/sites/3/2023/03/NYPICHPDPICT000008414388.jpg?quality=75&strip=all&w=1024',
+            position: 'Dev ops',
+            attributes: [
+                {
+                    title: '15 years',
+                },
+            ],
         },
     ];
 
     const [isSelectedTab, setIsSelectedTab] = useState<number>(0);
 
     return (
-        <div>
+        <div className="px-[1rem]">
             <div className="mb-[2.4rem] border-b-[0.1rem] border-b-[#ccc]">
                 <Tabs arrayTabs={optionsTab} onSelectTab={setIsSelectedTab} />
             </div>
             {isSelectedTab === 0 && (
-                <div className="grid grid-cols-4 gap-[1.2rem]">
-                    {arrayMentor &&
-                        arrayMentor.map((item, index) => (
-                            <MentorItem
-                                key={index}
-                                name={item.name}
-                                url={item.url}
-                                attributes={item.attributes}
-                            />
-                        ))}
+                <div className="flex flex-wrap gap-[1.2rem]">
+                    {arrayMentor.map((item) => (
+                        <SlideImageMentor
+                            name={item.name}
+                            url={item.url}
+                            position={item.position}
+                            attributes={item.attributes}
+                        />
+                    ))}
                 </div>
             )}
         </div>

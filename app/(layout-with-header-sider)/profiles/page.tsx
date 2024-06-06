@@ -34,15 +34,15 @@ function Profiles() {
         },
     ];
     return (
-        <div className="min-h-[120rem] w-full">
+        <div className="min-h-[120rem] w-full p-[1rem]">
             <div className="h-[15rem] bg-[#5b8c00]"></div>
             <div className="flex">
                 <div className="relative ml-[10rem] w-[15rem]">
                     <picture>
                         <img
-                            src="https://avatars.githubusercontent.com/u/167729556?v=4"
+                            src="https://pagesix.com/wp-content/uploads/sites/3/2023/03/NYPICHPDPICT000008414388.jpg?quality=75&strip=all&w=1024"
                             alt="avatar"
-                            className="absolute top-[-5rem] h-[15rem] w-[15rem] rounded-full border-[0.3rem] border-white"
+                            className="absolute top-[-5rem] h-[15rem] w-[15rem] rounded-full border-[0.3rem] border-white object-cover"
                         />
                     </picture>
                 </div>

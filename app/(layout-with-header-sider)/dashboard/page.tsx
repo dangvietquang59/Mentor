@@ -1,82 +1,137 @@
 'use client';
 import BlogItem from '../../components/BlogItem';
 import React from 'react';
-import SesionToday from '../../components/SesstionToday';
 import Image from 'next/image';
 import images from '@/app/assets/img';
 import SearchCategory from '@/app/components/SearchCategory';
-import MentorItem from '@/app/components/MentorItem';
-import { AttributeMentorItem, MentorItemType } from '@/app/types/mentor';
+import { MentorItemType } from '@/app/types/mentor';
 import icons from '@/app/assets/icons';
 import useScroll from '@/app/hooks/useScroll';
+import SlideImageMentor from '@/app/components/SlideImageMentor';
 
 const Dashboard = () => {
     const { mentorListContainerRef, handleScroll, isAtStart, isAtEnd } =
         useScroll({ scrollAmount: 800 });
-    const attributes: AttributeMentorItem[] = [
-        {
-            title: 'Technical Program Manager at TDMUuuuuuuuuuuuuuuuuuuuuu',
-            icon: icons.briefcase,
-        },
-        {
-            title: '12 sessions',
-            icon: icons.message,
-        },
-        {
-            title: 'experience 9 years',
-            icon: icons.code,
-        },
-    ];
     const arrayMentor: MentorItemType[] = [
         {
-            name: 'Gojo Satoru',
-            url: 'https://minhtuanmobile.com/uploads/blog/tai-sao-gojo-van-chua-chet-phan-tich-chap-236-jujutsu-kaisen-230922023358.jpg',
-            attributes: attributes,
+            name: 'Nicolas Cage',
+            url: 'https://cand.com.vn/Files/Image/thanhbinh/2019/11/18/ea2d44b5-1bff-4edb-84c7-6a3d253f2803.jpg',
+            position: 'Frontend Developer',
+            attributes: [
+                {
+                    title: '9 years',
+                },
+            ],
         },
         {
-            name: 'Geto Suguru',
-            url: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2023/09/playing-with-the-death-jujutsu-kaisen.jpg',
-            attributes: attributes,
+            name: 'Bruce Willis',
+            url: 'https://media-cdn-v2.laodong.vn/storage/newsportal/2022/2/13/1013837/The-Rock-1710-1.jpeg?w=526&h=314&crop=auto&scale=both',
+            position: 'Backend Developer',
+            attributes: [
+                {
+                    title: '2 years',
+                },
+            ],
         },
         {
-            name: 'Okkotsu Yuta',
-            url: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/05/yuta-gojo-body-jjk.jpg',
-            attributes: attributes,
+            name: 'Jason Statham',
+            url: 'https://ddk.1cdn.vn/2024/01/06/image006.jpg',
+            position: 'Dev ops',
+            attributes: [
+                {
+                    title: '15 years',
+                },
+            ],
         },
         {
-            name: 'Yuki Tsukumo',
-            url: 'https://preview.redd.it/yuki-will-return-as-a-vengeful-spirit-and-yujis-power-up-v0-res6xprzhxma1.jpg?width=785&format=pjpg&auto=webp&s=fd9401b709057654a25debf95f45170b98dd7147',
-            attributes: attributes,
+            name: 'Cristiano Ronaldo',
+            url: 'https://nld.mediacdn.vn/2020/10/3/tai-xuong-16017123610432098033804.jpg',
+            position: 'Dev ops',
+            attributes: [
+                {
+                    title: '15 years',
+                },
+            ],
         },
         {
-            name: 'Okkotsu Yuta',
-            url: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/05/yuta-gojo-body-jjk.jpg',
-            attributes: attributes,
+            name: 'John Wick',
+            url: 'https://vcdn1-giaitri.vnecdn.net/2023/08/31/372264938691962012859421184825-3290-7471-1693478844.jpg?w=500&h=300&q=100&dpr=2&fit=crop&s=hdCTVclDOaAOu1rInN283A',
+            position: 'Dev ops',
+            attributes: [
+                {
+                    title: '15 years',
+                },
+            ],
         },
         {
-            name: 'Yuki Tsukumo',
-            url: 'https://preview.redd.it/yuki-will-return-as-a-vengeful-spirit-and-yujis-power-up-v0-res6xprzhxma1.jpg?width=785&format=pjpg&auto=webp&s=fd9401b709057654a25debf95f45170b98dd7147',
-            attributes: attributes,
+            name: 'John Wick',
+            url: 'https://pagesix.com/wp-content/uploads/sites/3/2023/03/NYPICHPDPICT000008414388.jpg?quality=75&strip=all&w=1024',
+            position: 'Dev ops',
+            attributes: [
+                {
+                    title: '15 years',
+                },
+            ],
         },
         {
-            name: 'Okkotsu Yuta',
-            url: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/05/yuta-gojo-body-jjk.jpg',
-            attributes: attributes,
+            name: 'Nicolas Cage',
+            url: 'https://cand.com.vn/Files/Image/thanhbinh/2019/11/18/ea2d44b5-1bff-4edb-84c7-6a3d253f2803.jpg',
+            position: 'Frontend Developer',
+            attributes: [
+                {
+                    title: '9 years',
+                },
+            ],
         },
         {
-            name: 'Yuki Tsukumo',
-            url: 'https://preview.redd.it/yuki-will-return-as-a-vengeful-spirit-and-yujis-power-up-v0-res6xprzhxma1.jpg?width=785&format=pjpg&auto=webp&s=fd9401b709057654a25debf95f45170b98dd7147',
-            attributes: attributes,
+            name: 'Bruce Willis',
+            url: 'https://media-cdn-v2.laodong.vn/storage/newsportal/2022/2/13/1013837/The-Rock-1710-1.jpeg?w=526&h=314&crop=auto&scale=both',
+            position: 'Backend Developer',
+            attributes: [
+                {
+                    title: '2 years',
+                },
+            ],
         },
         {
-            name: 'Yuki Tsukumo',
-            url: 'https://preview.redd.it/yuki-will-return-as-a-vengeful-spirit-and-yujis-power-up-v0-res6xprzhxma1.jpg?width=785&format=pjpg&auto=webp&s=fd9401b709057654a25debf95f45170b98dd7147',
-            attributes: attributes,
+            name: 'Jason Statham',
+            url: 'https://ddk.1cdn.vn/2024/01/06/image006.jpg',
+            position: 'Dev ops',
+            attributes: [
+                {
+                    title: '15 years',
+                },
+            ],
         },
         {
-            name: 'Yuki Tsukumo',
-            url: 'https://preview.redd.it/yuki-will-return-as-a-vengeful-spirit-and-yujis-power-up-v0-res6xprzhxma1.jpg?width=785&format=pjpg&auto=webp&s=fd9401b709057654a25debf95f45170b98dd7147',
-            attributes: attributes,
+            name: 'Cristiano Ronaldo',
+            url: 'https://nld.mediacdn.vn/2020/10/3/tai-xuong-16017123610432098033804.jpg',
+            position: 'Dev ops',
+            attributes: [
+                {
+                    title: '15 years',
+                },
+            ],
+        },
+        {
+            name: 'John Wick',
+            url: 'https://vcdn1-giaitri.vnecdn.net/2023/08/31/372264938691962012859421184825-3290-7471-1693478844.jpg?w=500&h=300&q=100&dpr=2&fit=crop&s=hdCTVclDOaAOu1rInN283A',
+            position: 'Dev ops',
+            attributes: [
+                {
+                    title: '15 years',
+                },
+            ],
+        },
+        {
+            name: 'John Wick',
+            url: 'https://pagesix.com/wp-content/uploads/sites/3/2023/03/NYPICHPDPICT000008414388.jpg?quality=75&strip=all&w=1024',
+            position: 'Dev ops',
+            attributes: [
+                {
+                    title: '15 years',
+                },
+            ],
         },
     ];
     return (
@@ -85,7 +140,7 @@ const Dashboard = () => {
                 <Image
                     src={images.bgSlider}
                     alt="background"
-                    className="h-[60rem] w-full object-cover"
+                    className="h-[65rem] w-full object-cover"
                 />
                 <div className="absolute left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/2 transform">
                     <h2 className="text-center text-[5rem] font-bold text-white">
@@ -98,18 +153,7 @@ const Dashboard = () => {
             </div>
 
             <div className="flex gap-[2.4rem] p-[1rem]">
-                <div className="max-w-[72%]">
-                    <h2 className="my-[1rem] text-[2rem] font-bold">
-                        Blog from mentor and mentee
-                    </h2>
-                    <div className="grid grid-cols-2 gap-[1.2rem]">
-                        <BlogItem />
-                        <BlogItem />
-                        <BlogItem />
-                        <BlogItem />
-                        <BlogItem />
-                        <BlogItem />
-                    </div>
+                <div className="max-w-[100%]">
                     <div className="mt-[2.4rem] flex items-center justify-between">
                         <h2 className="my-[1rem] text-[2rem] font-bold">
                             Finding a suitable mentor
@@ -141,21 +185,29 @@ const Dashboard = () => {
                         className="no-scrollbar overflow-auto whitespace-nowrap"
                         ref={mentorListContainerRef}
                     >
-                        <div className="flex gap-[0.8rem]">
-                            {arrayMentor &&
-                                arrayMentor.map((item, index) => (
-                                    <MentorItem
-                                        key={index}
+                        <ul className="flex gap-[0.8rem]">
+                            {arrayMentor.map((item) => (
+                                <li key={item.name}>
+                                    <SlideImageMentor
                                         name={item.name}
                                         url={item.url}
+                                        position={item.position}
                                         attributes={item.attributes}
                                     />
-                                ))}
-                        </div>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
-                </div>
-                <div className="w-[28%]">
-                    <SesionToday />
+
+                    <h2 className="my-[1rem] mt-[2.4rem] text-[2rem] font-bold">
+                        Blog from mentor and mentee
+                    </h2>
+                    <div className="flex flex-wrap gap-[2.4rem]">
+                        <BlogItem />
+                        <BlogItem />
+                        <BlogItem />
+                        <BlogItem />
+                    </div>
                 </div>
             </div>
         </div>

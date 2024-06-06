@@ -1,6 +1,12 @@
-function ChatUser() {
+interface ChatUserProps {
+    onOpenSingleChat?: () => void;
+}
+function ChatUser({ onOpenSingleChat }: ChatUserProps) {
     return (
-        <div className="flex w-full cursor-pointer items-center gap-[2.4rem] rounded-[0.8rem] p-[1rem] duration-300 hover:bg-[#B7EB8F]">
+        <div
+            className="flex w-full cursor-pointer items-center gap-[2.4rem] rounded-[0.8rem] p-[1rem] duration-300 hover:bg-[#B7EB8F]"
+            onClick={onOpenSingleChat}
+        >
             <picture>
                 <img
                     src="https://avatars.githubusercontent.com/u/167729556?v=4"

@@ -1,14 +1,9 @@
 import search from './search.svg';
 import chevronDown from './chevron-down.svg';
 import bell from './bell.svg';
-import home from './home.svg';
-import clipboard from './clipboard.svg';
 import message from './message-circle.svg';
-import monitor from './monitor.svg';
 import hashTag from './hash.svg'
 import xCircle from './x-circle.svg'
-import code from './code.svg'
-import briefcase from './briefcase.svg'
 import chat from './comment-alt.svg'
 import heart from './heart.svg'
 import moreInfo from './circle-ellipsis.svg'
@@ -19,26 +14,22 @@ import picture from './picture.svg'
 import camera from './camera.svg'
 import appAdd from './apps-add.svg'
 import share from './share.svg'
-import homeGreen from './homeGreen.svg'
-import monitorGreen from './monitorGreen.svg'
-import clipboardGreen from './clipboardGreen.svg'
-import messageGreen from './message-circle-green.svg'
 import calendar from './calendar-day.svg'
 import github from './github.svg'
 import google from './google.svg'
+import mic from './mic.svg'
+import phone from './phone.svg'
+import shareScreen from './share-screen.svg'
+import video from './video.svg'
+import xIcon from './x.svg'
 
 const icons = {
     search,
     chevronDown,
     bell,
-    home,
-    clipboard,
     message,
-    monitor,
     hashTag,
     xCircle,
-    code,
-    briefcase,
     chat,
     heart,
     moreInfo,
@@ -49,13 +40,14 @@ const icons = {
     camera,
     appAdd,
     share,
-    homeGreen,
-    monitorGreen,
-    messageGreen,
-    clipboardGreen,
     calendar,
     github,
-    google
+    google,
+    mic,
+    video,
+    xIcon,
+    shareScreen,
+    phone
 };
 
 export default icons;

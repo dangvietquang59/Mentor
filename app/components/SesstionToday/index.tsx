@@ -1,25 +1,10 @@
 import icons from '@/app/assets/icons';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Calendar, theme } from 'antd';
-import type { CalendarProps } from 'antd';
-import type { Dayjs } from 'dayjs';
 
-const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>['mode']) => {
-    console.log(value.format('YYYY-MM-DD'), mode);
-};
 function SesionToday() {
-    const { token } = theme.useToken();
-    const wrapperStyle: React.CSSProperties = {
-        width: '100%',
-        border: `1px solid ${token.colorBorderSecondary}`,
-        borderRadius: token.borderRadiusLG,
-    };
     return (
-        <div className="rounded-[0.8rem] border-[0.1rem] border-[#ccc] p-[1rem]">
-            <div style={wrapperStyle} className="mb-[2.4rem]">
-                <Calendar fullscreen={false} onPanelChange={onPanelChange} />
-            </div>
+        <div className="rounded-[0.8rem] p-[1rem]">
             <div className="flex items-center gap-[0.8rem] border-b p-[1rem]">
                 <Image
                     src={icons.calendar}
