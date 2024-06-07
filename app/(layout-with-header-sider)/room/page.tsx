@@ -78,12 +78,12 @@ function Room() {
                 <h2 className="mb-[1.2rem] text-[2rem] font-bold">Live chat</h2>
                 <div className="mb-[2.4rem] flex h-[50rem] flex-col gap-[1.2rem] overflow-auto">
                     {arrayMessage.map((item, index) => (
-                        <span
-                            className="break-words rounded-[0.8rem] bg-[rgba(0,0,0,0.1)] p-[1rem] text-[1.6rem]"
+                        <p
+                            className="w-fit break-words rounded-[0.8rem] bg-[rgba(0,0,0,0.1)] p-[1rem] text-[1.6rem]"
                             key={index}
                         >
                             {item}
-                        </span>
+                        </p>
                     ))}
                 </div>
                 <div className="h-[10%]">

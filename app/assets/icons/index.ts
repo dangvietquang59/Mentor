@@ -22,6 +22,9 @@ import phone from './phone.svg'
 import shareScreen from './share-screen.svg'
 import video from './video.svg'
 import xIcon from './x.svg'
+import facebook from './facebook.svg'
+import instagram from './instagram.svg'
+import twitter from './twitter.svg'
 
 const icons = {
     search,
@@ -47,7 +50,10 @@ const icons = {
     video,
     xIcon,
     shareScreen,
-    phone
+    phone,
+    facebook,
+    instagram,
+    twitter
 };
 
 export default icons;

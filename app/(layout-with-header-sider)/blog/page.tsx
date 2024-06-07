@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import icons from '../../assets/icons';
-import ActionButtonBlog from '../../components/BlogItem/ActionButtonBlog';
 import { useState } from 'react';
 import Comments from '../../components/Comment';
 
@@ -47,11 +46,7 @@ function Blog() {
                 thức và sức mạnh tay đôi của mình, khiến hắn trở thành một đối
                 thủ cực kỳ khó bị áp đảo trong trận chiến.
             </p>
-            <div className="flex items-center gap-[1.2rem]">
-                <ActionButtonBlog icon={icons.heart} title="123k" />
-                <ActionButtonBlog icon={icons.message} title="Comments" />
-                <ActionButtonBlog icon={icons.share} title="Share" />
-            </div>
+            <div className="flex items-center gap-[1.2rem]"></div>
 
             <h2 className="my-[2.4rem] text-[2rem] font-bold">Comments (12)</h2>
             <div className="flex w-[70%] items-center gap-[1.2rem]">
