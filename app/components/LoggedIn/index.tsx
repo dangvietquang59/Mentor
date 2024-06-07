@@ -16,30 +16,39 @@ function LoggedIn() {
     const [isOpenMessage, setIsopenMessage] = useState<boolean>(false);
     const [isOpenSessionToday, setIsOpenSessionToday] =
         useState<boolean>(false);
+    const [selectedUser, setSelectedUser] = useState<{
+        id: string;
+        name: string;
+    } | null>(null);
+
     const handleToggleSessionToday = () => {
         setIsOpenSessionToday(!isOpenSessionToday);
         setIsOpenNotification(false);
         setIsopenMessage(false);
         setIsOpenInfo(false);
     };
+
     const handleToggleMessage = () => {
         setIsopenMessage(!isOpenMessage);
         setIsOpenInfo(false);
         setIsOpenNotification(false);
         setIsOpenSessionToday(false);
     };
+
     const handleToggleInfo = () => {
         setIsOpenInfo(!isOpenInfo);
         setIsopenMessage(false);
         setIsOpenNotification(false);
         setIsOpenSessionToday(false);
     };
+
     const handleToggleNotification = () => {
         setIsOpenNotification(!isOpenNotification);
         setIsopenMessage(false);
         setIsOpenInfo(false);
         setIsOpenSessionToday(false);
     };
+
     return (
         <>
             <div
@@ -64,10 +73,22 @@ function LoggedIn() {
                     <h2 className="my-[0.8rem] text-[1.6rem] font-bold">
                         Message
                     </h2>
-                    <ChatUser />
-                    <ChatUser />
-                    <ChatUser />
-                    <ChatUser />
+                    <div
+                        onClick={() => {
+                            setSelectedUser({ id: '1', name: 'John Doe' });
+                            setIsopenMessage(false);
+                        }}
+                    >
+                        <ChatUser />
+                    </div>
+                    <div
+                        onClick={() => {
+                            setSelectedUser({ id: '2', name: 'Jane Smith' });
+                            setIsopenMessage(false);
+                        }}
+                    >
+                        <ChatUser />
+                    </div>
                     <ul className="flex h-[3rem] items-center justify-between">
                         <li onClick={() => setIsopenMessage(false)}>
                             <Link href={'/messages'}>
@@ -135,6 +156,12 @@ function LoggedIn() {
                         </Link>
                     </ul>
                 </Wrapper>
+            )}
+            {selectedUser && (
+                <SingleChat
+                    user={selectedUser}
+                    onClose={() => setSelectedUser(null)}
+                />
             )}
         </>
     );

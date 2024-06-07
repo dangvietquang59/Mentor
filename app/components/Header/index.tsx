@@ -1,10 +1,7 @@
 'use client';
-import icons from '@/app/assets/icons';
 import logo from '@/app/assets/img/Mentors.png';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import Wrapper from '../Wrapper';
-import CategoryItem from '../CategoryItem';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { SiderType } from '@/app/types/sider';

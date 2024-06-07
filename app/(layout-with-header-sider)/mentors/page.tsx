@@ -4,6 +4,7 @@ import Tabs from '../../components/Tabs';
 import { TabType } from '../../types/tab';
 import SlideImageMentor from '@/app/components/SlideImageMentor';
 import { MentorItemType } from '@/app/types/mentor';
+import SpecialMentor from '@/app/components/SpecialMentor';
 
 function Mentors() {
     const optionsTab: TabType[] = [
@@ -94,15 +95,21 @@ function Mentors() {
                 <Tabs arrayTabs={optionsTab} onSelectTab={setIsSelectedTab} />
             </div>
             {isSelectedTab === 0 && (
-                <div className="flex flex-wrap gap-[1.2rem]">
-                    {arrayMentor.map((item) => (
-                        <SlideImageMentor
-                            name={item.name}
-                            url={item.url}
-                            position={item.position}
-                            attributes={item.attributes}
-                        />
-                    ))}
+                <div className="flex flex-col gap-[2.4rem]">
+                    <div className="flex items-center gap-[0.8rem]">
+                        <SpecialMentor url="https://images.lifestyleasia.com/wp-content/uploads/sites/7/2021/05/24141529/vin-diesel-1600x900.jpg" />
+                        <SpecialMentor url="https://cdn.mos.cms.futurecdn.net/YbiZFaCqQvTAYez9EpVH26-1200-80.jpg" />
+                    </div>
+                    <div className="grid grid-cols-5 gap-[1.2rem]">
+                        {arrayMentor.map((item) => (
+                            <SlideImageMentor
+                                name={item.name}
+                                url={item.url}
+                                position={item.position}
+                                attributes={item.attributes}
+                            />
+                        ))}
+                    </div>
                 </div>
             )}
         </div>
