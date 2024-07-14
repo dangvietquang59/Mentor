@@ -45,9 +45,9 @@ const Header = () => {
         }
     }, [pathname, mounted]);
 
-    const user = true;
+    const user = false;
     return (
-        <div className="fixed z-[100] flex h-[8rem] w-full items-center justify-between border-b bg-white p-[1rem]">
+        <div className="fixed z-[100] flex h-[8rem] w-full items-center justify-between border-b border-b-[#0f0f0f] bg-[#000] p-[1rem]">
             <div className="flex items-center gap-[2.4rem]">
                 <Image
                     src={logo}

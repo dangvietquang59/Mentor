@@ -17,10 +17,15 @@ const useScroll = ({ scrollAmount }: UseScrollProps) => {
 
         const handleScrollUpdate = () => {
             setIsAtStart(container.scrollLeft === 0);
-            setIsAtEnd(Math.round(container.scrollLeft + container.clientWidth) === container.scrollWidth);
-            console.log('a',Math.round(container.scrollLeft + container.clientWidth)+1);
-            console.log('b',container.scrollWidth);
-            
+            setIsAtEnd(
+                Math.round(container.scrollLeft + container.clientWidth) ===
+                    container.scrollWidth,
+            );
+            console.log(
+                'a',
+                Math.round(container.scrollLeft + container.clientWidth) + 1,
+            );
+            console.log('b', container.scrollWidth);
         };
 
         container.addEventListener('scroll', handleScrollUpdate);
@@ -29,13 +34,19 @@ const useScroll = ({ scrollAmount }: UseScrollProps) => {
         };
     }, []);
 
-    const smoothScroll = (startTime: number, endTime: number, startScroll: number, targetScroll: number) => {
+    const smoothScroll = (
+        startTime: number,
+        endTime: number,
+        startScroll: number,
+        targetScroll: number,
+    ) => {
         const duration = endTime - startTime;
         const currentTime = Math.min(Date.now(), endTime);
         const progress = (currentTime - startTime) / duration;
 
         const easedProgress = easeOutQuart(progress);
-        const newScroll = startScroll + (targetScroll - startScroll) * easedProgress;
+        const newScroll =
+            startScroll + (targetScroll - startScroll) * easedProgress;
 
         mentorListContainerRef.current!.scrollLeft = newScroll;
 
@@ -51,9 +62,12 @@ const useScroll = ({ scrollAmount }: UseScrollProps) => {
 
         const container = mentorListContainerRef.current;
         const startScroll = container.scrollLeft;
-        const targetScroll = direction === 'right' ? startScroll + scrollAmount : startScroll - scrollAmount;
+        const targetScroll =
+            direction === 'right'
+                ? startScroll + scrollAmount
+                : startScroll - scrollAmount;
         const startTime = Date.now();
-        const endTime = startTime + 100; 
+        const endTime = startTime + 100;
 
         if (animationFrameId) {
             cancelAnimationFrame(animationFrameId);

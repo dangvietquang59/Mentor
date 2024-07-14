@@ -5,7 +5,7 @@ import SessionsItem from '../SessionsItem';
 
 function BookingTime() {
     return (
-        <div className="min-h-[40rem] rounded-[0.8rem] border-[0.2rem] border-[#ccc] p-[2rem]">
+        <div className="min-h-[40rem] rounded-[0.8rem] border p-[2rem]">
             <div className="mb-[2.4rem]">
                 <h2 className="text-[2rem] font-bold">Available sessions</h2>
                 <span className="text-[1.6rem] font-bold text-[#6B7B8A]">
@@ -44,7 +44,7 @@ function BookingTime() {
                     <TimeItem />
                     <TimeItem />
                 </div>
-                <button className="mt-[2.4rem] w-full rounded-[0.8rem] bg-[#254000] p-[2rem] text-[2rem] font-bold text-white duration-300 hover:opacity-80">
+                <button className="mt-[2.4rem] w-full rounded-[0.8rem] bg-[#337418] p-[2rem] text-[2rem] font-bold text-white duration-300 hover:opacity-80">
                     Book session for 02 Jun 2024
                 </button>
             </div>

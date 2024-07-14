@@ -10,7 +10,17 @@ import SlideImageMentor from '@/app/components/SlideImageMentor';
 import OverviewBlog from '@/app/components/OverviewBlog';
 import NewsFeedItem from '@/app/components/NewsFeedItem';
 import { NewsFeedItemProps } from '@/app/types/blog';
+import Devider from '@/app/components/Devider';
+import Introduce from '@/app/components/Introduce';
+import ReviewMentee from '@/app/components/ReviewMentee';
+import 'swiper/swiper-bundle.css';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
+import { Swiper, SwiperSlide } from 'swiper/react';
 const Dashboard = () => {
     const {
         mentorListContainerRef: mentorScroll,
@@ -18,12 +28,7 @@ const Dashboard = () => {
         isAtStart: isMentorStart,
         isAtEnd: isMentorEnd,
     } = useScroll({ scrollAmount: 800 });
-    const {
-        mentorListContainerRef: listNewsRef,
-        handleScroll: handleScrollnewsRef,
-        isAtStart: isAtStartNews,
-        isAtEnd: isAtEndNews,
-    } = useScroll({ scrollAmount: 1000 });
+
     const arrayBlog: NewsFeedItemProps[] = [
         {
             title: 'The Rise of Artificial Intelligence in Healthcare',
@@ -219,63 +224,23 @@ const Dashboard = () => {
         <div className="overflow-hidden">
             <div className="relative">
                 <Image
-                    src={images.bgSlider}
+                    src={images.banner}
                     alt="background"
                     className="h-[65rem] w-full object-cover"
                 />
-                <div className="absolute left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/2 transform">
-                    <h2 className="text-center text-[5rem] font-bold text-white">
-                        Nothing is impossible when you have a mentor
+                <div className="absolute left-[27%] top-[60%] flex max-w-[60rem] -translate-x-1/2 -translate-y-1/2 transform flex-col gap-[2rem]">
+                    <h2 className="text-[5rem] font-bold text-white">
+                        Make contact with eminent mentors
                     </h2>
-                </div>
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform">
                     <SearchCategory />
                 </div>
             </div>
 
             <div className="mt-[2.4rem] flex flex-col gap-[3.2rem] px-[8%]">
-                <div className="flex items-center justify-between gap-[0.8rem]">
-                    <div className="w-[40%] rounded-[3rem] bg-[#eaff8f] p-[3rem]">
-                        <h2 className="text-[9rem] font-bold">
-                            Become a{' '}
-                            <span className="text-[#A0D911]">mentor</span> now
-                        </h2>
-                    </div>
-                    <div className="grid grid-cols-2 gap-[0.8rem]">
-                        <picture>
-                            <img
-                                src="https://gcs.tripi.vn/public-tripi/tripi-feed/img/473865FHw/charlize-theron-53719.jpg"
-                                alt="avatar"
-                                className="h-[20rem] w-[30rem] rounded-[2rem] object-cover"
-                            />
-                        </picture>
-                        <picture>
-                            <img
-                                src="https://afamilycdn.com/k:thumb_w/600/FeC7mIEfmQHVffExQxvrGdkRdYCZvO/Image/2016/03/AfamilyPAbrapitthollywood11-05e46/dien-vien-hollywood-2.jpg"
-                                alt="avatar"
-                                className="h-[20rem] w-[30rem] rounded-[2rem] object-cover"
-                            />
-                        </picture>
-                        <picture>
-                            <img
-                                src="https://cdn.galaxycine.vn/media/r/y/ryan%20reynolds-ngang.jpg"
-                                alt="avatar"
-                                className="h-[20rem] w-[30rem] rounded-[2rem] object-cover"
-                            />
-                        </picture>
-                        <picture>
-                            <img
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpUjYiIXEotmTbp_szOZe7CbCNiyYF_-T9JA&s"
-                                alt="avatar"
-                                className="h-[20rem] w-[30rem] rounded-[2rem] object-cover"
-                            />
-                        </picture>
-                    </div>
-                </div>
                 <div className="max-w-[100%]">
                     <div className="flex items-center justify-between">
-                        <h2 className="my-[1rem] text-[3rem] font-bold">
-                            Finding a suitable mentor
+                        <h2 className="my-[1rem] text-[3.6rem] font-bold">
+                            Reccomend for you
                         </h2>
                         <div className="flex items-center gap-[1.2rem]">
                             <button
@@ -318,52 +283,49 @@ const Dashboard = () => {
                         </ul>
                     </div>
                 </div>
+                <Devider />
+
                 <div>
                     <OverviewBlog />
                 </div>
-                <div className="relative my-[2.4rem]">
-                    <div className="flex items-center justify-center">
-                        <h2 className="mb-[2.4rem] text-[5rem] font-bold">
-                            <span className="text-[#A0D911]">News</span> feed
-                            today
-                        </h2>
-                    </div>
+                <div className="mt-[2.4rem]">
+                    <p className="text-[3.6rem] font-bold">Recent articles</p>
                     <div className="flex items-center gap-[0.8rem]">
-                        <button
-                            className="rounded-full bg-[rgba(0,0,0,0.1)] p-[1rem] duration-300 hover:bg-[rgba(0,0,0,0.3)]"
-                            onClick={() => handleScrollnewsRef('left')}
-                            disabled={isAtStartNews}
-                        >
-                            <Image
-                                src={icons.chevronDown}
-                                alt="icon"
-                                className="w-[7rem] rotate-90"
-                            />
-                        </button>
-                        <div
-                            className="no-scrollbar flex gap-[0.8rem] overflow-x-auto"
-                            ref={listNewsRef}
-                        >
-                            {arrayBlog.map((blog) => (
-                                <NewsFeedItem
-                                    title={blog.title}
-                                    description={blog.description}
-                                    imageUrl={blog.imageUrl}
-                                />
-                            ))}
+                        <div className="no-scrollbar flex gap-[0.8rem] overflow-x-auto">
+                            <Swiper
+                                modules={[
+                                    Navigation,
+                                    Pagination,
+                                    Scrollbar,
+                                    A11y,
+                                ]}
+                                spaceBetween={10}
+                                slidesPerView={3}
+                                navigation
+                                pagination={{ clickable: true }}
+                                scrollbar={{ draggable: true }}
+                            >
+                                {arrayBlog.map((blog) => (
+                                    <SwiperSlide>
+                                        <NewsFeedItem
+                                            title={blog.title}
+                                            description={blog.description}
+                                            imageUrl={blog.imageUrl}
+                                        />
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
                         </div>
-                        <button
-                            className="rounded-full bg-[rgba(0,0,0,0.1)] p-[1rem] duration-300 hover:bg-[rgba(0,0,0,0.3)]"
-                            onClick={() => handleScrollnewsRef('right')}
-                            disabled={isAtEndNews}
-                        >
-                            <Image
-                                src={icons.chevronDown}
-                                alt="icon"
-                                className="w-[7rem] rotate-[-90deg]"
-                            />
-                        </button>
                     </div>
+                </div>
+                <div>
+                    <Introduce />
+                </div>
+                <Devider />
+                <div className="my-[2.4rem] grid grid-cols-3 gap-[1rem]">
+                    <ReviewMentee />
+                    <ReviewMentee />
+                    <ReviewMentee />
                 </div>
             </div>
         </div>

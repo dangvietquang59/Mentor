@@ -5,7 +5,7 @@ import Link from 'next/link';
 function NewsFeedItem({ description, title, imageUrl }: NewsFeedItemProps) {
     return (
         <Link href={'/blog'}>
-            <div className="my-[1.2rem] flex max-h-[30rem] min-h-[40rem] w-[38.5rem] flex-col gap-[0.8rem] overflow-hidden rounded-[1rem] border-[0.2rem] hover:border-[#A0D911]">
+            <div className="my-[1.2rem] flex max-h-[30rem] min-h-[40rem] w-[38.5rem] flex-col gap-[0.8rem] overflow-hidden rounded-[1rem]">
                 <picture>
                     <img
                         src={imageUrl}

@@ -10,7 +10,7 @@ const Home = () => {
         router.push('/dashboard');
     }, [router]);
 
-    return null; // Trả về null thay vì một fragment rỗng
+    return null;
 };
 
 export default Home;

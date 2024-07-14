@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect, useRef } from 'react';
 import { TabType } from '@/app/types/tab';
 

@@ -1,9 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 html {
-    font-size: 10px;
+    font-size: 62.5%;
+    background-color: #0f0f0f;
+    color: #F8F8F8;
 }
 
 @layer utilities {
