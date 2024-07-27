@@ -1,6 +1,21 @@
-//pagination
 .ant-pagination {
+    .ant-pagination-prev svg, .ant-pagination-next svg{
+        color: #fff !important;
+       
+    }
+    .ant-pagination-prev .ant-pagination-disabled , .ant-pagination-next .ant-pagination-disabled  {
+        color: #ccc !important;
+    }
     .ant-pagination-item a{
         color: #fff !important;
+    }
+    .ant-pagination-item-active{
+        border-color:#5dd26c ;
+        a{
+            color: #5dd26c !important;
+        }
+        &:hover{
+        border-color:#5dd26c ;
+        }
     }
 }

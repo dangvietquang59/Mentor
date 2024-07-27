@@ -1,83 +1,85 @@
-'use client';
+import icons from '@/assets/icons';
+import BlogItem from '@/components/BlogItem';
+import BlogTag from '@/components/BlogTag';
 import Image from 'next/image';
-import icons from '../../../assets/icons';
-import { useState } from 'react';
-import Comments from '../../../components/Comment';
 
 function Blog() {
-    const [comment, setComment] = useState<string>('');
-    return (
-        <div className="w-[80%] px-[2%] py-[2rem]">
-            <div className="flex items-center gap-[0.8rem]">
-                <picture>
-                    <img
-                        src="https://avatars.githubusercontent.com/u/167729556?v=4"
-                        alt="avatar"
-                        className="h-[4rem] w-[4rem] rounded-full"
-                    />
-                </picture>
-                <div>
-                    <p className="text-[1.6rem] font-bold">Ryomen Sukuna</p>
-                    <p className="text-[1.4rem] text-[#6B7B8A]">
-                        1 tháng trước
-                    </p>
-                </div>
-            </div>
-            <p className="my-[2.4rem] text-justify text-[1.4rem] leading-[2.5rem]">
-                Sukuna là một đấu sĩ cận chiến cực kỳ điêu luyện và mạnh mẽ. Hắn
-                thể hiện sự áp đảo trước Megumi với những đòn vật lý mạnh mẽ.
-                Sukuna có thể kết hợp thuật thức và sức mạnh tay đôi của mình,
-                khiến hắn trở thành một đối thủ cực kỳ khó bị áp đảo trong trận
-                chiến. Sukuna là một đấu sĩ cận chiến cực kỳ điêu luyện và mạnh
-                mẽ. Hắn thể hiện sự áp đảo trước Megumi với những đòn vật lý
-                mạnh mẽ. Sukuna có thể kết hợp thuật thức và sức mạnh tay đôi
-                của mình, khiến hắn trở thành một đối thủ cực kỳ khó bị áp đảo
-                trong trận chiến. Sukuna là một đấu sĩ cận chiến cực kỳ điêu
-                luyện và mạnh mẽ. Hắn thể hiện sự áp đảo trước Megumi với những
-                đòn vật lý mạnh mẽ. Sukuna có thể kết hợp thuật thức và sức mạnh
-                tay đôi của mình, khiến hắn trở thành một đối thủ cực kỳ khó bị
-                áp đảo trong trận chiến. Sukuna là một đấu sĩ cận chiến cực kỳ
-                điêu luyện và mạnh mẽ. Hắn thể hiện sự áp đảo trước Megumi với
-                những đòn vật lý mạnh mẽ. Sukuna có thể kết hợp thuật thức và
-                sức mạnh tay đôi của mình, khiến hắn trở thành một đối thủ cực
-                kỳ khó bị áp đảo trong trận chiến. Sukuna là một đấu sĩ cận
-                chiến cực kỳ điêu luyện và mạnh mẽ. Hắn thể hiện sự áp đảo trước
-                Megumi với những đòn vật lý mạnh mẽ. Sukuna có thể kết hợp thuật
-                thức và sức mạnh tay đôi của mình, khiến hắn trở thành một đối
-                thủ cực kỳ khó bị áp đảo trong trận chiến.
-            </p>
-            <div className="flex items-center gap-[1.2rem]"></div>
+    const arrayBlog = [
+        {
+            author: 'Đặng Việt Quang',
+            time: '12 giờ',
+            content: `
+            Mn tư vấn cho e logic Refresh Token khi Access Token sắp hết hạn với fetch với ạ. E mò mãi vẫn không dc, search google cũng chỉ toàn NextAuth. Có project mẫu càng tốt ạ, e cảm ơn.
+            --- Hay là mình chuyển sang dùng axios + react query cho tiện mn?
+          `,
+        },
+        {
+            author: 'Nguyễn Thị Mai',
+            time: '2 ngày trước',
+            content: `
+            Mn có ai đã từng làm về WebSockets chưa? Mình đang cần truyền tải dữ liệu real-time giữa server và client nhưng chưa rõ nên bắt đầu từ đâu. Mong mn chia sẻ kinh nghiệm với!
+            --- Mình có dùng qua Firebase Realtime Database nhưng có vẻ không phù hợp cho dự án hiện tại.
+          `,
+        },
+        {
+            author: 'Trần Hữu Phước',
+            time: '3 giờ trước',
+            content: `
+            Mình đang tìm hiểu về cách triển khai một ứng dụng Node.js trên AWS Lambda. Có tài liệu nào chi tiết không mn? Cảm ơn mn trước!
+            --- Đã thử qua vài cách trên YouTube nhưng vẫn chưa thực sự hiệu quả.
+          `,
+        },
+        {
+            author: 'Lê Minh Tuấn',
+            time: '5 ngày trước',
+            content: `
+            Mn cho hỏi giữa RESTful API và GraphQL thì cái nào tối ưu hơn cho ứng dụng mobile? Có ai đã có kinh nghiệm sử dụng chưa? Chia sẻ cho mình với.
+            --- Đang cân nhắc chuyển từ REST sang GraphQL mà vẫn còn lăn tăn.
+          `,
+        },
+        {
+            author: 'Phạm Anh Khoa',
+            time: '8 giờ trước',
+            content: `
+            Mn có ai đã từng sử dụng Next.js để xây dựng ứng dụng e-commerce chưa? Mình đang cần tư vấn về cách tối ưu SEO và tốc độ tải trang.
+            --- Đã thử qua Nuxt.js nhưng chưa ưng ý, chuyển sang Next.js thử xem sao.
+          `,
+        },
+    ];
 
-            <h2 className="my-[2.4rem] text-[2rem] font-bold">Comments (12)</h2>
-            <div className="flex w-[70%] items-center gap-[1.2rem]">
-                <picture>
-                    <img
-                        src="https://avatars.githubusercontent.com/u/167729556?v=4"
-                        alt="avatar"
-                        className="h-[4rem] w-[4rem] rounded-full"
-                    />
-                </picture>
-                <div className="flex h-[4rem] w-full items-center rounded-[0.8rem] bg-[rgba(0,0,0,0.1)] p-[1rem]">
-                    <textarea
-                        placeholder="enter your think"
-                        className="h-full grow bg-transparent text-[1.6rem] focus-within:outline-none"
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
+    return (
+        <div className="mx-[10%] mt-[2.4rem] grid min-h-[100vh] grid-cols-[60%_40%] gap-[1.6rem]">
+            <div className="grid gap-[2.4rem]">
+                {arrayBlog &&
+                    arrayBlog.map((item, index) => (
+                        <BlogItem
+                            key={index}
+                            author={item.author}
+                            time={item.time}
+                            content={item.content}
+                        />
+                    ))}
+            </div>
+            <div className="sticky top-[15%] max-h-[50rem] rounded-[0.8rem] bg-[#242526] p-[2rem]">
+                {/* search */}
+                <div className="flex w-full items-center gap-[0.8rem] rounded-full bg-[#3A3B3C] p-[1rem]">
+                    <Image src={icons.searchGrey} alt="icon" />
+                    <input
+                        placeholder="search"
+                        className="h-full w-full bg-transparent text-[1.6rem] focus-within:outline-none"
                     />
                 </div>
-            </div>
-            <div className="flex w-[70%] justify-end">
-                <button
-                    className={`mt-[1.2rem] rounded-[0.8rem] bg-[#254000] p-[1rem] text-[1.4rem] font-bold text-white opacity-70 ${comment && 'opacity-100'}`}
-                >
-                    Post comment
-                </button>
-            </div>
-            <div className="mt-[2.4rem] flex flex-col gap-[2.4rem]">
-                <Comments />
-                <Comments />
-                <Comments />
-                <Comments />
+                {/* tag  */}
+
+                <div className="mt-[2.4rem]">
+                    <h2 className="text-[2rem] font-bold">Blog tag</h2>
+                    <div className="mt-[2.4rem] flex flex-wrap gap-[0.8rem]">
+                        <BlogTag />
+                        <BlogTag />
+                        <BlogTag />
+                        <BlogTag />
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -31,6 +31,9 @@ import email from './email.svg';
 import telegram from './telegram.svg';
 import linkedIn from './linkedin.svg';
 import calendarClock from './calendar-clock.svg';
+import comment from './message-square.svg';
+import like from './thumbs-up.svg';
+import searchGrey from './search-grey.svg';
 
 const icons = {
     search,
@@ -66,6 +69,9 @@ const icons = {
     telegram,
     linkedIn,
     calendarClock,
+    comment,
+    like,
+    searchGrey,
 };
 
 export default icons;
