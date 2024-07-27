@@ -11,7 +11,7 @@ const Wrapper: React.FC<WrapperProps> = ({
 }: WrapperProps) => {
     return (
         <div
-            className={`${className}  overflow-hidden rounded-[0.8rem] bg-white shadow-2xl`}
+            className={`${className}  overflow-hidden rounded-[0.8rem] border-[0.1rem] border-[#ccc] bg-black`}
         >
             {children}
         </div>

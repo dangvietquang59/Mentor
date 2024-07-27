@@ -1,5 +1,5 @@
 export type MessageType = {
-    user?:string;
-    msg?:string;
-    time?:string;
-}
+    user?: string;
+    msg?: string;
+    time?: string;
+};

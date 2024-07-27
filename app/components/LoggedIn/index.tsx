@@ -8,6 +8,7 @@ import SesionToday from '../SesstionToday';
 import ChatUser from '../Chat/ChatUser';
 import Link from 'next/link';
 import SingleChat from '../SingleChat';
+import { Avatar } from 'antd';
 
 function LoggedIn() {
     const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
@@ -122,7 +123,13 @@ function LoggedIn() {
                     <NotificationItem />
                 </Wrapper>
             )}
-            <picture
+            <Avatar
+                src="https://avatars.githubusercontent.com/u/167729556?v=4"
+                className="relative cursor-pointer"
+                onClick={() => handleToggleInfo()}
+                size={50}
+            />
+            {/* <picture
                 className="relative cursor-pointer"
                 onClick={() => handleToggleInfo()}
             >
@@ -131,7 +138,7 @@ function LoggedIn() {
                     alt="avatar"
                     className="h-[5rem] w-[5rem] cursor-pointer rounded-full border-[0.2rem] object-cover"
                 />
-            </picture>
+            </picture> */}
             {isOpenInfo && (
                 <Wrapper className="absolute right-0 top-[7rem] w-[25rem] p-[1rem]">
                     <ul>

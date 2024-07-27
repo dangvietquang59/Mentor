@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import { SiderType } from '@/app/types/sider';
 import LoggedIn from '../LoggedIn';
 import { usePathname } from 'next/navigation';
+import ButtonCustom from '../ButtonCustom';
 
 const Header = () => {
     const [isSelectedPage, setIsSelectedPage] = useState<number>(0);
@@ -20,6 +21,10 @@ const Header = () => {
         {
             title: 'Mentors',
             url: '/mentors',
+        },
+        {
+            title: 'Blog',
+            url: '/blog',
         },
         {
             title: 'Streaming',
@@ -43,12 +48,12 @@ const Header = () => {
         } else {
             setIsSelectedPage(-1);
         }
-    }, [pathname, mounted]);
+    }, [pathname, mounted, arrayPage]);
 
-    const user = false;
+    const user = true;
     return (
         <div className="fixed z-[100] flex h-[8rem] w-full items-center justify-between border-b border-b-[#0f0f0f] bg-[#000] p-[1rem]">
-            <div className="flex items-center gap-[2.4rem]">
+            <div className="flex items-center gap-[1.6rem]">
                 <Image
                     src={logo}
                     alt="logo"
@@ -59,7 +64,11 @@ const Header = () => {
                         {arrayPage.map((page, index) => (
                             <Link href={page.url} key={page.url}>
                                 <li
-                                    className={`p-[1rem] text-[1.6rem] font-bold text-[#254000] ${isSelectedPage === index && 'text-[#7cb305]'}`}
+                                    className={`px-[1rem] text-[2rem] font-[700] ${
+                                        isSelectedPage === index
+                                            ? 'border-b-[0.1rem] border-b-[#5DD62C] font-[700] text-[#5DD62C]'
+                                            : 'text-[#F8F8F8]'
+                                    }`}
                                     onClick={() => setIsSelectedPage(index)}
                                 >
                                     {page.title}
@@ -75,16 +84,17 @@ const Header = () => {
                     <LoggedIn />
                 ) : (
                     <div className="flex gap-[1.2rem]">
-                        <button className="rounded-[0.8rem] p-[1.5rem] text-[1.6rem] font-bold text-[#254000]">
-                            <Link href={'/signin'}>Sign in</Link>
-                        </button>
-                        <button className="rounded-[0.8rem] bg-[#254000] p-[1.5rem] text-[1.6rem] font-bold text-white">
-                            <Link href={'/signup'}>Sign up</Link>
-                        </button>
+                        <ButtonCustom noBorder path="/signin">
+                            Sign in
+                        </ButtonCustom>
+                        <ButtonCustom path="/signup" outline>
+                            Sign up
+                        </ButtonCustom>
                     </div>
                 )}
             </div>
         </div>
     );
 };
+
 export default dynamic(() => Promise.resolve(Header), { ssr: false });

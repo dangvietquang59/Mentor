@@ -1,3 +1,3 @@
 export type TabType = {
-    title:string;
-}
+    title: string;
+};

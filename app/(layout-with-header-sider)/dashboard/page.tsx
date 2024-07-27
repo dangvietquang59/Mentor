@@ -322,10 +322,15 @@ const Dashboard = () => {
                     <Introduce />
                 </div>
                 <Devider />
-                <div className="my-[2.4rem] grid grid-cols-3 gap-[1rem]">
-                    <ReviewMentee />
-                    <ReviewMentee />
-                    <ReviewMentee />
+                <div className="my-[3rem]">
+                    <h2 className="mb-[4rem] text-[3.6rem] font-medium">
+                        The mentee's remarks
+                    </h2>
+                    <div className="grid grid-cols-3 gap-[1rem]">
+                        <ReviewMentee />
+                        <ReviewMentee />
+                        <ReviewMentee />
+                    </div>
                 </div>
             </div>
         </div>

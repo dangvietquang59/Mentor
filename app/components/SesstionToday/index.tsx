@@ -11,7 +11,7 @@ function SesionToday() {
                     alt="icon"
                     className="h-[1.5rem] w-[1.5rem]"
                 />
-                <h2 className="text-[1.6rem] font-bold text-[#254000]">
+                <h2 className="text-[1.6rem] font-bold text-[#5DD62C]">
                     Session today
                 </h2>
             </div>
