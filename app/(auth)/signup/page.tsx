@@ -1,10 +1,10 @@
 'use client';
 import Image from 'next/image';
-import images from '../../assets/img';
-import Input from '../../components/Input';
+import images from '../../../assets/img';
+import Input from '../../../components/Input';
 import { useState } from 'react';
 import Link from 'next/link';
-import icons from '@/app/assets/icons';
+import icons from '@/assets/icons';
 function SignUp() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');

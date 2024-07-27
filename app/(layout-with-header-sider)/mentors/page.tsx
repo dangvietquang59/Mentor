@@ -1,6 +1,6 @@
-import Filter from '@/app/components/Filter';
-import SlideImageMentor from '@/app/components/SlideImageMentor';
-import { MentorItemType } from '@/app/types/mentor';
+import Filter from '@/components/Filter';
+import SlideImageMentor from '@/components/SlideImageMentor';
+import { MentorItemType } from '@/types/mentor';
 import { Pagination } from 'antd';
 
 function Mentors() {

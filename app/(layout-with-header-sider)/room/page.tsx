@@ -1,6 +1,6 @@
 'use client';
-import icons from '@/app/assets/icons';
-import Input from '@/app/components/Input';
+import icons from '@/assets/icons';
+import Input from '@/components/Input';
 import Image from 'next/image';
 import { useState } from 'react';
 

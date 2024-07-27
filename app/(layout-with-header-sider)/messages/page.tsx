@@ -1,10 +1,10 @@
-import ChatUser from '../../components/Chat/ChatUser';
-import ActionChat from '../../components/Chat/ActionChat';
-import SearchInput from '../../components/SearchInput';
-import HeaderInfoChat from '../../components/Chat/HeaderInfoChat';
-import MentorMessage from '../../components/Chat/MessageItem/MentorMessage';
-import MenteeMessage from '../../components/Chat/MessageItem/MenteeMessage';
-import FooterActionChat from '../../components/Chat/FooterActionChat';
+import ChatUser from '../../../components/Chat/ChatUser';
+import ActionChat from '../../../components/Chat/ActionChat';
+import SearchInput from '../../../components/SearchInput';
+import HeaderInfoChat from '../../../components/Chat/HeaderInfoChat';
+import MentorMessage from '../../../components/Chat/MessageItem/MentorMessage';
+import MenteeMessage from '../../../components/Chat/MessageItem/MenteeMessage';
+import FooterActionChat from '../../../components/Chat/FooterActionChat';
 
 function Messages() {
     return (
