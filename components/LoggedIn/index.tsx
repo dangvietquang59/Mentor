@@ -51,12 +51,12 @@ function LoggedIn() {
     };
 
     return (
-        <>
+        <div className="flex items-center gap-[1.6rem]">
             <div
-                className="relative mr-[2.4rem] cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]"
+                className="relative cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]"
                 onClick={() => handleToggleSessionToday()}
             >
-                <Image src={icons.calendarClock} alt="bell" width={24} />
+                <Image src={icons.calendarClock} alt="bell" width={20} />
             </div>
             {isOpenSessionToday && (
                 <Wrapper className="absolute right-[25rem] top-[7rem] w-[40rem]">
@@ -64,10 +64,10 @@ function LoggedIn() {
                 </Wrapper>
             )}
             <div
-                className="relative mr-[2.4rem] cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]"
+                className="relative cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]"
                 onClick={() => handleToggleMessage()}
             >
-                <Image src={icons.message} alt="bell" />
+                <Image src={icons.message} alt="bell" width={20} />
             </div>
             {isOpenMessage && (
                 <Wrapper className="absolute right-[12rem] top-[7rem] w-[40rem] p-[1rem]">
@@ -107,10 +107,10 @@ function LoggedIn() {
                 </Wrapper>
             )}
             <div
-                className="relative mr-[2.4rem] cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]"
+                className="relative cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]"
                 onClick={() => handleToggleNotification()}
             >
-                <Image src={icons.bell} alt="bell" />
+                <Image src={icons.bell} alt="bell" width={20} />
             </div>
             {isOpenNotification && (
                 <Wrapper className="absolute right-[8rem] top-[7rem] w-[40rem] p-[1rem]">
@@ -127,7 +127,7 @@ function LoggedIn() {
                 src="https://avatars.githubusercontent.com/u/167729556?v=4"
                 className="relative cursor-pointer"
                 onClick={() => handleToggleInfo()}
-                size={50}
+                size={40}
             />
             {isOpenInfo && (
                 <Wrapper className="absolute right-0 top-[7rem] w-[25rem] p-[1rem]">
@@ -160,7 +160,7 @@ function LoggedIn() {
                     onClose={() => setSelectedUser(null)}
                 />
             )}
-        </>
+        </div>
     );
 }
 

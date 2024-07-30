@@ -23,11 +23,11 @@ const Header = () => {
             url: '/mentors',
         },
         {
-            title: 'Blog',
+            title: 'Blogs',
             url: '/blog',
         },
         {
-            title: 'Streaming',
+            title: 'Rooms',
             url: '/room',
         },
     ];
@@ -57,7 +57,7 @@ const Header = () => {
                 <Image
                     src={logo}
                     alt="logo"
-                    className="size-[7rem] rounded-full"
+                    className="size-[6rem] rounded-full"
                 />
                 <div>
                     <ul className="flex gap-[1.2rem]">
