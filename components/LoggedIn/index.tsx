@@ -9,6 +9,7 @@ import ChatUser from '../Chat/ChatUser';
 import Link from 'next/link';
 import SingleChat from '../SingleChat';
 import { Avatar } from 'antd';
+import paths from '@/utils/constants/paths';
 
 function LoggedIn() {
     const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
@@ -136,7 +137,7 @@ function LoggedIn() {
                             @Ryomen Sukuna
                         </li>
                         <Link
-                            href={'/profiles'}
+                            href={paths.PROFILE}
                             onClick={() => setIsOpenInfo(false)}
                         >
                             <li className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.4rem] font-bold hover:bg-[#b7eb8f]">

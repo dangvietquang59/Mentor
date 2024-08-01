@@ -5,7 +5,6 @@ import images from '@/assets/img';
 import SearchCategory from '@/components/SearchCategory';
 import { MentorItemType } from '@/types/mentor';
 import icons from '@/assets/icons';
-import useScroll from '@/hooks/useScroll';
 import SlideImageMentor from '@/components/SlideImageMentor';
 import OverviewBlog from '@/components/OverviewBlog';
 import NewsFeedItem from '@/components/NewsFeedItem';
@@ -21,6 +20,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
+import useScroll from '@/utils/hooks/useScroll';
 const Dashboard = () => {
     const {
         mentorListContainerRef: mentorScroll,

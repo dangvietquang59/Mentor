@@ -19,7 +19,7 @@ function FilterItem({ title, arrayItem, rangeFilter = false }: IFilterItem) {
     return (
         <div className="grid gap-[1.6rem]">
             <div
-                className={`flex cursor-pointer items-center justify-between rounded-[0.8rem] px-[1.5rem] py-[1rem] ${arrayItem ? 'bg-[#5dd62c]' : 'cursor-not-allowed bg-gray-400'}`}
+                className={`flex cursor-pointer items-center justify-between rounded-[0.8rem] bg-gradient-to-r from-[#355429] to-[#5dd62c] px-[1.5rem] py-[1rem]`}
                 onClick={() => arrayItem && setShowList(!showList)}
             >
                 <h2 className="text-[2rem]">{title}</h2>

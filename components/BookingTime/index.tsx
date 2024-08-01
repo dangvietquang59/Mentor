@@ -2,12 +2,15 @@ import Image from 'next/image';
 import TimeItem from '../TimeItem';
 import icons from '@/assets/icons';
 import SessionsItem from '../SessionsItem';
+import ButtonCustom from '../ButtonCustom';
 
 function BookingTime() {
     return (
-        <div className="min-h-[40rem] rounded-[0.8rem] border p-[2rem]">
+        <div className="min-h-[40rem] rounded-[0.4rem] bg-[#242526] p-[2rem]">
             <div className="mb-[2.4rem]">
-                <h2 className="text-[2rem] font-bold">Available sessions</h2>
+                <h2 className="text-[2rem] font-bold text-[#5DD62C]">
+                    Available sessions
+                </h2>
                 <span className="text-[1.6rem] font-bold text-[#6B7B8A]">
                     Book 1:1 sessions from the options based on your needs
                 </span>
@@ -44,9 +47,9 @@ function BookingTime() {
                     <TimeItem />
                     <TimeItem />
                 </div>
-                <button className="mt-[2.4rem] w-full rounded-[0.8rem] bg-[#337418] p-[2rem] text-[2rem] font-bold text-white duration-300 hover:opacity-80">
+                <ButtonCustom className="mt-[2.4rem] h-[7rem] w-full text-[2rem] text-white">
                     Book session for 02 Jun 2024
-                </button>
+                </ButtonCustom>
             </div>
         </div>
     );

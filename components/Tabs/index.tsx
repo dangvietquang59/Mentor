@@ -44,7 +44,7 @@ function Tabs({
                     ref={(el) => {
                         tabsRef.current[index] = el;
                     }}
-                    className={`flex cursor-pointer flex-col items-center justify-center transition-all duration-300 hover:bg-[#f4ffb8] ${
+                    className={`flex cursor-pointer flex-col items-center justify-center transition-all duration-300 ${
                         isSelectedTab === index
                             ? 'text-[#7cb305]'
                             : 'text-[#6B7B8A]'

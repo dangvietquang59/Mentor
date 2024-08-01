@@ -1,5 +1,5 @@
-import { limitWord } from '@/functions/limitWords';
 import { NewsFeedItemProps } from '@/types/blog';
+import { limitWord } from '@/utils/functions/limitWords';
 import Link from 'next/link';
 
 function NewsFeedItem({ description, title, imageUrl }: NewsFeedItemProps) {

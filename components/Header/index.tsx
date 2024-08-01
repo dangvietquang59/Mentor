@@ -8,6 +8,7 @@ import { SiderType } from '@/types/sider';
 import LoggedIn from '../LoggedIn';
 import { usePathname } from 'next/navigation';
 import ButtonCustom from '../ButtonCustom';
+import paths from '@/utils/constants/paths';
 
 const Header = () => {
     const [isSelectedPage, setIsSelectedPage] = useState<number>(0);
@@ -16,19 +17,19 @@ const Header = () => {
     const arrayPage: SiderType[] = [
         {
             title: 'Home',
-            url: '/dashboard',
+            url: paths.DASHBOARD,
         },
         {
             title: 'Mentors',
-            url: '/mentors',
+            url: paths.MENTORS,
         },
         {
             title: 'Blogs',
-            url: '/blog',
+            url: paths.BLOGS,
         },
         {
             title: 'Rooms',
-            url: '/room',
+            url: paths.ROOM,
         },
     ];
 

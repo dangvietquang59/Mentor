@@ -34,9 +34,9 @@ function Profiles() {
         },
     ];
     return (
-        <div className="min-h-[120rem] w-full p-[1rem]">
-            <div className="h-[15rem] bg-[#5b8c00]"></div>
-            <div className="flex">
+        <div className="min-h-[120rem] w-full p-[2rem]">
+            <div className="h-[15rem] bg-gradient-to-r from-[#355429] to-[#5dd62c]"></div>
+            <div className="flex min-h-[15rem] bg-[#242526]">
                 <div className="relative ml-[10rem] w-[15rem]">
                     <picture>
                         <img
@@ -53,7 +53,7 @@ function Profiles() {
                             Technical at K-Tech
                         </span>
                     </div>
-                    <div className="flex items-center  gap-[2.4rem]">
+                    <div className="flex items-center gap-[2.4rem]">
                         <div className="flex cursor-pointer items-center justify-center rounded p-[1rem] shadow-[0rem_0.5rem_2.4rem_rgba(0,0,0,0.1)]">
                             <button className="h-[2.5rem] w-[2.5rem]">
                                 <Image src={icons.chat} alt="icon" />
@@ -73,9 +73,9 @@ function Profiles() {
                 </div>
             </div>
 
-            <div className="mt-[7rem] flex w-full gap-[2.4rem]">
-                <div className="flex w-[60%] flex-col gap-[2.4rem]">
-                    <div className="flex items-center border-b-[0.1rem] border-b-[#ccc]">
+            <div className="mt-[2.4rem] flex w-full gap-[2.4rem]">
+                <div className="flex w-[60%] flex-col gap-[2.4rem] rounded-[0.4rem] bg-[#242526] p-[2rem]">
+                    <div className="flex items-center">
                         <Tabs
                             arrayTabs={arrayTabs}
                             onSelectTab={setSelectedTab}
