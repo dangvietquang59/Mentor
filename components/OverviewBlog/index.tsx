@@ -31,7 +31,9 @@ function OverviewBlog() {
                     </p>
                 </div>
                 <div className="grid grid-cols-2 gap-[1.6rem]">
-                    <ButtonCustom>Join as a mentor !</ButtonCustom>
+                    <ButtonCustom className="text-white">
+                        Join as a mentor !
+                    </ButtonCustom>
                     <ButtonCustom outline>About us</ButtonCustom>
                 </div>
             </div>

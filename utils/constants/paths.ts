@@ -5,6 +5,7 @@ const paths = {
     BLOGS: '/blogs',
     PROFILE: '/profile',
     MESSAGES: '/messages',
+    SCHEDULES: '/schedules',
 };
 
 export default paths;
