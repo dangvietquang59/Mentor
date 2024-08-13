@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { Toaster } from 'react-hot-toast';
+import './globals.css';
 
 export const metadata: Metadata = {
     title: 'Login - Mentor and mentee',
@@ -12,7 +14,10 @@ export default function AuthLayout({
 }>) {
     return (
         <html>
-            <body>{children}</body>
+            <body>
+                <Toaster />
+                {children}
+            </body>
         </html>
     );
 }

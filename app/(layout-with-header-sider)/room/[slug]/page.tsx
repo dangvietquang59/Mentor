@@ -1,6 +1,6 @@
 'use client';
 import icons from '@/assets/icons';
-import Input from '@/components/Input';
+import InputComponent from '@/components/Input';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -20,12 +20,7 @@ function RoomDetails() {
                 <div className="flex flex-col justify-between rounded-[0.4rem] bg-[#242526]">
                     <div></div>
                     <div className="flex items-center rounded-[0.4rem] bg-[#f0f0f0]">
-                        <Input
-                            placeHolder="texting with partner..."
-                            onChange={(e) => setMessage(e.target.value)}
-                            value={message}
-                            className="text-black"
-                        />
+                        <InputComponent name="email" />
                         <button>
                             <Image src={icons.paperPlane} alt="send message" />
                         </button>

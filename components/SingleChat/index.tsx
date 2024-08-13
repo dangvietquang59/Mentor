@@ -3,9 +3,9 @@ import icons from '@/assets/icons';
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import Input from '../Input';
 import MentorMessage from '../Chat/MessageItem/MentorMessage';
 import MenteeMessage from '../Chat/MessageItem/MenteeMessage';
+import InputComponent from '../Input';
 
 interface SingleChatProps {
     user: { id: string; name: string };
@@ -20,7 +20,7 @@ const SingleChat: React.FC<SingleChatProps> = ({ user, onClose }) => {
     const handleSendMessage = () => {
         if (message.trim()) {
             setArrayMenteeMessage((prevMessages) => [...prevMessages, message]);
-            setMessage(''); // Clear the input field after sending the message
+            setMessage('');
         }
     };
 
@@ -58,13 +58,7 @@ const SingleChat: React.FC<SingleChatProps> = ({ user, onClose }) => {
                 <div ref={messagesEndRef} />
             </div>
             <div className="border-t p-2">
-                <Input
-                    placeHolder="send message.."
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    rightIcon={icons.paperPlane}
-                    onEnterOrIconClick={handleSendMessage}
-                />
+                <InputComponent name="a" />
             </div>
         </div>,
         document.body,

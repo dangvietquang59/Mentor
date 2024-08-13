@@ -11,15 +11,21 @@
     },
     "dependencies": {
         "@nextui-org/react": "^2.4.2",
+        "@types/jwt-decode": "^3.1.0",
         "antd": "^5.19.1",
+        "js-cookie": "^3.0.5",
+        "jwt-decode": "^4.0.0",
         "next": "14.2.3",
         "react": "^18",
         "react-dom": "^18",
+        "react-hook-form": "^7.52.2",
+        "react-hot-toast": "^2.4.1",
         "sass": "^1.77.8",
         "sharp": "^0.33.4",
         "swiper": "^11.1.4"
     },
     "devDependencies": {
+        "@types/js-cookie": "^3.0.6",
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",

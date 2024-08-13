@@ -1,53 +1,115 @@
-import Image from 'next/image';
-import React from 'react';
+import { Input, InputProps } from 'antd';
+import clsx from 'clsx';
+import { Controller, FieldError, RegisterOptions } from 'react-hook-form';
 
-interface InputProps {
-    placeHolder?: string;
-    type?: string;
-    className?: string;
-    value?: string;
-    rightIcon?: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onEnterOrIconClick?: () => void;
+interface IInputComponentProps extends InputProps {
+    isPassword?: boolean;
+    label?: string;
+    labelClassName?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    control?: any;
+    name: string;
+    rules?: RegisterOptions;
+    errors?: FieldError;
+    helptext?: string;
+    isRequired?: boolean;
 }
 
-const Input: React.FC<InputProps> = ({
-    placeHolder,
-    type = 'text',
-    className,
-    rightIcon,
-    value,
-    onChange,
-    onEnterOrIconClick,
-}) => {
-    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter' && onEnterOrIconClick) {
-            onEnterOrIconClick();
-        }
-    };
+const InputComponent = (props: IInputComponentProps) => {
+    const {
+        isPassword,
+        label,
+        labelClassName,
+        className,
+        control,
+        name,
+        rules,
+        errors,
+        helptext,
+        isRequired = false,
+        ...rest
+    } = props;
 
     return (
-        <div className="flex h-[4rem] w-full items-center rounded-[0.8rem] bg-[rgba(0,0,0,0.1)] p-[1rem]">
-            <input
-                placeholder={placeHolder}
-                type={type}
-                value={value}
-                onChange={onChange}
-                onKeyPress={handleKeyPress}
-                className={`${className} h-full w-full bg-transparent text-[1.4rem] focus-within:outline-none`}
-            />
-            {rightIcon && onEnterOrIconClick && (
-                <Image
-                    src={rightIcon}
-                    alt="send message"
-                    onClick={onEnterOrIconClick}
-                    className="cursor-pointer"
-                    width={24} // specify width if needed
-                    height={24} // specify height if needed
+        <div className="flex flex-col gap-[0.6rem]">
+            {!!label && (
+                <div className="flex items-center gap-[0.8rem]">
+                    <label
+                        className={clsx(
+                            'text-[1.4rem] font-[500] leading-[2rem] text-[#f8f8f8]',
+                            labelClassName,
+                        )}
+                    >
+                        {label}
+                    </label>
+                    <div
+                        className={clsx(
+                            'flex items-center justify-center',
+                            isRequired ? 'visible' : 'invisible',
+                        )}
+                    >
+                        <span className="text-[1.6rem] font-bold text-[red]">
+                            *
+                        </span>
+                    </div>
+                </div>
+            )}
+
+            {control ? (
+                <Controller
+                    name={name}
+                    control={control}
+                    rules={rules}
+                    render={({ field: { onChange, onBlur, value, ref } }) =>
+                        isPassword ? (
+                            <Input.Password
+                                className={clsx(
+                                    'h-[4.2rem] text-[1.4rem] font-[500] leading-[2rem]',
+                                    className,
+                                )}
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                value={value}
+                                ref={ref}
+                                {...rest}
+                            />
+                        ) : (
+                            <Input
+                                className={clsx(
+                                    'h-[4.2rem] text-[1.4rem] font-[500] leading-[2rem] text-black',
+                                    className,
+                                )}
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                value={value}
+                                ref={ref}
+                                {...rest}
+                            />
+                        )
+                    }
                 />
+            ) : (
+                <Input
+                    className={clsx(
+                        'h-[4.2rem] text-[1.4rem] font-[500] leading-[2rem]',
+                        className,
+                    )}
+                    {...rest}
+                />
+            )}
+
+            {helptext && (
+                <p className="text-[1.4rem] font-[500] leading-[2rem] text-[#667085]">
+                    {helptext}
+                </p>
+            )}
+            {errors && (
+                <p className="text-[1.4rem] font-[500] leading-[2rem] text-red-500">
+                    {errors.message}
+                </p>
             )}
         </div>
     );
 };
 
-export default Input;
+export default InputComponent;
