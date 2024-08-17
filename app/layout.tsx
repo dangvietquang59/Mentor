@@ -31,7 +31,9 @@ export default function RootLayout({
                 <Toaster richColors />
                 <div>
                     <Header />
-                    <div className="pt-[7rem]"> {children}</div>
+                    <div className="min-h-[100vh] p-[1.6rem_2.4rem] pt-[6rem] md:pt-[7rem]">
+                        {children}
+                    </div>
                     <Footer />
                 </div>
             </body>

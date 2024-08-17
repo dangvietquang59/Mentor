@@ -34,6 +34,7 @@ import calendarClock from './calendar-clock.svg';
 import comment from './message-square.svg';
 import like from './thumbs-up.svg';
 import searchGrey from './search-grey.svg';
+import menu from './menu-burger.svg';
 
 const icons = {
     search,
@@ -72,6 +73,7 @@ const icons = {
     comment,
     like,
     searchGrey,
+    menu,
 };
 
 export default icons;

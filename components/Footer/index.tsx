@@ -68,17 +68,17 @@ function Footer() {
         },
     ];
     return (
-        <footer className="min-h-[55rem] bg-[#1A1A1A] p-[6rem]">
+        <footer className="bg-[#1A1A1A] p-[1.6rem_2.4rem] md:min-h-[55rem] md:p-[6rem]">
             <h2 className="mb-[3rem] text-[2.7rem] font-medium text-[#5DD62C]">
                 Mentor Systems
             </h2>
-            <div className="grid grid-cols-2 gap-[13rem]">
+            <div className="grid grid-cols-1 gap-[5rem] md:grid-cols-2 md:gap-[13rem]">
                 <div>
                     <div className="flex flex-col gap-[3rem]">
-                        <h2 className="text-justify text-[2.7rem] font-medium text-[#F8F8F8]">
+                        <h2 className=" text-[2.7rem] font-medium text-[#F8F8F8]">
                             A website where IT professionals can find mentors
                         </h2>
-                        <p className="text-justify text-[1.8rem] font-normal text-[#F8F8F8]">
+                        <p className=" text-[1.8rem] font-normal text-[#F8F8F8]">
                             Our goal is to provide mentees with opportunities to
                             grow and learn from seasoned individuals, advancing
                             both their professional and personal development. in
