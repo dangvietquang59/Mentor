@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NotificationItem from '../NotificationItem';
 import Image from 'next/image';
 import icons from '@/assets/icons';
@@ -10,8 +10,13 @@ import Link from 'next/link';
 import SingleChat from '../SingleChat';
 import { Avatar } from 'antd';
 import paths from '@/utils/constants/paths';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import variables from '@/utils/constants/variables';
+import { toast } from 'sonner';
 
 function LoggedIn() {
+    const router = useRouter();
     const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
     const [isOpenNotification, setIsOpenNotification] =
         useState<boolean>(false);
@@ -51,6 +56,11 @@ function LoggedIn() {
         setIsOpenSessionToday(false);
     };
 
+    const logout = () => {
+        Cookies.remove(variables.ACCESS_TOKEN);
+        router.push(paths.DASHBOARD);
+        toast.success('Logout successfull');
+    };
     return (
         <div className="flex items-center gap-[1.6rem]">
             <div
@@ -144,14 +154,12 @@ function LoggedIn() {
                                 Profile
                             </li>
                         </Link>
-                        <Link
-                            href={'signin'}
-                            onClick={() => setIsOpenInfo(false)}
+                        <li
+                            className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.4rem] font-bold hover:bg-[#b7eb8f]"
+                            onClick={logout}
                         >
-                            <li className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.4rem] font-bold hover:bg-[#b7eb8f]">
-                                Sign out
-                            </li>
-                        </Link>
+                            Sign out
+                        </li>
                     </ul>
                 </Wrapper>
             )}

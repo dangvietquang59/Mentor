@@ -64,7 +64,7 @@ const InputComponent = (props: IInputComponentProps) => {
                         isPassword ? (
                             <Input.Password
                                 className={clsx(
-                                    'h-[4.2rem] text-[1.4rem] font-[500] leading-[2rem]',
+                                    'h-[4.2rem] border-0 bg-[#1a1a1a] text-[1.4rem] font-[500] leading-[2rem] text-[#FFFFFF] hover:bg-[#1a1a1a] focus:bg-[#1a1a1a]',
                                     className,
                                 )}
                                 onChange={onChange}
@@ -76,7 +76,7 @@ const InputComponent = (props: IInputComponentProps) => {
                         ) : (
                             <Input
                                 className={clsx(
-                                    'h-[4.2rem] text-[1.4rem] font-[500] leading-[2rem] text-black',
+                                    'h-[4.2rem] border-0 bg-[#1a1a1a] text-[1.4rem] font-[500] leading-[2rem] text-[#FFFFFF] hover:bg-[#1a1a1a] focus:bg-[#1a1a1a]',
                                     className,
                                 )}
                                 onChange={onChange}
@@ -91,7 +91,7 @@ const InputComponent = (props: IInputComponentProps) => {
             ) : (
                 <Input
                     className={clsx(
-                        'h-[4.2rem] text-[1.4rem] font-[500] leading-[2rem]',
+                        'h-[4.2rem] border-0 bg-[#1a1a1a] text-[1.4rem] font-[500] leading-[2rem] text-[#FFFFFF] hover:bg-[#1a1a1a] focus:bg-[#1a1a1a]',
                         className,
                     )}
                     {...rest}

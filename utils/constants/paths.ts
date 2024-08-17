@@ -6,6 +6,8 @@ const paths = {
     PROFILE: '/profile',
     MESSAGES: '/messages',
     SCHEDULES: '/schedules',
+    SIGNIN: '/signin',
+    SIGNUP: '/signup',
 };
 
 export default paths;

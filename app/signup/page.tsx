@@ -1,9 +1,9 @@
 'use client';
 import Image from 'next/image';
-import images from '../../../assets/img';
+import images from '../../assets/img';
 import Link from 'next/link';
 import icons from '@/assets/icons';
-import InputComponent from '../../../components/Input';
+import InputComponent from '../../components/Input';
 function SignUp() {
     return (
         <div className="mx-auto mt-[10rem] flex w-[50rem] flex-col rounded-[0.8rem] border-[0.1rem] border-[#ccc] p-[3rem]">
