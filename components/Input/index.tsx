@@ -1,3 +1,8 @@
+import {
+    EyeInvisibleOutlined,
+    EyeOutlined,
+    EyeTwoTone,
+} from '@ant-design/icons';
 import { Input, InputProps } from 'antd';
 import clsx from 'clsx';
 import { Controller, FieldError, RegisterOptions } from 'react-hook-form';
@@ -6,8 +11,7 @@ interface IInputComponentProps extends InputProps {
     isPassword?: boolean;
     label?: string;
     labelClassName?: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    control?: any;
+    control?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
     name: string;
     rules?: RegisterOptions;
     errors?: FieldError;
@@ -64,7 +68,7 @@ const InputComponent = (props: IInputComponentProps) => {
                         isPassword ? (
                             <Input.Password
                                 className={clsx(
-                                    'h-[4.2rem] border-0 bg-[#1a1a1a] text-[1.4rem] font-[500] leading-[2rem] text-[#FFFFFF] hover:bg-[#1a1a1a] focus:bg-[#1a1a1a]',
+                                    'h-[4.2rem] border-0 bg-[#1a1a1a] text-[1.4rem] font-[500] leading-[2rem] text-[#FFFFFF] !placeholder-white focus-within:!bg-[#1a1a1a] hover:bg-[#1a1a1a] focus:bg-[#1a1a1a] focus:ring-transparent',
                                     className,
                                 )}
                                 onChange={onChange}
@@ -76,7 +80,7 @@ const InputComponent = (props: IInputComponentProps) => {
                         ) : (
                             <Input
                                 className={clsx(
-                                    'h-[4.2rem] border-0 bg-[#1a1a1a] text-[1.4rem] font-[500] leading-[2rem] text-[#FFFFFF] hover:bg-[#1a1a1a] focus:bg-[#1a1a1a]',
+                                    'h-[4.2rem] border-0 bg-[#1a1a1a] text-[1.4rem] font-[500] leading-[2rem] text-[#FFFFFF] placeholder-[#848484] hover:bg-[#1a1a1a] focus:bg-[#1a1a1a]',
                                     className,
                                 )}
                                 onChange={onChange}
@@ -91,7 +95,7 @@ const InputComponent = (props: IInputComponentProps) => {
             ) : (
                 <Input
                     className={clsx(
-                        'h-[4.2rem] border-0 bg-[#1a1a1a] text-[1.4rem] font-[500] leading-[2rem] text-[#FFFFFF] hover:bg-[#1a1a1a] focus:bg-[#1a1a1a]',
+                        'h-[4.2rem] border-0 bg-[#1a1a1a] text-[1.4rem] font-[500] leading-[2rem] text-[#FFFFFF] placeholder-white hover:bg-[#1a1a1a] focus:bg-[#1a1a1a]',
                         className,
                     )}
                     {...rest}

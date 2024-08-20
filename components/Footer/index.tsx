@@ -68,7 +68,7 @@ function Footer() {
         },
     ];
     return (
-        <footer className="bg-[#1A1A1A] p-[1.6rem_2.4rem] md:min-h-[55rem] md:p-[6rem]">
+        <footer className="w-full bg-[#1A1A1A] p-[1.6rem_2.4rem] md:min-h-[55rem] md:p-[6rem]">
             <h2 className="mb-[3rem] text-[2.7rem] font-medium text-[#5DD62C]">
                 Mentor Systems
             </h2>

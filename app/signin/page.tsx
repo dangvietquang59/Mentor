@@ -58,7 +58,7 @@ function Login() {
             });
     };
     return (
-        <div className="my-[2rem] flex w-full flex-col rounded-[0.8rem] bg-[#1C1E21] p-[3rem] md:mx-auto md:w-[50rem]">
+        <div className="my-[2rem] flex w-full flex-col rounded-[0.8rem] bg-[#242526] p-[1rem] md:mx-auto md:w-[50rem] md:p-[3rem]">
             <div className="flex items-center justify-center">
                 <Image
                     src={images.logo}
@@ -90,7 +90,6 @@ function Login() {
                             control={control}
                             name="password"
                             label="Password"
-                            placeholder="**************"
                             rules={formValidation.password}
                             errors={errors.password}
                             isPassword
