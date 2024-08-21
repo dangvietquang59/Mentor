@@ -60,7 +60,7 @@ function Blog() {
                         />
                     ))}
             </div>
-            <div className="sticky top-[15%] max-h-[50rem] rounded-[0.8rem] bg-[#242526] p-[2rem]">
+            <div className="sticky top-[13%] max-h-[50rem] rounded-[0.8rem] bg-[#242526] p-[2rem]">
                 {/* search */}
                 <div className="flex w-full items-center gap-[0.8rem] rounded-full bg-[#3A3B3C] p-[1rem]">
                     <Image src={icons.searchGrey} alt="icon" />

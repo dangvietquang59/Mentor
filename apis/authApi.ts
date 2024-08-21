@@ -32,10 +32,26 @@ const authApi = {
             return res;
         } catch (error: any) {
             console.error(
-                'Error calling login API:',
+                'Error calling register API:',
                 error?.response?.data || error.message || error,
             );
-            throw new Error('Error calling login API');
+            throw new Error('Error calling register API');
+        }
+    },
+    async getProfile(userId: string, accessToken: string) {
+        try {
+            const res = await fetchData<LoginResponseType>(
+                `${urls.USERS}/${urls.GET_PROFILE}/${userId}`,
+                accessToken,
+                'GET',
+            );
+            return res;
+        } catch (error: any) {
+            console.error(
+                'Error calling get profile API:',
+                error?.response?.data || error.message || error,
+            );
+            throw new Error('Error calling get profile API');
         }
     },
 };

@@ -35,6 +35,8 @@ import comment from './message-square.svg';
 import like from './thumbs-up.svg';
 import searchGrey from './search-grey.svg';
 import menu from './menu-burger.svg';
+import plus from './plus.svg';
+import editPen from './edit-3.svg';
 
 const icons = {
     search,
@@ -74,6 +76,8 @@ const icons = {
     like,
     searchGrey,
     menu,
+    plus,
+    editPen,
 };
 
 export default icons;

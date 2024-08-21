@@ -14,6 +14,8 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import variables from '@/utils/constants/variables';
 import { toast } from 'sonner';
+import images from '@/assets/img';
+import { getProfile } from '@/utils/functions/getProfile';
 
 function LoggedIn() {
     const router = useRouter();
@@ -27,6 +29,7 @@ function LoggedIn() {
         id: string;
         name: string;
     } | null>(null);
+    const profile = getProfile() || {};
 
     const handleToggleSessionToday = () => {
         setIsOpenSessionToday(!isOpenSessionToday);
@@ -134,12 +137,35 @@ function LoggedIn() {
                     <NotificationItem />
                 </Wrapper>
             )}
-            <Avatar
-                src="https://avatars.githubusercontent.com/u/167729556?v=4"
-                className="relative cursor-pointer"
-                onClick={() => handleToggleInfo()}
-                size={40}
-            />
+            {profile ? (
+                <Avatar
+                    src={
+                        // <Image
+                        //     src={profile?.imageUrl || images.defaultAvatar}
+                        //     alt="Default Avatar"
+                        //     width={40}
+                        //     height={40}
+                        // />
+                        profile?.imageUrl
+                    }
+                    className="relative cursor-pointer"
+                    onClick={() => handleToggleInfo()}
+                    size={40}
+                />
+            ) : (
+                <Avatar
+                    src={
+                        <Image
+                            src={images.defaultAvatar}
+                            alt="Default Avatar"
+                        />
+                    }
+                    className="relative cursor-pointer"
+                    onClick={() => handleToggleInfo()}
+                    size={40}
+                />
+            )}
+
             {isOpenInfo && (
                 <Wrapper className="absolute right-0 top-[7rem] w-[25rem] p-[1rem]">
                     <ul>
@@ -147,7 +173,7 @@ function LoggedIn() {
                             @Ryomen Sukuna
                         </li>
                         <Link
-                            href={paths.PROFILE}
+                            href={`${paths.PROFILE}/${profile?._id}`}
                             onClick={() => setIsOpenInfo(false)}
                         >
                             <li className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.4rem] font-bold hover:bg-[#b7eb8f]">
