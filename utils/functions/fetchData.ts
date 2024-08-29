@@ -7,12 +7,11 @@ export const fetchData = async <T>(
     endpoint: string,
     token?: string | null,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
-    body?: string | object,
+    body?: string | FormData | object,
     isSearch: boolean = false,
+    additionalHeaders: Record<string, string> = {},
 ): Promise<T | undefined> => {
-    const headers: HeadersInit = {
-        'Content-Type': 'application/json',
-    };
+    const headers: Record<string, string> = {};
 
     if (token) {
         if (isTokenExpired(token)) {
@@ -29,14 +28,20 @@ export const fetchData = async <T>(
         headers['Authorization'] = `Bearer ${token}`;
     }
 
+    if (!(body instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+    }
+
+    // Kết hợp headers tùy chỉnh với các headers khác
+    Object.assign(headers, additionalHeaders);
+
     const config: RequestInit = {
         method,
         headers,
     };
 
-    // Thêm body nếu có
     if (body) {
-        config.body = JSON.stringify(body);
+        config.body = body instanceof FormData ? body : JSON.stringify(body);
     }
 
     try {
