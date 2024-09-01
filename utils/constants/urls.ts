@@ -7,6 +7,7 @@ const urls = {
     UPDATE_PROFILE: 'update-profile',
     UPDATE_PROFILE_IMAGE: 'update-profile-image',
     TECHNOLOGIES: 'technologies',
+    GET_ALL_USERS: 'get-all-users',
 };
 
 export default urls;

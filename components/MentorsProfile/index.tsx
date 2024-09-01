@@ -31,21 +31,34 @@ function MentorsProfile(props: MentorProfileProps) {
                 <div className="mt-[1.2rem] flex flex-col gap-[0.8rem]">
                     <p className="text-[1.4rem]">{mentor?.bio}</p>
                     <ul className="flex flex-wrap items-center gap-[0.8rem]">
-                        {mentor?.technologies?.length > 0 &&
-                            mentor?.technologies?.map((item, index) => (
-                                <li
-                                    key={index}
-                                    className="rounded-[0.8rem] bg-[#1A1A1A] p-[0.5rem] text-[1.4rem] text-[#f1f1f1]"
-                                >
-                                    {item?.technology?.name}
-                                </li>
-                            ))}
+                        {mentor?.technologies?.length > 0 && (
+                            <>
+                                {mentor?.technologies
+                                    .slice(0, 2)
+                                    .map((item, index) => (
+                                        <li
+                                            key={index}
+                                            className="rounded-[0.8rem] bg-[#1A1A1A] p-[0.5rem] text-[1.4rem] text-[#f1f1f1]"
+                                        >
+                                            {item?.technology?.name}
+                                        </li>
+                                    ))}
+                                {mentor?.technologies.length > 2 && (
+                                    <li className="rounded-[0.8rem] bg-[#1A1A1A] p-[0.5rem] text-[1.4rem] text-[#f1f1f1]">
+                                        + {mentor?.technologies.length - 2} more
+                                    </li>
+                                )}
+                            </>
+                        )}
                     </ul>
+
                     <div className="grid grid-cols-2 gap-[0.8rem]">
                         <div className="flex flex-col gap-[0.4rem] rounded-[0.8rem] bg-[#1A1A1A] p-[1rem]">
                             <p className="text-[1.4rem] font-medium">Rating</p>
                             <p className="text-[1.2rem]">
-                                {mentor?.rating} / 5.0
+                                {mentor?.rating
+                                    ? `${mentor?.rating}/5.0`
+                                    : '0 / 5.0'}
                             </p>
                         </div>
                         <div className="flex flex-col gap-[0.4rem] rounded-[0.8rem] bg-[#1A1A1A] p-[1rem]">

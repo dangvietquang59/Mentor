@@ -7,7 +7,7 @@ export const fetchData = async <T>(
     endpoint: string,
     token?: string | null,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
-    body?: string | FormData | object,
+    body?: string | FormData | object | null,
     isSearch: boolean = false,
     additionalHeaders: Record<string, string> = {},
 ): Promise<T | undefined> => {
@@ -28,11 +28,10 @@ export const fetchData = async <T>(
         headers['Authorization'] = `Bearer ${token}`;
     }
 
-    if (!(body instanceof FormData)) {
+    if (!(body instanceof FormData) && method !== 'GET') {
         headers['Content-Type'] = 'application/json';
     }
 
-    // Kết hợp headers tùy chỉnh với các headers khác
     Object.assign(headers, additionalHeaders);
 
     const config: RequestInit = {
@@ -40,7 +39,7 @@ export const fetchData = async <T>(
         headers,
     };
 
-    if (body) {
+    if (body && method !== 'GET') {
         config.body = body instanceof FormData ? body : JSON.stringify(body);
     }
 

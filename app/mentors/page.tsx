@@ -1,149 +1,14 @@
 'use client';
+import userApi from '@/apis/userApit';
 import icons from '@/assets/icons';
 import MentorsProfile from '@/components/MentorsProfile';
 import SelectComponent from '@/components/Select';
+import { UserType } from '@/types/user';
 import { Pagination, Popover } from 'antd';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 function Mentors() {
-    const mentors = [
-        {
-            _id: '66d353c108ac9d20fd4ff448',
-            email: 'dvquang@gmail.com',
-            password:
-                '$2a$10$P7zMVhOv8pDfeWk0YMyjwOw5SVV.Dc2sLGRNavHjRf8yFtrjuOO96',
-            fullName: 'Đặng Việt Quang',
-            role: 'Mentor',
-            bio: 'Frontend Developer',
-            rating: '5.0',
-            imageUrl:
-                'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQOi1nsNXOQ41sNW1uK_Aft6kYZydfsCU7xEP38sA298BWc3shR',
-            technologies: [
-                {
-                    technology: {
-                        _id: '66d161482ee12770ff77b339',
-                        name: 'Express.js',
-                    },
-                    experienceYears: 2,
-                    _id: '66d3d8060bdc7125345769b2',
-                },
-                {
-                    technology: {
-                        _id: '66d161482ee12770ff77b33a',
-                        name: 'Angular',
-                    },
-                    experienceYears: 4,
-                    _id: '66d3d8060bdc7125345769b3',
-                },
-            ],
-            createdAt: '2024-08-31T17:32:49.439Z',
-            updatedAt: '2024-09-01T02:59:59.541Z',
-            __v: 0,
-            slug: 'dang-viet-quang',
-        },
-        {
-            _id: '66d353c108ac9d20fd4ff449',
-            email: 'mtlanh@gmail.com',
-            password:
-                '$2a$10$ABC12Z9yFjkOxpL5.yK8c.m6zjb.xpa3VGyODVb4f34uEOXJRSJe2',
-            fullName: 'Mai Tùng Lanh',
-            role: 'Mentor',
-            bio: 'Full Stack Developer',
-            rating: '4.8',
-            imageUrl:
-                'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQOi1nsNXOQ41sNW1uK_Aft6kYZydfsCU7xEP38sA298BWc3shR',
-            technologies: [
-                {
-                    technology: {
-                        _id: '66d161482ee12770ff77b340',
-                        name: 'React.js',
-                    },
-                    experienceYears: 3,
-                    _id: '66d3d8060bdc7125345769b4',
-                },
-                {
-                    technology: {
-                        _id: '66d161482ee12770ff77b341',
-                        name: 'Node.js',
-                    },
-                    experienceYears: 5,
-                    _id: '66d3d8060bdc7125345769b5',
-                },
-            ],
-            createdAt: '2024-08-31T17:40:49.439Z',
-            updatedAt: '2024-09-01T03:10:59.541Z',
-            __v: 0,
-            slug: 'mai-tung-lanh',
-        },
-        {
-            _id: '66d353c108ac9d20fd4ff450',
-            email: 'hnhoang@gmail.com',
-            password:
-                '$2a$10$7K9DS3cvwLXj.P6x0YTZCu.5SVY.QzJ9Vz2lHKFs9R.AecwFSgeSS',
-            fullName: 'Hồ Nam Hoàng',
-            role: 'Mentor',
-            bio: 'Senior Frontend Developer',
-            rating: '4.9',
-            imageUrl:
-                'https://scontent.fsgn21-1.fna.fbcdn.net/v/t39.30808-6/456717372_1502052240679006_8715417935453666269_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeE2LxWJ0wRCJeT2wTEM4Kh8Ycx2SRbEDmVhzHZJFsQOZeDdJ2sCY9P1nw3n0Tvn-elQhrLNSuWOeF_x5mlwlr2E&_nc_ohc=WzWu-zHT9p4Q7kNvgFDR75V&_nc_ht=scontent.fsgn21-1.fna&oh=00_AYBKhhIiE1okz7JzoqPO3LuE6FufY_3KAO91khClE6tiYA&oe=66D9E191',
-            technologies: [
-                {
-                    technology: {
-                        _id: '66d161482ee12770ff77b342',
-                        name: 'Vue.js',
-                    },
-                    experienceYears: 4,
-                    _id: '66d3d8060bdc7125345769b6',
-                },
-                {
-                    technology: {
-                        _id: '66d161482ee12770ff77b343',
-                        name: 'JavaScript',
-                    },
-                    experienceYears: 6,
-                    _id: '66d3d8060bdc7125345769b7',
-                },
-            ],
-            createdAt: '2024-08-31T17:45:49.439Z',
-            updatedAt: '2024-09-01T03:20:59.541Z',
-            __v: 0,
-            slug: 'ho-nam-hoang',
-        },
-        {
-            _id: '66d353c108ac9d20fd4ff448',
-            email: 'dvquang@gmail.com',
-            password:
-                '$2a$10$P7zMVhOv8pDfeWk0YMyjwOw5SVV.Dc2sLGRNavHjRf8yFtrjuOO96',
-            fullName: 'Đặng Việt Quang',
-            role: 'Mentor',
-            bio: 'Frontend Developer',
-            rating: '5.0',
-            imageUrl:
-                'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQOi1nsNXOQ41sNW1uK_Aft6kYZydfsCU7xEP38sA298BWc3shR',
-            technologies: [
-                {
-                    technology: {
-                        _id: '66d161482ee12770ff77b339',
-                        name: 'Express.js',
-                    },
-                    experienceYears: 2,
-                    _id: '66d3d8060bdc7125345769b2',
-                },
-                {
-                    technology: {
-                        _id: '66d161482ee12770ff77b33a',
-                        name: 'Angular',
-                    },
-                    experienceYears: 4,
-                    _id: '66d3d8060bdc7125345769b3',
-                },
-            ],
-            createdAt: '2024-08-31T17:32:49.439Z',
-            updatedAt: '2024-09-01T02:59:59.541Z',
-            __v: 0,
-            slug: 'dang-viet-quang',
-        },
-    ];
     const jobTitles = [
         { label: 'Software Engineer', value: 'software_engineer' },
         { label: 'Frontend Developer', value: 'frontend_developer' },
@@ -241,6 +106,26 @@ function Mentors() {
             </div>
         </div>
     );
+    const [mentors, setMentors] = useState<UserType[]>([]);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const params = {
+        role: 'Mentor',
+        page: currentPage,
+    };
+
+    useEffect(() => {
+        const fetchMentors = async () => {
+            await userApi
+                .getAll(params)
+                .then((res) => {
+                    if (res) {
+                        setMentors(res?.users);
+                    }
+                })
+                .catch((error) => console.log(error));
+        };
+        fetchMentors();
+    }, [currentPage]);
     return (
         <div className="my-[3%] flex flex-col gap-[4.8rem] md:mx-[10%]">
             <div className="flex items-center justify-between">
