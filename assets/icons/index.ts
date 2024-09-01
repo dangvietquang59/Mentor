@@ -37,6 +37,7 @@ import searchGrey from './search-grey.svg';
 import menu from './menu-burger.svg';
 import plus from './plus.svg';
 import editPen from './edit-3.svg';
+import trash from './trash.svg';
 
 const icons = {
     search,
@@ -78,6 +79,7 @@ const icons = {
     menu,
     plus,
     editPen,
+    trash,
 };
 
 export default icons;

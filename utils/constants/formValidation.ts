@@ -15,4 +15,6 @@ export const formValidation = {
             message: 'Mật khẩu không được ít hơn 6 ký tự',
         },
     }),
+    experiemceYears: { required: 'Số năm kinh nghiệm không được để trống' },
+    technologies: { required: 'Công nghệ không được để trống' },
 };

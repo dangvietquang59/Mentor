@@ -12,6 +12,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import paths from '@/utils/constants/paths';
 import authApi from '@/apis/authApi';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
+import { UserType } from '@/types/user';
 
 const BlockInformation = ({
     title,
@@ -33,7 +34,9 @@ function Profiles() {
     const router = useRouter();
     const pathname = usePathname();
     const profileId = pathname.split(`${paths.PROFILE}/`)[1];
-    const [profileUser, setProfileUser] = useState<any>(null);
+    const [profileUser, setProfileUser] = useState<UserType | null | undefined>(
+        null,
+    );
     const accessToken = getAccessTokenClient() || '';
     useEffect(() => {
         if (profileId) {

@@ -1,5 +1,6 @@
 import { LoginRequestType, RegisterRequestType } from '@/types/request/auth';
 import { LoginResponseType } from '@/types/response/auth';
+import { UserType } from '@/types/user';
 import urls from '@/utils/constants/urls';
 import { fetchData } from '@/utils/functions/fetchData';
 
@@ -40,7 +41,7 @@ const authApi = {
     },
     async getProfile(userId: string, accessToken: string) {
         try {
-            const res = await fetchData<LoginResponseType>(
+            const res = await fetchData<UserType>(
                 `${urls.USERS}/${urls.GET_PROFILE}/${userId}`,
                 accessToken,
                 'GET',

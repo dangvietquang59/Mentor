@@ -1,10 +1,11 @@
+import { UserType } from '@/types/user';
 import urls from '@/utils/constants/urls';
 import { fetchData } from '@/utils/functions/fetchData';
 
 const userApi = {
-    async updateProfile(data: any, userId: string, accessToken: string) {
+    async updateProfile(data: UserType, userId: string, accessToken: string) {
         try {
-            const res = await fetchData<any>(
+            const res = await fetchData<UserType>(
                 `${urls.USERS}/${urls.UPDATE_PROFILE}/${userId}`,
                 accessToken,
                 'PUT',
