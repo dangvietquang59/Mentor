@@ -52,7 +52,7 @@ const SelectComponent = (props: ISelectComponentProps) => {
 
                 <Select
                     className={clsx(
-                        'h-[4.2rem] w-full border-[#000] text-[1.4rem] font-[500] leading-[2rem] text-black hover:!border-[#000] focus:border-[#000] focus:shadow-none',
+                        'min-h-[4.2rem] w-full border-[#000] text-[1.4rem] font-[500] leading-[2rem] text-black hover:!border-[#000] focus:border-[#000] focus:shadow-none',
                         className,
                     )}
                     {...rest}
@@ -102,7 +102,7 @@ const SelectComponent = (props: ISelectComponentProps) => {
                     render={({ field: { onChange, onBlur, value, ref } }) => (
                         <Select
                             className={clsx(
-                                'h-[4.2rem] w-full border-[#000] text-[1.4rem] font-[500] leading-[2rem] hover:!border-[#000] focus:border-[#000] focus:shadow-none',
+                                'min-h-[4.2rem] w-full border-[#000] text-[1.4rem] font-[500] leading-[2rem] hover:!border-[#000] focus:border-[#000] focus:shadow-none',
                                 className,
                             )}
                             onChange={onChange}

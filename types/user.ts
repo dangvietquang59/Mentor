@@ -12,10 +12,10 @@ export type UserType = {
     email: string;
     role: string;
     imageUrl: string;
-    bio: string;
+    bio?: string;
     slug: string;
-    rating: string;
-    createdAt: Date;
-    updatedAt: Date;
+    rating?: string;
+    createdAt: string | Date;
+    updatedAt: string | Date;
     technologies: Technologies[];
 };

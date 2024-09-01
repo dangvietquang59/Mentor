@@ -10,12 +10,13 @@
         color: #fff !important;
     }
     .ant-pagination-item-active{
-        border-color:#5dd26c ;
+        border-color:#5dd62c ;
+        background-color: #5dd62c;
         a{
-            color: #5dd26c !important;
+            color: white !important;
         }
         &:hover{
-        border-color:#5dd26c ;
+        border-color:#5dd62c ;
         }
     }
 }
