@@ -108,6 +108,7 @@ function Mentors() {
     );
     const [mentors, setMentors] = useState<UserType[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalUsers, setTotalUser] = useState<number>(0);
     const params = {
         role: 'Mentor',
         page: currentPage,
@@ -120,6 +121,8 @@ function Mentors() {
                 .then((res) => {
                     if (res) {
                         setMentors(res?.users);
+                        setCurrentPage(Number(res?.currentPage));
+                        setTotalUser(res?.totalUsers);
                     }
                 })
                 .catch((error) => console.log(error));
@@ -179,10 +182,14 @@ function Mentors() {
                     </li>
                 ))}
             </ul>
-            <div className="flex items-center justify-center">
-                {' '}
-                <Pagination defaultCurrent={1} total={50} />
-            </div>
+
+            <Pagination
+                defaultCurrent={currentPage}
+                total={totalUsers}
+                pageSize={12}
+                align="center"
+                onChange={(page) => setCurrentPage(page)}
+            />
         </div>
     );
 }

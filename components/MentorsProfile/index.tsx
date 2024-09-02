@@ -24,11 +24,11 @@ function MentorsProfile(props: MentorProfileProps) {
                 className="w-full object-cover"
                 height={250}
             />
-            <div className="px-[1rem]">
+            <div className="h-full px-[1rem]">
                 <h3 className="text-[1.8rem] font-medium">
                     {mentor?.fullName}
                 </h3>
-                <div className="mt-[1.2rem] flex flex-col gap-[0.8rem]">
+                <div className="mt-[1.2rem] flex h-full flex-col gap-[0.8rem]">
                     <p className="text-[1.4rem]">{mentor?.bio}</p>
                     <ul className="flex flex-wrap items-center gap-[0.8rem]">
                         {mentor?.technologies?.length > 0 && (

@@ -13,6 +13,7 @@ import paths from '@/utils/constants/paths';
 import authApi from '@/apis/authApi';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { UserType } from '@/types/user';
+import { getProfile } from '@/utils/functions/getProfile';
 
 const BlockInformation = ({
     title,
@@ -33,6 +34,7 @@ function Profiles() {
     const mounted = useMounted();
     const router = useRouter();
     const pathname = usePathname();
+    const profile: UserType = getProfile();
     const profileId = pathname.split(`${paths.PROFILE}/`)[1];
     const [profileUser, setProfileUser] = useState<UserType | null | undefined>(
         null,
@@ -98,10 +100,10 @@ function Profiles() {
                                     {profileUser?.fullName}
                                 </p>
                                 <span className="text-[1.6rem] font-bold text-[#6b7b8a]">
-                                    Technical at K-Tech
+                                    {profileUser?.bio}
                                 </span>
                             </div>
-                            {profileUser?._id === profileId ? (
+                            {profile?._id === profileId ? (
                                 <div className="flex items-center gap-[1.2rem] px-[2rem]">
                                     <button className="flex items-center gap-[1.6rem] rounded-[0.8rem] bg-[#5DD52C] p-[10px_20px]">
                                         <Image src={icons.plus} alt="icon" />
