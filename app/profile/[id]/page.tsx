@@ -14,21 +14,8 @@ import authApi from '@/apis/authApi';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { UserType } from '@/types/user';
 import { getProfile } from '@/utils/functions/getProfile';
+import ExperienceTag from '@/components/ExperienceTag';
 
-const BlockInformation = ({
-    title,
-    content,
-}: {
-    title?: string;
-    content?: string;
-}) => (
-    <div>
-        <h2 className="text-[2.5rem] font-bold">{title}</h2>
-        <p className="mt-[1.2rem] text-justify text-[1.6rem] font-bold text-[#4f4e4e]">
-            {content}
-        </p>
-    </div>
-);
 function Profiles() {
     const [selectedTab, setSelectedTab] = useState<number>(0);
     const mounted = useMounted();
@@ -148,23 +135,30 @@ function Profiles() {
                                 />
                             </div>
                             {selectedTab === 0 && (
-                                <div>
-                                    <BlockInformation
-                                        title="Overview"
-                                        content="Sukuna là một đấu sĩ cận chiến cực kỳ điêu luyện và mạnh mẽ. Hắn thể
-                        hiện sự áp đảo trước Megumi với những đòn vật lý mạnh mẽ. Sukuna có
-                        thể kết hợp thuật thức và sức mạnh tay đôi của mình, khiến hắn trở
-                        thành một đối thủ cực kỳ khó bị áp đảo trong trận chiến."
-                                    />
-                                    <BlockInformation
-                                        title="Education"
-                                        content="Tốt nghiệp tại Đại học Bách khoa Hà Nội"
-                                    />
-                                    <BlockInformation
-                                        title="Experience"
-                                        content="Từng có 9 năm kinh nghiệm với vị trí Technical Leader"
-                                    />
-                                </div>
+                                <>
+                                    <h3 className="text-[2rem] font-medium">
+                                        Experiences
+                                        <ul className="mt-[1.2rem] grid grid-cols-4 gap-[0.8rem]">
+                                            {profileUser?.technologies?.map(
+                                                (technology, index) => (
+                                                    <li key={index}>
+                                                        <ExperienceTag
+                                                            technology={
+                                                                technology
+                                                                    ?.technology
+                                                                    ?.name
+                                                            }
+                                                            experienceYears={
+                                                                technology?.experienceYears
+                                                            }
+                                                            showIcon={false}
+                                                        />
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    </h3>
+                                </>
                             )}
                         </div>
                         <div className="w-[40%]">

@@ -8,6 +8,9 @@ const urls = {
     UPDATE_PROFILE_IMAGE: 'update-profile-image',
     TECHNOLOGIES: 'technologies',
     GET_ALL_USERS: 'get-all-users',
+    FREETIME: 'freetime',
+    CREATE_FREE_TIME: 'create-free-time',
+    GET_FREE_TIME: 'get-free-time',
 };
 
 export default urls;

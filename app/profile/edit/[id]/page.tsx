@@ -22,6 +22,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
+import FreetimeForm from '@/components/FreetimeForm';
 
 function EditProfile() {
     const mounted = useMounted();
@@ -223,116 +224,125 @@ function EditProfile() {
         <>
             {mounted && (
                 <div className="mx-[10%] mt-[2.4rem] flex gap-[2.4rem]">
-                    <div className="min-h-[50rem] w-full flex-1 rounded-[0.8rem] bg-[#242526] p-[2rem]">
-                        <div className="flex items-center justify-between">
-                            <h2 className="text-[2.4rem] font-bold text-[#5DD62C]">
-                                Information
-                            </h2>
-                            {!isEdit ? (
-                                <ButtonCustom onClick={() => setIsEdit(true)}>
-                                    Edit profile
-                                </ButtonCustom>
-                            ) : (
-                                <div className="flex items-center gap-[1.2rem]">
+                    <div className="flex flex-1 flex-col gap-[2.4rem]">
+                        <div className=" min-h-[50rem] rounded-[0.8rem] bg-[#242526]  p-[2rem]">
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-[2.4rem] font-bold text-[#5DD62C]">
+                                    Information
+                                </h2>
+                                {!isEdit ? (
                                     <ButtonCustom
-                                        onClick={() => setIsEdit(false)}
+                                        onClick={() => setIsEdit(true)}
                                     >
-                                        Cancel
+                                        Edit profile
                                     </ButtonCustom>
-                                    <ButtonCustom
-                                        onClick={handleProfileSubmit(
-                                            onSubmitProfile,
-                                        )}
-                                    >
-                                        Save
-                                    </ButtonCustom>
-                                </div>
-                            )}
-                        </div>
-                        <div>
-                            <form
-                                className="mt-[2.4rem] flex flex-col gap-[1.2rem]"
-                                onSubmit={handleProfileSubmit(onSubmitProfile)}
-                            >
-                                <div className="grid grid-cols-2 gap-[1.2rem]">
-                                    <InputComponent
-                                        control={profileControl}
-                                        name="fullName"
-                                        label="Full name"
-                                        placeholder="Full name"
-                                        disabled={!isEdit}
-                                    />
-                                    <InputComponent
-                                        control={profileControl}
-                                        name="email"
-                                        label="Email"
-                                        placeholder="Email"
-                                        disabled={!isEdit}
-                                    />
-                                </div>
-                                <InputComponent
-                                    control={profileControl}
-                                    name="bio"
-                                    label="Bio"
-                                    placeholder="Bio"
-                                    disabled={!isEdit}
-                                />
-                                <div className="grid grid-cols-2 gap-[1.2rem]">
-                                    <InputComponent
-                                        control={profileControl}
-                                        name="role"
-                                        label="Role"
-                                        placeholder="Role"
-                                        className="w-full"
-                                        disabled
-                                    />
-                                    <InputComponent
-                                        control={profileControl}
-                                        name="rating"
-                                        label="Rating"
-                                        placeholder="Rating"
-                                        disabled
-                                        className="w-full"
-                                    />
-                                </div>
-                            </form>
-                        </div>
-                        <div className="mt-[1.2rem] flex items-center gap-[2.4rem]">
-                            <h3 className="text-[1.8rem] font-medium text-[#5DD62C]">
-                                Experience
-                            </h3>
-                            {isEdit && (
-                                <div
-                                    className="flex cursor-pointer items-center gap-[0.8rem] rounded-[0.8rem] border-[0.1rem] border-[#5DD62C] p-[0.4rem_2rem]"
-                                    onClick={showModal}
+                                ) : (
+                                    <div className="flex items-center gap-[1.2rem]">
+                                        <ButtonCustom
+                                            onClick={() => setIsEdit(false)}
+                                        >
+                                            Cancel
+                                        </ButtonCustom>
+                                        <ButtonCustom
+                                            onClick={handleProfileSubmit(
+                                                onSubmitProfile,
+                                            )}
+                                        >
+                                            Save
+                                        </ButtonCustom>
+                                    </div>
+                                )}
+                            </div>
+                            <div>
+                                <form
+                                    className="mt-[2.4rem] flex flex-col gap-[1.2rem]"
+                                    onSubmit={handleProfileSubmit(
+                                        onSubmitProfile,
+                                    )}
                                 >
-                                    <Image src={icons.plus} alt="icon" />
-                                    <span className="text-[1.4rem]">
-                                        Add new{' '}
-                                    </span>
-                                </div>
-                            )}
+                                    <div className="grid grid-cols-2 gap-[1.2rem]">
+                                        <InputComponent
+                                            control={profileControl}
+                                            name="fullName"
+                                            label="Full name"
+                                            placeholder="Full name"
+                                            disabled={!isEdit}
+                                        />
+                                        <InputComponent
+                                            control={profileControl}
+                                            name="email"
+                                            label="Email"
+                                            placeholder="Email"
+                                            disabled={!isEdit}
+                                        />
+                                    </div>
+                                    <InputComponent
+                                        control={profileControl}
+                                        name="bio"
+                                        label="Bio"
+                                        placeholder="Bio"
+                                        disabled={!isEdit}
+                                    />
+                                    <div className="grid grid-cols-2 gap-[1.2rem]">
+                                        <InputComponent
+                                            control={profileControl}
+                                            name="role"
+                                            label="Role"
+                                            placeholder="Role"
+                                            className="w-full"
+                                            disabled
+                                        />
+                                        <InputComponent
+                                            control={profileControl}
+                                            name="rating"
+                                            label="Rating"
+                                            placeholder="Rating"
+                                            disabled
+                                            className="w-full"
+                                        />
+                                    </div>
+                                </form>
+                            </div>
+                            <div className="mt-[1.2rem] flex items-center gap-[2.4rem]">
+                                <h3 className="text-[1.8rem] font-medium text-[#5DD62C]">
+                                    Experience
+                                </h3>
+                                {isEdit && (
+                                    <div
+                                        className="flex cursor-pointer items-center gap-[0.8rem] rounded-[0.8rem] border-[0.1rem] border-[#5DD62C] p-[0.4rem_2rem]"
+                                        onClick={showModal}
+                                    >
+                                        <Image src={icons.plus} alt="icon" />
+                                        <span className="text-[1.4rem]">
+                                            Add new{' '}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="mt-[2.4rem]">
+                                <ul className="grid grid-cols-4 gap-[1.2rem]">
+                                    {experiences.length > 0 &&
+                                        experiences?.map((item, index) => (
+                                            <li key={index}>
+                                                <ExperienceTag
+                                                    technology={
+                                                        item?.technology
+                                                    }
+                                                    experienceYears={
+                                                        item?.experienceYears
+                                                    }
+                                                    onDelete={() =>
+                                                        handleDeleteExperience(
+                                                            index,
+                                                        )
+                                                    }
+                                                />
+                                            </li>
+                                        ))}
+                                </ul>
+                            </div>
                         </div>
-                        <div className="mt-[2.4rem]">
-                            <ul className="grid grid-cols-4 gap-[1.2rem]">
-                                {experiences.length > 0 &&
-                                    experiences?.map((item, index) => (
-                                        <li key={index}>
-                                            <ExperienceTag
-                                                technology={item?.technology}
-                                                experienceYears={
-                                                    item?.experienceYears
-                                                }
-                                                onDelete={() =>
-                                                    handleDeleteExperience(
-                                                        index,
-                                                    )
-                                                }
-                                            />
-                                        </li>
-                                    ))}
-                            </ul>
-                        </div>
+                        <FreetimeForm />
                     </div>
                     <div className="flex h-[40rem] w-[30rem] flex-col items-center justify-center">
                         <Avatar
