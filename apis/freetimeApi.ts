@@ -1,4 +1,4 @@
-import { FreeTimeResponseType } from '@/types/response/freetime';
+import { FreeTimeReponseType, FreeTimeType } from '@/types/response/freetime';
 import urls from '@/utils/constants/urls';
 import { fetchData } from '@/utils/functions/fetchData';
 interface FreetimeProps {
@@ -9,7 +9,7 @@ interface FreetimeProps {
 const freetimeApi = {
     async create(data: FreetimeProps, accessToken: string) {
         try {
-            const res = await fetchData<FreeTimeResponseType>(
+            const res = await fetchData<FreeTimeType>(
                 `${urls.FREETIME}/${urls.CREATE_FREE_TIME}`,
                 accessToken,
                 'POST',
@@ -24,10 +24,10 @@ const freetimeApi = {
             throw new Error('Error calling freetime API');
         }
     },
-    async getById(accessToken: string, id: string) {
+    async getById(accessToken: string, id: string, params: { page: number }) {
         try {
-            const res = await fetchData<FreeTimeResponseType[]>(
-                `${urls.FREETIME}/${urls.GET_FREE_TIME}/${id}`,
+            const res = await fetchData<FreeTimeReponseType>(
+                `${urls.FREETIME}/${urls.GET_FREE_TIME}/${id}?page=${params?.page}`,
                 accessToken,
                 'GET',
             );
@@ -42,7 +42,7 @@ const freetimeApi = {
     },
     async delete(accessToken: string, id: string) {
         try {
-            const res = await fetchData<FreeTimeResponseType[]>(
+            const res = await fetchData<FreeTimeType[]>(
                 `${urls.FREETIME}/${urls.DELETE_FREE_TIME}/${id}`,
                 accessToken,
                 'DELETE',

@@ -12,8 +12,9 @@ import { toast } from 'sonner';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { getProfile } from '@/utils/functions/getProfile';
 import { UserType } from '@/types/user';
-import { FreeTimeResponseType } from '@/types/response/freetime';
+import { FreeTimeReponseType, FreeTimeType } from '@/types/response/freetime';
 import FreetimeTag from '../FreetimeTag';
+import { pages } from 'next/dist/build/templates/app-page';
 
 interface SessionProps {
     date: Date;
@@ -22,28 +23,44 @@ interface SessionProps {
 }
 
 function FreetimeForm() {
-    const [arraySession, setArraySession] = useState<FreeTimeResponseType[]>(
-        [],
-    );
-    console.log('arraySession', arraySession);
+    const [arraySession, setArraySession] = useState<FreeTimeType[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+
     const accessToken = getAccessTokenClient();
     const time = generate24Hours();
     const profile: UserType = getProfile();
+    const params = {
+        page: currentPage,
+    };
     useEffect(() => {
         const fetchFreetime = async () => {
-            if (accessToken) {
-                await freetimeApi
-                    .getById(accessToken, profile?._id)
-                    .then((res) => {
-                        if (res) {
-                            setArraySession([...res]);
-                        }
-                    });
+            if (accessToken && profile?._id) {
+                try {
+                    const res: FreeTimeReponseType | undefined =
+                        await freetimeApi.getById(
+                            accessToken,
+                            profile._id,
+                            params,
+                        );
+                    if (res && Array.isArray(res.freetime)) {
+                        setArraySession(res.freetime);
+                        setTotalPages(res?.totalRecords);
+                    } else {
+                        console.error(
+                            'Freetime không phải là mảng hoặc dữ liệu trả về không hợp lệ:',
+                            res,
+                        );
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
             }
         };
+
         fetchFreetime();
-    }, []);
+    }, [currentPage]);
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -104,7 +121,7 @@ function FreetimeForm() {
         <>
             {' '}
             <div className="min-h-[50rem] w-full flex-1 rounded-[0.8rem] bg-[#242526] p-[2rem]">
-                <div className="flex items-center justify-between">
+                <div className="mb-[2.4rem] flex items-center justify-between">
                     <h2 className="text-[2.4rem] font-bold text-[#5DD62C]">
                         Freetime sessions
                     </h2>
@@ -114,12 +131,13 @@ function FreetimeForm() {
                     </ButtonCustom>
                 </div>
                 {accessToken && (
-                    <div className="mt-[2.4rem] grid grid-cols-3 gap-[0.8rem]">
-                        <FreetimeTag
-                            sessions={arraySession}
-                            token={accessToken}
-                        />
-                    </div>
+                    <FreetimeTag
+                        sessions={arraySession}
+                        token={accessToken}
+                        totalPages={totalPages}
+                        setPage={setCurrentPage}
+                        page={currentPage}
+                    />
                 )}
             </div>
             <Modal
