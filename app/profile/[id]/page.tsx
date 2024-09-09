@@ -92,12 +92,6 @@ function Profiles() {
                             </div>
                             {profile?._id === profileId ? (
                                 <div className="flex items-center gap-[1.2rem] px-[2rem]">
-                                    <button className="flex items-center gap-[1.6rem] rounded-[0.8rem] bg-[#5DD52C] p-[10px_20px]">
-                                        <Image src={icons.plus} alt="icon" />
-                                        <p className="text-[1.6rem] text-black">
-                                            Add schedules
-                                        </p>
-                                    </button>
                                     <button
                                         className="flex items-center gap-[1.6rem] rounded-[0.8rem] bg-[#5DD52C] p-[10px_20px]"
                                         onClick={() =>
@@ -107,7 +101,7 @@ function Profiles() {
                                         }
                                     >
                                         <Image src={icons.editPen} alt="icon" />
-                                        <p className="text-[1.6rem] text-black">
+                                        <p className="text-[1.6rem] text-white">
                                             Edit profile
                                         </p>
                                     </button>

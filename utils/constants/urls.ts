@@ -11,6 +11,7 @@ const urls = {
     FREETIME: 'freetime',
     CREATE_FREE_TIME: 'create-free-time',
     GET_FREE_TIME: 'get-free-time',
+    DELETE_FREE_TIME: 'delete-free-time',
 };
 
 export default urls;

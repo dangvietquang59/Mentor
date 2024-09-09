@@ -20,10 +20,7 @@ interface SessionProps {
     from: string;
     to: string;
 }
-interface TimeOption {
-    label: string;
-    value: string;
-}
+
 function FreetimeForm() {
     const [arraySession, setArraySession] = useState<FreeTimeResponseType[]>(
         [],
@@ -92,10 +89,10 @@ function FreetimeForm() {
                 .create(freeTimeData, accessToken)
                 .then((res) => {
                     if (res) {
-                        console.log(res);
                         setArraySession((prev) => [...prev, res]);
                         toast.success('Create freetime session successful');
                         handleOk();
+                        reset();
                     }
                 })
                 .catch((error) => {
@@ -116,9 +113,14 @@ function FreetimeForm() {
                         Add new session
                     </ButtonCustom>
                 </div>
-                <div className="mt-[2.4rem] grid grid-cols-3 gap-[0.8rem]">
-                    <FreetimeTag sessions={arraySession} />
-                </div>
+                {accessToken && (
+                    <div className="mt-[2.4rem] grid grid-cols-3 gap-[0.8rem]">
+                        <FreetimeTag
+                            sessions={arraySession}
+                            token={accessToken}
+                        />
+                    </div>
+                )}
             </div>
             <Modal
                 open={isModalOpen}
