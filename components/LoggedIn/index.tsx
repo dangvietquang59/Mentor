@@ -3,12 +3,11 @@ import { useEffect, useState } from 'react';
 import NotificationItem from '../NotificationItem';
 import Image from 'next/image';
 import icons from '@/assets/icons';
-import Wrapper from '../Wrapper';
 import SesionToday from '../SesstionToday';
 import ChatUser from '../Chat/ChatUser';
 import Link from 'next/link';
 import SingleChat from '../SingleChat';
-import { Avatar } from 'antd';
+import { Avatar, Popover } from 'antd';
 import paths from '@/utils/constants/paths';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
@@ -16,6 +15,7 @@ import variables from '@/utils/constants/variables';
 import { toast } from 'sonner';
 import images from '@/assets/img';
 import { getProfile } from '@/utils/functions/getProfile';
+import { UserType } from '@/types/user';
 
 function LoggedIn() {
     const router = useRouter();
@@ -29,166 +29,156 @@ function LoggedIn() {
         id: string;
         name: string;
     } | null>(null);
-    const profile = getProfile() || {};
-
-    const handleToggleSessionToday = () => {
-        setIsOpenSessionToday(!isOpenSessionToday);
-        setIsOpenNotification(false);
-        setIsopenMessage(false);
-        setIsOpenInfo(false);
-    };
-
-    const handleToggleMessage = () => {
-        setIsopenMessage(!isOpenMessage);
-        setIsOpenInfo(false);
-        setIsOpenNotification(false);
-        setIsOpenSessionToday(false);
-    };
-
-    const handleToggleInfo = () => {
-        setIsOpenInfo(!isOpenInfo);
-        setIsopenMessage(false);
-        setIsOpenNotification(false);
-        setIsOpenSessionToday(false);
-    };
-
-    const handleToggleNotification = () => {
-        setIsOpenNotification(!isOpenNotification);
-        setIsopenMessage(false);
-        setIsOpenInfo(false);
-        setIsOpenSessionToday(false);
-    };
+    const profile: UserType = getProfile() || {};
 
     const logout = () => {
         Cookies.remove(variables.ACCESS_TOKEN);
         router.push(paths.DASHBOARD);
         toast.success('Logout successfull');
     };
+
+    const RenderContentUser = () => {
+        return (
+            <ul className="text-white">
+                <li className="mb-[0.8rem] border-b-[0.1rem] py-[1rem] text-[1.4rem] font-bold text-[#6B7B8A]">
+                    @{profile?.slug}
+                </li>
+                <li
+                    className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
+                    onClick={() => {
+                        setIsOpenInfo(false);
+                        router.push(`${paths.PROFILE}/${profile?._id}`);
+                    }}
+                >
+                    Profile
+                </li>
+                <li
+                    className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
+                    onClick={logout}
+                >
+                    Sign out
+                </li>
+            </ul>
+        );
+    };
+
+    const RenderChat = () => {
+        return (
+            <div className="text-white">
+                <h2 className="my-[0.8rem] text-[1.6rem] font-bold">Message</h2>
+                <div
+                    onClick={() => {
+                        setSelectedUser({ id: '1', name: 'John Doe' });
+                        setIsopenMessage(false);
+                    }}
+                >
+                    <ChatUser />
+                </div>
+                <div
+                    onClick={() => {
+                        setSelectedUser({
+                            id: '2',
+                            name: 'Jane Smith',
+                        });
+                        setIsopenMessage(false);
+                    }}
+                >
+                    <ChatUser />
+                </div>
+                <ul className="flex h-[3rem] items-center justify-between">
+                    <li onClick={() => setIsopenMessage(false)}>
+                        <Link href={'/messages'}>
+                            <span className="text-[1.4rem] font-bold text-[#7CB305]">
+                                Open all message
+                            </span>
+                        </Link>
+                    </li>
+                    <li>
+                        <span className="text-[1.4rem] font-bold text-[#7CB305]">
+                            Read
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        );
+    };
+
+    const RenderNotification = () => {
+        return (
+            <div className="text-white">
+                <h2 className="my-[0.8rem] text-[1.6rem] font-bold">
+                    Notification
+                </h2>
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+            </div>
+        );
+    };
     return (
         <div className="flex items-center gap-[1.6rem]">
-            <div
-                className="relative cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]"
-                onClick={() => handleToggleSessionToday()}
+            <Popover
+                content={<SesionToday />}
+                trigger="click"
+                open={isOpenSessionToday}
+                onOpenChange={() => setIsOpenSessionToday(!isOpenSessionToday)}
+                overlayStyle={{ width: '40rem' }}
             >
-                <Image src={icons.calendarClock} alt="bell" width={20} />
-            </div>
-            {isOpenSessionToday && (
-                <Wrapper className="absolute right-[25rem] top-[7rem] w-[40rem]">
-                    <SesionToday />
-                </Wrapper>
-            )}
-            <div
-                className="relative cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]"
-                onClick={() => handleToggleMessage()}
+                <div className="relative cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]">
+                    <Image src={icons.calendarClock} alt="bell" width={20} />
+                </div>
+            </Popover>
+            <Popover
+                content={<RenderChat />}
+                trigger="click"
+                open={isOpenMessage}
+                onOpenChange={() => setIsopenMessage(!isOpenMessage)}
+                overlayStyle={{ width: '40rem' }}
             >
-                <Image src={icons.message} alt="bell" width={20} />
-            </div>
-            {isOpenMessage && (
-                <Wrapper className="absolute right-[12rem] top-[7rem] w-[40rem] p-[1rem]">
-                    <h2 className="my-[0.8rem] text-[1.6rem] font-bold">
-                        Message
-                    </h2>
-                    <div
-                        onClick={() => {
-                            setSelectedUser({ id: '1', name: 'John Doe' });
-                            setIsopenMessage(false);
-                        }}
-                    >
-                        <ChatUser />
-                    </div>
-                    <div
-                        onClick={() => {
-                            setSelectedUser({ id: '2', name: 'Jane Smith' });
-                            setIsopenMessage(false);
-                        }}
-                    >
-                        <ChatUser />
-                    </div>
-                    <ul className="flex h-[3rem] items-center justify-between">
-                        <li onClick={() => setIsopenMessage(false)}>
-                            <Link href={'/messages'}>
-                                <span className="text-[1.4rem] font-bold text-[#7CB305]">
-                                    Open all message
-                                </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <span className="text-[1.4rem] font-bold text-[#7CB305]">
-                                Read
-                            </span>
-                        </li>
-                    </ul>
-                </Wrapper>
-            )}
-            <div
-                className="relative cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]"
-                onClick={() => handleToggleNotification()}
+                <div className="relative cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]">
+                    <Image src={icons.message} alt="bell" width={20} />
+                </div>
+            </Popover>
+            <Popover
+                content={<RenderNotification />}
+                trigger="click"
+                open={isOpenNotification}
+                onOpenChange={() => setIsOpenNotification(!isOpenNotification)}
+                overlayStyle={{ width: '40rem' }}
             >
-                <Image src={icons.bell} alt="bell" width={20} />
-            </div>
-            {isOpenNotification && (
-                <Wrapper className="absolute right-[8rem] top-[7rem] w-[40rem] p-[1rem]">
-                    <h2 className="my-[0.8rem] text-[1.6rem] font-bold">
-                        Notification
-                    </h2>
-                    <NotificationItem />
-                    <NotificationItem />
-                    <NotificationItem />
-                    <NotificationItem />
-                </Wrapper>
-            )}
-            {profile ? (
-                <Avatar
-                    src={
-                        // <Image
-                        //     src={profile?.imageUrl || images.defaultAvatar}
-                        //     alt="Default Avatar"
-                        //     width={40}
-                        //     height={40}
-                        // />
-                        profile?.imageUrl
-                    }
-                    className="relative cursor-pointer"
-                    onClick={() => handleToggleInfo()}
-                    size={40}
-                />
-            ) : (
-                <Avatar
-                    src={
-                        <Image
-                            src={images.defaultAvatar}
-                            alt="Default Avatar"
-                        />
-                    }
-                    className="relative cursor-pointer"
-                    onClick={() => handleToggleInfo()}
-                    size={40}
-                />
-            )}
+                <div className="relative cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]">
+                    <Image src={icons.bell} alt="bell" width={20} />
+                </div>
+            </Popover>
 
-            {isOpenInfo && (
-                <Wrapper className="absolute right-0 top-[7rem] w-[25rem] p-[1rem]">
-                    <ul>
-                        <li className="border-b-[0.1rem] py-[1rem] text-[1.4rem] font-bold text-[#6B7B8A]">
-                            @Ryomen Sukuna
-                        </li>
-                        <Link
-                            href={`${paths.PROFILE}/${profile?._id}`}
-                            onClick={() => setIsOpenInfo(false)}
-                        >
-                            <li className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.4rem] font-bold hover:bg-[#b7eb8f]">
-                                Profile
-                            </li>
-                        </Link>
-                        <li
-                            className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.4rem] font-bold hover:bg-[#b7eb8f]"
-                            onClick={logout}
-                        >
-                            Sign out
-                        </li>
-                    </ul>
-                </Wrapper>
-            )}
+            <Popover
+                content={<RenderContentUser />}
+                trigger="click"
+                open={isOpenInfo}
+                onOpenChange={() => setIsOpenInfo(!isOpenInfo)}
+                overlayStyle={{ width: '20rem' }}
+            >
+                {profile ? (
+                    <Avatar
+                        src={profile?.imageUrl}
+                        className="relative cursor-pointer"
+                        size={40}
+                    />
+                ) : (
+                    <Avatar
+                        src={
+                            <Image
+                                src={images.defaultAvatar}
+                                alt="Default Avatar"
+                            />
+                        }
+                        className="relative cursor-pointer"
+                        size={40}
+                    />
+                )}
+            </Popover>
+
             {selectedUser && (
                 <SingleChat
                     user={selectedUser}

@@ -1,8 +1,8 @@
 'use client';
 import Image from 'next/image';
 import { useState } from 'react';
-import Wrapper from '../Wrapper';
-import CategoryItem from '../CategoryItem';
+// import Wrapper from '../Wrapper';
+// import CategoryItem from '../CategoryItem';
 import icons from '@/assets/icons';
 
 function SearchCategory() {
@@ -29,13 +29,13 @@ function SearchCategory() {
                     className={`transition-transform duration-300 ${isOpenCategory ? 'rotate-180' : 'rotate-0'}`}
                 />
             </div>
-            {isOpenCategory && (
+            {/* {isOpenCategory && (
                 <Wrapper className="absolute top-[5.5rem] w-[30rem]">
                     <CategoryItem nameCategory="Front-end Developer" />
                     <CategoryItem nameCategory="Back-end Developer" />
                     <CategoryItem nameCategory="Fullstack Developer" />
                 </Wrapper>
-            )}
+            )} */}
             <input
                 placeholder="Enter mentor's name"
                 className="h-full grow bg-transparent px-[1rem] text-[1.6rem] focus-within:outline-none"

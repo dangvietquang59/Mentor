@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 function SesionToday() {
     return (
-        <div className="rounded-[0.8rem] p-[1rem]">
+        <div className="rounded-[0.8rem] p-[1rem] text-white">
             <div className="flex items-center justify-between border-b p-[1rem]">
                 <div className="flex items-center gap-[0.8rem]">
                     <Image
