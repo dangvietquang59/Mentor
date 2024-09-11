@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import images from '@/assets/img';
 import { getProfile } from '@/utils/functions/getProfile';
 import { UserType } from '@/types/user';
+import { formatNumeric } from '@/utils/functions/formatNumeric';
 
 function LoggedIn() {
     const router = useRouter();
@@ -40,8 +41,21 @@ function LoggedIn() {
     const RenderContentUser = () => {
         return (
             <ul className="text-white">
-                <li className="mb-[0.8rem] border-b-[0.1rem] py-[1rem] text-[1.4rem] font-bold text-[#6B7B8A]">
-                    @{profile?.slug}
+                <li className="mb-[0.8rem] flex flex-col gap-[0.8rem] border-b-[0.1rem] py-[1rem]">
+                    <p className="text-[1.4rem] font-bold text-[#6B7B8A]">
+                        @{profile?.slug}
+                    </p>
+                    <div className="flex items-center gap-[0.4rem]">
+                        <Image
+                            src={images.qCoin}
+                            alt="coin"
+                            className="size-[3rem]"
+                        />
+                        <span className="text-[1.4rem] font-bold">
+                            {/* <Button icon={<UploadOutlined />}>Upload</Button> */}
+                            {formatNumeric(10000000000000)}
+                        </span>
+                    </div>
                 </li>
                 <li
                     className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"

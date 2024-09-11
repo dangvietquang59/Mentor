@@ -5,10 +5,15 @@ import { getFormattedDate } from '@/utils/functions/getFormattedDate';
 import freetimeApi from '@/apis/freetimeApi';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
-import { Pagination } from 'antd';
+import { Modal, Pagination } from 'antd';
 import TimeItem from '../TimeItem';
 import ButtonCustom from '../ButtonCustom';
 import SelectComponent from '../Select';
+import { Image as ImageAnt } from 'antd';
+import images from '@/assets/img';
+import InputComponent from '../Input';
+import { useForm } from 'react-hook-form';
+import UploadCustom from '../UploadCustom';
 
 interface FreetimeTagProps {
     sessions: FreeTimeType[];
@@ -40,7 +45,19 @@ function FreetimeTag({
 }: FreetimeTagProps) {
     const [sessionData, setSessionData] = useState<SessionData[]>([]);
     const [selectedTime, setSelectedTime] = useState<string>('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
     const formatData = (data: any[]) => {
         return data.map((item) => {
             const formattedDate = getFormattedDate(new Date(item.freeDate));
@@ -133,98 +150,153 @@ function FreetimeTag({
         }
         return options;
     };
+    const {
+        control,
+        handleSubmit,
+        reset: resetProfileForm,
+        formState: { errors: profileErrors },
+    } = useForm<any>();
+    const onSubmit = async (data: any) => {};
     if (forBooking) {
         return (
-            <div className="flex flex-col gap-[1.2rem]">
-                <div className="min-h-[32rem]">
-                    <div className="grid grid-cols-4 gap-[0.8rem]">
-                        {sessionData?.length > 0 &&
-                            sessionData.map((item, index) => (
-                                <div
-                                    className={`flex w-full cursor-pointer flex-col items-center justify-between rounded-[0.8rem] p-[1rem] ${selected?._id === item?._id ? 'border-[#5CD22C] bg-[#5CD22C] text-black' : 'border-[#ccc]'} border-[0.1rem] duration-300 hover:border-[#5CD22C] `}
-                                    key={index}
-                                    onClick={() => handleClickSession(item)}
-                                >
-                                    <p className="text-[2rem] font-bold">
-                                        {item?.formattedDate?.dayOfWeek}
-                                    </p>
-                                    <p className="text-[1.6rem] font-medium">
-                                        {`${item?.formattedDate?.day} ${item?.formattedDate?.month} ${item?.formattedDate?.year}`}
-                                    </p>
-                                    <p className="text-[1.6rem] font-medium">
-                                        {`${item?.startTime} - ${item?.endTime}`}
-                                    </p>
-                                </div>
-                            ))}
+            <>
+                <div className="flex flex-col gap-[1.2rem]">
+                    <div className="mb-[2.4rem]">
+                        <h2 className="text-[2rem] font-bold text-[#5DD62C]">
+                            Available sessions
+                        </h2>
+
+                        <span className="text-[1.6rem] font-bold text-[#6B7B8A]">
+                            Book 1:1 sessions from the options based on your
+                            needs
+                        </span>
                     </div>
-                </div>
-                <Pagination
-                    defaultCurrent={page}
-                    total={totalPages}
-                    pageSize={12}
-                    align="center"
-                    onChange={(page) => setPage(page)}
-                />
-                {selected && (
-                    <div className="mt-[2.4rem]">
-                        <div className="flex items-center justify-between border-b-[0.1rem] border-b-[#ccc] p-[1rem]">
-                            <span className="text-[2rem] font-bold">
-                                Available time slots
-                            </span>
-                            <div className="flex items-center gap-[0.8rem]">
-                                <button
-                                    onClick={handlePrevPage}
-                                    disabled={currentPage === 1}
-                                    className={`${currentPage === 1 ? 'cursor-not-allowed opacity-70' : ' '}`}
-                                >
-                                    <Image
-                                        src={icons.chevronDown}
-                                        alt="icon"
-                                        className="rotate-[90deg]"
-                                    />
-                                </button>
-                                <button
-                                    onClick={handleNextPage}
-                                    disabled={currentPage === totalPagesTime}
-                                    className={`${currentPage === totalPagesTime ? 'cursor-not-allowed opacity-70' : ' '}`}
-                                >
-                                    <Image
-                                        src={icons.chevronDown}
-                                        alt="icon"
-                                        className="rotate-[-90deg]"
-                                    />
-                                </button>
-                            </div>
-                        </div>
-                        <div className="mt-[2.4rem] grid grid-cols-3 gap-[0.8rem]">
-                            {getCurrentPageItems().length > 0 &&
-                                getCurrentPageItems().map((item, index) => (
-                                    <TimeItem
-                                        name={item}
+                    <div className="min-h-[32rem]">
+                        <div className="grid grid-cols-4 gap-[0.8rem]">
+                            {sessionData?.length > 0 &&
+                                sessionData.map((item, index) => (
+                                    <div
+                                        className={`flex w-full cursor-pointer flex-col items-center justify-between rounded-[0.8rem] p-[1rem] ${selected?._id === item?._id ? 'border-[#5CD22C] bg-[#5CD22C] text-black' : 'border-[#ccc]'} border-[0.1rem] duration-300 hover:border-[#5CD22C] `}
                                         key={index}
-                                        isSelected={selectedTime}
-                                        onSelected={setSelectedTime}
-                                    />
+                                        onClick={() => handleClickSession(item)}
+                                    >
+                                        <p className="text-[2rem] font-bold">
+                                            {item?.formattedDate?.dayOfWeek}
+                                        </p>
+                                        <p className="text-[1.6rem] font-medium">
+                                            {`${item?.formattedDate?.day} ${item?.formattedDate?.month} ${item?.formattedDate?.year}`}
+                                        </p>
+                                        <p className="text-[1.6rem] font-medium">
+                                            {`${item?.startTime} - ${item?.endTime}`}
+                                        </p>
+                                    </div>
                                 ))}
                         </div>
-                        {selectedTime.length > 0 && (
-                            <div className="mt-[2.4rem]">
-                                <h3 className="mb-[1.2rem] text-[2rem] font-bold">
-                                    Temporary rental
-                                </h3>
-                                <SelectComponent
-                                    name="jobTitle"
-                                    options={generateHourOptions()}
-                                    placeholder="Chọn chức danh công việc"
-                                />
-                            </div>
-                        )}
-                        <ButtonCustom className="mt-[2.4rem] h-[7rem] w-full text-[2rem] text-white">
-                            Book session for 02 Jun 2024
-                        </ButtonCustom>
                     </div>
-                )}
-            </div>
+                    <Pagination
+                        defaultCurrent={page}
+                        total={totalPages}
+                        pageSize={12}
+                        align="center"
+                        onChange={(page) => setPage(page)}
+                    />
+                    {selected && (
+                        <div className="mt-[2.4rem]">
+                            <div className="flex items-center justify-between border-b-[0.1rem] border-b-[#ccc] p-[1rem]">
+                                <span className="text-[2rem] font-bold">
+                                    Available time slots
+                                </span>
+                                <div className="flex items-center gap-[0.8rem]">
+                                    <button
+                                        onClick={handlePrevPage}
+                                        disabled={currentPage === 1}
+                                        className={`${currentPage === 1 ? 'cursor-not-allowed opacity-70' : ' '}`}
+                                    >
+                                        <Image
+                                            src={icons.chevronDown}
+                                            alt="icon"
+                                            className="rotate-[90deg]"
+                                        />
+                                    </button>
+                                    <button
+                                        onClick={handleNextPage}
+                                        disabled={
+                                            currentPage === totalPagesTime
+                                        }
+                                        className={`${currentPage === totalPagesTime ? 'cursor-not-allowed opacity-70' : ' '}`}
+                                    >
+                                        <Image
+                                            src={icons.chevronDown}
+                                            alt="icon"
+                                            className="rotate-[-90deg]"
+                                        />
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="mt-[2.4rem] grid grid-cols-3 gap-[0.8rem]">
+                                {getCurrentPageItems().length > 0 &&
+                                    getCurrentPageItems().map((item, index) => (
+                                        <TimeItem
+                                            name={item}
+                                            key={index}
+                                            isSelected={selectedTime}
+                                            onSelected={setSelectedTime}
+                                        />
+                                    ))}
+                            </div>
+                            {selectedTime.length > 0 && (
+                                <div className="mt-[2.4rem]">
+                                    <h3 className="mb-[1.2rem] text-[2rem] font-bold">
+                                        Temporary rental
+                                    </h3>
+                                    <SelectComponent
+                                        name="jobTitle"
+                                        options={generateHourOptions()}
+                                        placeholder="Chọn chức danh công việc"
+                                    />
+                                </div>
+                            )}
+                            <ButtonCustom
+                                className="mt-[2.4rem] h-[7rem] w-full text-[2rem] text-white"
+                                onClick={showModal}
+                            >
+                                Book session
+                            </ButtonCustom>
+                        </div>
+                    )}
+                </div>
+                <Modal
+                    open={isModalOpen}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                    footer={null}
+                    closable={false}
+                >
+                    <div className="flex flex-col gap-[2.4rem]">
+                        <h2 className="text-center text-[3rem] font-bold text-white">
+                            Deposit coins
+                        </h2>
+                        <div className="flex items-center justify-center">
+                            <div className=" size-[20rem]">
+                                <ImageAnt src={images.qrMomo.src} alt="qr" />
+                            </div>
+                        </div>
+                        <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            className="flex flex-col gap-[2.4rem]"
+                        >
+                            <InputComponent
+                                control={control}
+                                name="fullName"
+                                label="Total amount"
+                                placeholder="totalAmount"
+                            />
+                            <UploadCustom />
+                            <ButtonCustom>Send request</ButtonCustom>
+                        </form>
+                    </div>
+                </Modal>
+            </>
         );
     }
     return (

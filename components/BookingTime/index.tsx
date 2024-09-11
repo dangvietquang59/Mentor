@@ -65,15 +65,6 @@ function BookingTime({ id }: BookingTimeProps) {
     return (
         <>
             <div className="min-h-[40rem] rounded-[0.4rem] bg-[#242526] p-[2rem]">
-                <div className="mb-[2.4rem]">
-                    <h2 className="text-[2rem] font-bold text-[#5DD62C]">
-                        Available sessions
-                    </h2>
-
-                    <span className="text-[1.6rem] font-bold text-[#6B7B8A]">
-                        Book 1:1 sessions from the options based on your needs
-                    </span>
-                </div>
                 <div className="flex flex-col gap-[0.8rem]">
                     <FreetimeTag
                         sessions={arraySession}
