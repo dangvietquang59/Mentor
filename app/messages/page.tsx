@@ -8,8 +8,8 @@ import FooterActionChat from '../../components/Chat/FooterActionChat';
 
 function Messages() {
     return (
-        <div className="flex w-full">
-            <div className="h-[65rem] w-[30%] rounded border-r border-r-[#ccc] p-[1rem] pt-[1rem]">
+        <div className="mx-[5%] mt-[2%] flex gap-[1.2rem]">
+            <div className=" w-[30%] rounded-[0.8rem] bg-[#242526] p-[1rem] pt-[1rem]">
                 <ActionChat />
                 <SearchInput />
                 <div className="flex flex-col gap-[0.8rem]">
@@ -19,13 +19,15 @@ function Messages() {
                     <ChatUser />
                 </div>
             </div>
-            <div className="w-full">
-                <HeaderInfoChat />
-                <div className="flex min-h-[48rem] flex-col gap-[1.2rem] p-[1rem]">
-                    <MentorMessage />
-                    <MentorMessage />
-                    <MenteeMessage />
-                    <MentorMessage />
+            <div className="flex w-full flex-col justify-between gap-[1.2rem] overflow-hidden rounded-[0.8rem] bg-[#242526]">
+                <div className="flex flex-col gap-[2.4rem]">
+                    <HeaderInfoChat />
+                    <div className="flex min-h-[20rem] flex-col gap-[1.2rem] p-[1rem]">
+                        <MentorMessage />
+                        <MentorMessage />
+                        <MenteeMessage />
+                        <MentorMessage />
+                    </div>
                 </div>
                 <FooterActionChat />
             </div>

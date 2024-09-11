@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 function SearchInput() {
     return (
-        <div className="my-[2.4rem] flex h-[4rem] items-center rounded-[0.8rem] border border-[#ccc] p-[1rem]">
+        <div className="my-[2.4rem] flex h-[4rem] items-center rounded-[0.8rem] bg-[#3A3B3C] p-[1rem]">
             <Image src={icons.search} alt="icon" />
             <input
                 placeholder="Enter name user"

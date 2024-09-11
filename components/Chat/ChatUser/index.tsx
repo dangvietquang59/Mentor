@@ -4,7 +4,7 @@ interface ChatUserProps {
 function ChatUser({ onOpenSingleChat }: ChatUserProps) {
     return (
         <div
-            className="flex w-full cursor-pointer items-center gap-[2.4rem] rounded-[0.8rem] p-[1rem] duration-300 hover:bg-[#B7EB8F]"
+            className="flex w-full cursor-pointer items-center gap-[2.4rem] rounded-[0.8rem] p-[1rem] duration-300 hover:bg-[#0F0F0F]"
             onClick={onOpenSingleChat}
         >
             <picture>
