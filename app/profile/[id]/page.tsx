@@ -156,7 +156,7 @@ function Profiles() {
                             )}
                         </div>
                         <div className="w-[40%]">
-                            <BookingTime />
+                            <BookingTime id={profileId} />
                         </div>
                     </div>
                 </div>
