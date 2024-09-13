@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { getProfile } from '@/utils/functions/getProfile';
 import { UserType } from '@/types/user';
-import { FreeTimeReponseType, FreeTimeType } from '@/types/response/freetime';
+import { FreeTimeResponseType, FreeTimeType } from '@/types/response/freetime';
 import FreetimeTag from '../FreetimeTag';
 import { pages } from 'next/dist/build/templates/app-page';
 
@@ -38,7 +38,7 @@ function FreetimeForm() {
         const fetchFreetime = async () => {
             if (accessToken && profile?._id) {
                 try {
-                    const res: FreeTimeReponseType | undefined =
+                    const res: FreeTimeResponseType | undefined =
                         await freetimeApi.getById(
                             accessToken,
                             profile._id,

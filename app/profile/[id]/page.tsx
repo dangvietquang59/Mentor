@@ -15,6 +15,7 @@ import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { UserType } from '@/types/user';
 import { getProfile } from '@/utils/functions/getProfile';
 import ExperienceTag from '@/components/ExperienceTag';
+import groupChatApi from '@/apis/groupChatApi';
 
 function Profiles() {
     const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -54,7 +55,24 @@ function Profiles() {
             title: 'Group sessions',
         },
     ];
-
+    const handleCreateChatOneVOne = async () => {
+        if (profileUser && profile) {
+            const dataChat = {
+                name: profileUser?.fullName,
+                members: [profileUser?._id, profile?._id],
+            };
+            await groupChatApi
+                .create(dataChat, accessToken)
+                .then((res) => {
+                    if (res) {
+                        console.log(res);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    };
     return (
         <>
             {mounted && (
@@ -108,7 +126,10 @@ function Profiles() {
                                 </div>
                             ) : (
                                 <div className="px-[2rem]">
-                                    <button className="flex items-center gap-[1.6rem] rounded-[0.8rem] bg-[#46a321] p-[10px_20px]">
+                                    <button
+                                        className="flex items-center gap-[1.6rem] rounded-[0.8rem] bg-[#5CD22C] p-[10px_20px]"
+                                        onClick={handleCreateChatOneVOne}
+                                    >
                                         <Image src={icons.message} alt="icon" />
                                         <p className="text-[1.6rem] text-white">
                                             Send message

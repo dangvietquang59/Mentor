@@ -7,7 +7,7 @@ export type FreeTimeType = {
     createdAt: Date;
     updatedAt: Date;
 };
-export type FreeTimeReponseType = {
+export type FreeTimeResponseType = {
     freetime: FreeTimeType[];
     page: number;
     totalPages: number;

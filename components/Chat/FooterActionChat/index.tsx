@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 function FooterActionChat() {
     return (
-        <div className="mb-[1rem] flex flex-col gap-[1.2rem] px-[1rem]">
+        <div className="flex flex-col gap-[1.2rem] bg-[#2E2D2D] p-[1rem]">
             <div className="flex items-center gap-[1.2rem]">
                 <button>
                     <Image

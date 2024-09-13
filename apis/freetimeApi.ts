@@ -1,4 +1,4 @@
-import { FreeTimeReponseType, FreeTimeType } from '@/types/response/freetime';
+import { FreeTimeResponseType, FreeTimeType } from '@/types/response/freetime';
 import urls from '@/utils/constants/urls';
 import { fetchData } from '@/utils/functions/fetchData';
 interface FreetimeProps {
@@ -26,7 +26,7 @@ const freetimeApi = {
     },
     async getById(accessToken: string, id: string, params: { page: number }) {
         try {
-            const res = await fetchData<FreeTimeReponseType>(
+            const res = await fetchData<FreeTimeResponseType>(
                 `${urls.FREETIME}/${urls.GET_FREE_TIME}/${id}?page=${params?.page}`,
                 accessToken,
                 'GET',

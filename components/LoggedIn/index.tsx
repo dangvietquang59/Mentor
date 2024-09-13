@@ -101,7 +101,7 @@ function LoggedIn() {
                 </div>
                 <ul className="flex h-[3rem] items-center justify-between">
                     <li onClick={() => setIsopenMessage(false)}>
-                        <Link href={'/messages'}>
+                        <Link href={`${paths.MESSAGES}/${profile?._id}`}>
                             <span className="text-[1.4rem] font-bold text-[#7CB305]">
                                 Open all message
                             </span>

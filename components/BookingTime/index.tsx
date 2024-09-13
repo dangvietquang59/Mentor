@@ -1,6 +1,6 @@
 import FreetimeTag from '../FreetimeTag';
 import { useEffect, useState } from 'react';
-import { FreeTimeReponseType, FreeTimeType } from '@/types/response/freetime';
+import { FreeTimeResponseType, FreeTimeType } from '@/types/response/freetime';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 
 import freetimeApi from '@/apis/freetimeApi';
@@ -25,7 +25,7 @@ function BookingTime({ id }: BookingTimeProps) {
         const fetchFreetime = async () => {
             if (accessToken && id) {
                 try {
-                    const res: FreeTimeReponseType | undefined =
+                    const res: FreeTimeResponseType | undefined =
                         await freetimeApi.getById(accessToken, id, params);
                     if (res && Array.isArray(res.freetime)) {
                         setArraySession(res.freetime);
