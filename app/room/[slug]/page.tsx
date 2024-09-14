@@ -2,10 +2,8 @@
 import icons from '@/assets/icons';
 import InputComponent from '@/components/Input';
 import Image from 'next/image';
-import { useState } from 'react';
 
 function RoomDetails() {
-    const [message, setMessage] = useState<string>('');
     return (
         <div className="mx-[5%] mt-[2.4rem]">
             <div className="grid min-h-[50rem] grid-cols-[70%_30%] gap-[1.6rem]">

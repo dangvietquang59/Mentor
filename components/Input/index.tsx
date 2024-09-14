@@ -1,8 +1,3 @@
-import {
-    EyeInvisibleOutlined,
-    EyeOutlined,
-    EyeTwoTone,
-} from '@ant-design/icons';
 import { Input, InputProps } from 'antd';
 import clsx from 'clsx';
 import { Controller, FieldError, RegisterOptions } from 'react-hook-form';

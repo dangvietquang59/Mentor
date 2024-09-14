@@ -3,7 +3,6 @@ import React from 'react';
 import Image from 'next/image';
 import images from '@/assets/img';
 import SearchCategory from '@/components/SearchCategory';
-import icons from '@/assets/icons';
 import OverviewBlog from '@/components/OverviewBlog';
 import NewsFeedItem from '@/components/NewsFeedItem';
 import { NewsFeedItemProps } from '@/types/blog';
@@ -18,16 +17,9 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import useScroll from '@/utils/hooks/useScroll';
 import { useMounted } from '@/utils/hooks/useMounted';
 const Dashboard = () => {
     const mounted = useMounted();
-    const {
-        mentorListContainerRef: mentorScroll,
-        handleScroll: handleMentorScroll,
-        isAtStart: isMentorStart,
-        isAtEnd: isMentorEnd,
-    } = useScroll({ scrollAmount: 800 });
 
     const arrayBlog: NewsFeedItemProps[] = [
         {
@@ -122,50 +114,7 @@ const Dashboard = () => {
                                 <h2 className="my-[1rem] text-[3.6rem] font-bold">
                                     Reccomend for you
                                 </h2>
-                                <div className="flex items-center gap-[1.2rem]">
-                                    <button
-                                        onClick={() =>
-                                            handleMentorScroll('left')
-                                        }
-                                        disabled={isMentorStart}
-                                    >
-                                        <Image
-                                            src={icons.chevronDown}
-                                            alt="icon"
-                                            className={`rotate-90 ${isMentorStart && 'opacity-30'}`}
-                                        />
-                                    </button>
-                                    <button
-                                        onClick={() =>
-                                            handleMentorScroll('right')
-                                        }
-                                        disabled={isMentorEnd}
-                                    >
-                                        <Image
-                                            src={icons.chevronDown}
-                                            alt="icon"
-                                            className={`rotate-[-90deg] ${isMentorEnd && 'opacity-30'}`}
-                                        />
-                                    </button>
-                                </div>
                             </div>
-                            {/* <div
-                                className="no-scrollbar overflow-auto whitespace-nowrap"
-                                ref={mentorScroll}
-                            >
-                                <ul className="flex gap-[0.8rem]">
-                                    {arrayMentor.map((item) => (
-                                        <li key={item.name}>
-                                            <SlideImageMentor
-                                                name={item.name}
-                                                url={item.url}
-                                                position={item.position}
-                                                attributes={item.attributes}
-                                            />
-                                        </li>s
-                                    ))}
-                                </ul>
-                            </div> */}
                         </div>
                         <Devider />
 

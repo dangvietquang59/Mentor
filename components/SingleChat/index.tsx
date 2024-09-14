@@ -3,8 +3,6 @@ import icons from '@/assets/icons';
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import MentorMessage from '../Chat/MessageItem/MentorMessage';
-import MenteeMessage from '../Chat/MessageItem/MenteeMessage';
 import InputComponent from '../Input';
 
 interface SingleChatProps {
@@ -50,12 +48,12 @@ const SingleChat: React.FC<SingleChatProps> = ({ user, onClose }) => {
                 </button>
             </div>
             <div className="flex-1 overflow-auto p-2">
-                <MentorMessage />
+                {/* <MentorMessage />
                 {arrayMenteeMessage &&
                     arrayMenteeMessage.map((item: string, index: number) => (
                         <MenteeMessage key={index} msg={item} />
                     ))}
-                <div ref={messagesEndRef} />
+                <div ref={messagesEndRef} /> */}
             </div>
             <div className="border-t p-2">
                 <InputComponent name="a" />

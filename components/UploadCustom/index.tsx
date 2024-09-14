@@ -2,7 +2,6 @@ import { Upload, UploadProps } from 'antd';
 import ButtonCustom from '../ButtonCustom';
 import urls from '@/utils/constants/urls';
 
-interface UploadCustomProps {}
 function UploadCustom() {
     const props: UploadProps = {
         action: `${process.env.NEXT_PUBLIC_API_URL}/${urls.UPLOAD}`,

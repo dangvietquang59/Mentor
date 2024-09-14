@@ -1,10 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import NotificationItem from '../NotificationItem';
 import Image from 'next/image';
 import icons from '@/assets/icons';
 import SesionToday from '../SesstionToday';
-import ChatUser from '../Chat/ChatUser';
 import Link from 'next/link';
 import SingleChat from '../SingleChat';
 import { Avatar, Popover } from 'antd';
@@ -86,7 +85,7 @@ function LoggedIn() {
                         setIsopenMessage(false);
                     }}
                 >
-                    <ChatUser />
+                    {/* <ChatUser /> */}
                 </div>
                 <div
                     onClick={() => {
@@ -97,7 +96,7 @@ function LoggedIn() {
                         setIsopenMessage(false);
                     }}
                 >
-                    <ChatUser />
+                    {/* <ChatUser /> */}
                 </div>
                 <ul className="flex h-[3rem] items-center justify-between">
                     <li onClick={() => setIsopenMessage(false)}>

@@ -15,7 +15,6 @@ import variables from '@/utils/constants/variables';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { useMounted } from '@/utils/hooks/useMounted';
 import { Avatar, Modal } from 'antd';
-import { error } from 'console';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -154,7 +153,7 @@ function EditProfile() {
         control: profileControl,
         handleSubmit: handleProfileSubmit,
         reset: resetProfileForm,
-        formState: { errors: profileErrors },
+        // formState: { errors: profileErrors },
     } = useForm<UserType>();
 
     useEffect(() => {
@@ -187,7 +186,6 @@ function EditProfile() {
                 profileId,
                 accessToken,
             );
-            console.log('API Response:', response);
             toast.success('Update profile successful');
             setIsEdit(false);
         } catch (error) {

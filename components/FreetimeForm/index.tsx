@@ -14,7 +14,6 @@ import { getProfile } from '@/utils/functions/getProfile';
 import { UserType } from '@/types/user';
 import { FreeTimeResponseType, FreeTimeType } from '@/types/response/freetime';
 import FreetimeTag from '../FreetimeTag';
-import { pages } from 'next/dist/build/templates/app-page';
 
 interface SessionProps {
     date: Date;
@@ -76,7 +75,6 @@ function FreetimeForm() {
         control,
         handleSubmit,
         reset,
-        watch,
         formState: { errors },
     } = useForm<SessionProps>();
     const fromValue: string = useWatch({

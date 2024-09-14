@@ -29,7 +29,7 @@ function Login() {
         } else {
             setIsLoading(false);
         }
-    }, [isLoggedIn, router]);
+    }, [isLoggedIn, router, isLoading]);
     const {
         control,
         handleSubmit,
@@ -52,8 +52,7 @@ function Login() {
                     }
                 }
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
                 toast.error('Login failed');
             });
     };

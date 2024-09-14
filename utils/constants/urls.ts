@@ -14,6 +14,8 @@ const urls = {
     DELETE_FREE_TIME: 'delete-free-time',
     GROUP_CHAT: 'chat-groups',
     USER: 'user',
+    MESSAGES: 'messages',
+    GROUP: 'group',
 };
 
 export default urls;

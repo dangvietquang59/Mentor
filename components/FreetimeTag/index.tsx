@@ -77,7 +77,6 @@ function FreetimeTag({
         await freetimeApi
             .delete(token, id)
             .then((res) => {
-                console.log(res);
                 if (res) {
                     setSessionData((prev) =>
                         prev.filter((item) => item._id !== id),

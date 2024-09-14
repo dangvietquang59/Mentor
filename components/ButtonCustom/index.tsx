@@ -14,7 +14,6 @@ function ButtonCustom({
     children,
     className,
     outline = false,
-    noBorder = false,
     path,
     disabled = false,
     onClick,

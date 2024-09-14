@@ -1,6 +1,5 @@
 'use client';
-import Image from 'next/image';
-import icons from '../../../assets/icons';
+
 import { useState } from 'react';
 import Comments from '../../../components/Comment';
 
