@@ -1,9 +1,13 @@
 import icons from '@/assets/icons';
 import Image from 'next/image';
-
-function SearchInput() {
+interface SearchInputProps {
+    className?: string;
+}
+function SearchInput({ className }: SearchInputProps) {
     return (
-        <div className="my-[2.4rem] flex h-[4rem] items-center rounded-[0.8rem] bg-[#3A3B3C] p-[1rem]">
+        <div
+            className={`flex h-[4rem] items-center rounded-[0.8rem] bg-[#3A3B3C] p-[1rem] ${className}`}
+        >
             <Image src={icons.search} alt="icon" />
             <input
                 placeholder="Enter name user"

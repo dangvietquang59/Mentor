@@ -24,18 +24,35 @@ const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`);
 
 function Messages() {
     const [groups, setGroups] = useState<GroupChatResponseType[]>([]);
-    const accessToken = getAccessTokenClient();
-    const id = useGetIdFromUrl();
     const [selectedGroup, setSelectedGroup] = useState<UserType | null>(null);
     const [selectedGroupId, setSelectedGroupId] = useState<string>('');
     const [messages, setMessages] = useState<MessageResponseType[]>([]);
     const [newMessage, setNewMessage] = useState('');
+    const [images, setImages] = useState<File[]>([]);
+    const [isSending, setIsSending] = useState(false);
+    const accessToken = getAccessTokenClient();
+    const id = useGetIdFromUrl();
     const profile: UserType = getProfile();
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleIconClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFiles = event.target.files;
+        if (selectedFiles) {
+            const fileArray = Array.from(selectedFiles);
+            setImages((prevImages) => [...prevImages, ...fileArray]);
+        }
+    };
 
     useEffect(() => {
         useScrollToBottom(messagesEndRef.current);
-    }, [messages]);
+    }, [messages?.length, isSending]);
 
     useEffect(() => {
         if (selectedGroupId) {
@@ -92,11 +109,9 @@ function Messages() {
                         accessToken,
                     );
                     if (res) {
-                        // Filter out invalid messages
                         const validMessages = res.filter(
                             (msg) => msg && msg.content,
                         );
-                        console.log('validMessages', validMessages);
                         setMessages(validMessages);
                     }
                 } catch (error) {
@@ -117,36 +132,39 @@ function Messages() {
     }, [groups, id]);
 
     const handleSendMessage = async () => {
-        if (newMessage.trim() === '') return;
+        const formData = new FormData();
 
+        if (profile) {
+            formData.append('senderId', profile?._id);
+            formData.append('content', newMessage);
+            formData.append('groupId', selectedGroupId);
+
+            images.forEach((image, index) => {
+                formData.append('attachments', image);
+            });
+        }
+        setIsSending(true);
         try {
-            if (id && accessToken) {
-                const timestamp = new Date().toISOString();
-                const data = {
-                    groupId: selectedGroupId,
-                    content: newMessage,
-                    senderId: id,
-                    timestamp,
-                };
-
-                const res = await messageApi.create(data, accessToken);
-                if (res) {
-                    const formatNewMessage = {
-                        ...res?.data,
+            if (accessToken) {
+                const result = await messageApi.create(formData, accessToken);
+                if (result) {
+                    const newData = {
+                        ...result?.data,
                         sender: profile,
                     };
-                    setMessages((prevMessages) => [
-                        ...prevMessages,
-                        formatNewMessage,
-                    ]);
+                    setMessages((prevMessages) => [...prevMessages, newData]);
+
+                    socket.emit('sendMessage', newData);
                     setNewMessage('');
-                    socket.emit('sendMessage', data);
+                    setImages([]);
+                } else {
+                    console.error('Failed to send message');
                 }
-            } else {
-                console.error('Missing id or accessToken');
             }
         } catch (error) {
             console.error('Error sending message:', error);
+        } finally {
+            setIsSending(false);
         }
     };
 
@@ -157,11 +175,16 @@ function Messages() {
     const handleGroupSelect = (groupId: string) => {
         setSelectedGroupId(groupId);
     };
+    const autoResizeTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const textarea = e.target;
+        textarea.style.height = 'auto';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+    };
     return (
         <div className="mx-[5%] mt-[2%] flex max-h-[85vh] min-h-[85vh] gap-[1.2rem]">
             <div className="w-[30%] rounded-[0.8rem] bg-[#242526] p-[1rem] pt-[1rem]">
                 <ActionChat />
-                <SearchInput />
+                <SearchInput className="my-[2.4rem]" />
                 <div className="flex flex-col gap-[0.8rem]">
                     {id && (
                         <ChatUser
@@ -177,39 +200,107 @@ function Messages() {
             <div className="flex w-full flex-col justify-between gap-[1.2rem] overflow-hidden rounded-[0.8rem] bg-[#242526]">
                 {selectedGroup && <HeaderInfoChat user={selectedGroup} />}
                 <div
-                    className="no-scrollbar flex max-h-[60vh] min-h-[20rem] flex-col gap-[1.2rem] overflow-y-auto p-[1rem]"
+                    className="no-scrollbar flex max-h-[50vh] min-h-[30rem] flex-col gap-[2.4rem] overflow-y-auto p-[1rem]"
                     ref={messagesEndRef}
                 >
                     {messages.map((item, index) => (
                         <MessageItem
                             key={index}
-                            msg={item.content}
-                            time={item.timestamp}
-                            user={item.sender}
+                            msg={item?.content || ''}
+                            time={item?.timestamp || ''}
+                            user={item?.sender}
                             id={id ?? ''}
+                            attachments={item.attachments || []}
                         />
                     ))}
+                    {isSending && (
+                        <div className="flex justify-end">
+                            <span className="text-[1.4rem] text-[#6B7B8A]">
+                                Đang gửi...
+                            </span>
+                        </div>
+                    )}
                 </div>
 
-                <div className="flex flex-col gap-[1.2rem] bg-[#2E2D2D] p-[1rem]">
+                <div className="flex h-auto flex-col gap-[1.2rem] bg-[#2E2D2D] p-[1rem]">
                     <div className="flex items-center gap-[1.2rem]">
                         {/* Add buttons */}
+                        <>
+                            <button onClick={handleIconClick} type="button">
+                                <Image
+                                    src={icons.photo}
+                                    alt="upload image"
+                                    width={24}
+                                    height={24}
+                                    className="cursor-pointer"
+                                />
+                            </button>
+
+                            {/* Input file ẩn */}
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                style={{ display: 'none' }}
+                                onChange={handleFileChange}
+                                accept="image/*"
+                                multiple
+                            />
+                        </>
                     </div>
-                    <div className="flex items-center gap-[0.8rem] rounded-[0.8rem] bg-[#3A3B3C] p-[1rem]">
-                        <input
-                            placeholder="texting with mentor..."
-                            className="h-full grow bg-transparent text-[1.4rem] focus:outline-none"
-                            value={newMessage}
-                            onChange={(e) => handleSetMessage(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    handleSendMessage();
-                                }
-                            }}
-                        />
-                        <button onClick={handleSendMessage}>
-                            <Image src={icons.paperPlane} alt="send message" />
-                        </button>
+
+                    <div className="flex flex-col gap-[0.4rem]">
+                        {/* Hiển thị ảnh đã chọn */}
+                        {images.length > 0 && (
+                            <div className="mt-2 flex gap-2">
+                                {images.map((image, index) => (
+                                    <div key={index} className="relative">
+                                        {/* Hiển thị ảnh */}
+                                        <img
+                                            src={URL.createObjectURL(image)}
+                                            alt={`Selected image ${index + 1}`}
+                                            className="h-[8rem] w-[8rem] rounded object-cover"
+                                        />
+                                        {/* Button xóa ảnh */}
+                                        <button
+                                            onClick={() => {
+                                                setImages((prevImages) =>
+                                                    prevImages.filter(
+                                                        (_, i) => i !== index,
+                                                    ),
+                                                );
+                                            }}
+                                            className="absolute right-0 top-0 flex h-6 w-6 items-center justify-center rounded-full bg-[#5dd62c] text-sm text-white"
+                                        >
+                                            X
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        <div className="flex items-center gap-[0.8rem] rounded-[0.8rem] bg-[#3A3B3C] p-[1rem]">
+                            <textarea
+                                placeholder="texting with mentor..."
+                                className="h-full grow resize-none overflow-hidden bg-transparent text-[1.4rem] focus:outline-none"
+                                value={newMessage}
+                                rows={1}
+                                onChange={(e) => {
+                                    handleSetMessage(e.target.value);
+                                    autoResizeTextarea(e);
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && !e.shiftKey) {
+                                        e.preventDefault();
+                                        handleSendMessage();
+                                    }
+                                }}
+                            />
+                            <button onClick={handleSendMessage}>
+                                <Image
+                                    src={icons.paperPlane}
+                                    alt="send message"
+                                />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -16,6 +16,7 @@
         "antd": "^5.19.1",
         "js-cookie": "^3.0.5",
         "jwt-decode": "^4.0.0",
+        "lodash": "^4.17.21",
         "next": "14.2.3",
         "query-string": "^9.1.0",
         "react": "^18",

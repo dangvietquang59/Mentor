@@ -2,7 +2,7 @@
 import authApi from '@/apis/authApi';
 import technologiesApi from '@/apis/technologiesApi';
 import uploadApi from '@/apis/uploadApi';
-import userApi from '@/apis/userApit';
+import userApi from '@/apis/userApi';
 import icons from '@/assets/icons';
 import ButtonCustom from '@/components/ButtonCustom';
 import ExperienceTag, { ExperienceProps } from '@/components/ExperienceTag';

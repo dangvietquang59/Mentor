@@ -1,5 +1,5 @@
 'use client';
-import userApi from '@/apis/userApit';
+import userApi from '@/apis/userApi';
 import icons from '@/assets/icons';
 import MentorsProfile from '@/components/MentorsProfile';
 import SelectComponent from '@/components/Select';
