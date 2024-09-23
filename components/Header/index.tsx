@@ -23,7 +23,7 @@ const Header = () => {
     const arrayPage: SiderType[] = [
         {
             title: 'Home',
-            url: paths.DASHBOARD,
+            url: paths.HOME,
         },
         {
             title: 'Mentors',

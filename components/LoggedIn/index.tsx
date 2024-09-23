@@ -33,7 +33,7 @@ function LoggedIn() {
 
     const logout = () => {
         Cookies.remove(variables.ACCESS_TOKEN);
-        router.push(paths.DASHBOARD);
+        router.push(paths.HOME);
         toast.success('Logout successfull');
     };
 

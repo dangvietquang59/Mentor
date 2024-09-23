@@ -1,7 +1,5 @@
-import icons from '@/assets/icons';
+import BlogFilter from '@/components/BlogFilter';
 import BlogItem from '@/components/BlogItem';
-import BlogTag from '@/components/BlogTag';
-import Image from 'next/image';
 
 function Blog() {
     const arrayBlog = [
@@ -60,27 +58,7 @@ function Blog() {
                         />
                     ))}
             </div>
-            <div className="sticky top-[13%] max-h-[50rem] rounded-[0.8rem] bg-[#242526] p-[2rem]">
-                {/* search */}
-                <div className="flex w-full items-center gap-[0.8rem] rounded-full bg-[#3A3B3C] p-[1rem]">
-                    <Image src={icons.searchGrey} alt="icon" />
-                    <input
-                        placeholder="search"
-                        className="h-full w-full bg-transparent text-[1.6rem] focus-within:outline-none"
-                    />
-                </div>
-                {/* tag  */}
-
-                <div className="mt-[2.4rem]">
-                    <h2 className="text-[2rem] font-bold">Blog tag</h2>
-                    <div className="mt-[2.4rem] flex flex-wrap gap-[0.8rem]">
-                        <BlogTag />
-                        <BlogTag />
-                        <BlogTag />
-                        <BlogTag />
-                    </div>
-                </div>
-            </div>
+            <BlogFilter />
         </div>
     );
 }

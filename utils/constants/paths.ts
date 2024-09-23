@@ -1,6 +1,6 @@
 const paths = {
     ROOM: '/room',
-    DASHBOARD: '/dashboard',
+    HOME: '/',
     MENTORS: '/mentors',
     BLOGS: '/blogs',
     PROFILE: '/profile',

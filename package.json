@@ -11,6 +11,8 @@
     },
     "dependencies": {
         "@ant-design/icons": "^5.4.0",
+        "@ckeditor/ckeditor5-build-classic": "^43.1.0",
+        "@ckeditor/ckeditor5-react": "^9.2.0",
         "@nextui-org/react": "^2.4.2",
         "@types/jwt-decode": "^3.1.0",
         "antd": "^5.19.1",

@@ -25,7 +25,7 @@ function Login() {
     const isLoggedIn = getAccessTokenClient();
     useEffect(() => {
         if (isLoggedIn) {
-            router.push(paths.DASHBOARD);
+            router.push(paths.HOME);
         } else {
             setIsLoading(false);
         }
@@ -41,7 +41,7 @@ function Login() {
             .login(data)
             .then((res) => {
                 if (res) {
-                    router.push(paths.DASHBOARD);
+                    router.push(paths.HOME);
                     if (res) {
                         Cookies.set(
                             variables.PROFILE,

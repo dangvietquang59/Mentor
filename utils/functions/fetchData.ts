@@ -20,7 +20,7 @@ export const fetchData = async <T>(
             Cookies.remove(variables.PROFILE);
 
             if (typeof window !== 'undefined') {
-                window.location.href = paths.DASHBOARD;
+                window.location.href = paths.HOME;
             }
             return;
         }
