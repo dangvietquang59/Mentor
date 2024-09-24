@@ -16,6 +16,9 @@ const urls = {
     USER: 'user',
     MESSAGES: 'messages',
     GROUP: 'group',
+    POSTS: 'posts',
+    CREATE_NEW_POST: 'create-new-post',
+    GET_ALL_BLOG: 'get-all-post',
 };
 
 export default urls;

@@ -6,11 +6,11 @@ import Editor from '../Editor';
 import { useState } from 'react';
 import ButtonCustom from '../ButtonCustom';
 
-interface BlogFromProps {
+export type BlogFromProps = {
     title: string;
     tags: string[];
     content: string;
-}
+};
 function BlogForm() {
     const [editorValue, setEditorValue] = useState<string>('');
 
@@ -38,6 +38,7 @@ function BlogForm() {
                 rules={formValidation.date}
             />
             <SelectComponent control={control} label="Tags" name="tags" />
+
             <div className="flex flex-col gap-[0.8rem]">
                 <p className="font-medium text-white">Content</p>
                 <Editor
