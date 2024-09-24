@@ -113,7 +113,6 @@ function EditProfile() {
                     .then((res) => {
                         toast.success('Upload image successful');
                         setSelectedImage(res.result.url);
-                        window.location.reload();
                     })
                     .catch((error) => {
                         console.log(error);
