@@ -1,3 +1,4 @@
+'use client';
 import BlogFilter from '@/components/BlogFilter';
 import BlogItem from '@/components/BlogItem';
 
