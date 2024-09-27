@@ -35,7 +35,6 @@ function Messages() {
     const profile: UserType = getProfile();
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
-
     const handleIconClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
@@ -56,33 +55,50 @@ function Messages() {
 
     useEffect(() => {
         if (selectedGroupId) {
+            console.log(`Emitting joinRoom for group: ${selectedGroupId}`);
             socket.emit('joinRoom', selectedGroupId);
         }
+
+        socket.on('connect', () => {
+            console.log('Connected to socket server');
+            if (selectedGroupId) {
+                console.log(
+                    `Emitting joinRoom after reconnect for group: ${selectedGroupId}`,
+                );
+                socket.emit('joinRoom', selectedGroupId);
+            }
+        });
+
         return () => {
             if (selectedGroupId) {
+                console.log(`Leaving room: ${selectedGroupId}`);
                 socket.emit('leaveRoom', selectedGroupId);
             }
         };
     }, [selectedGroupId]);
 
     useEffect(() => {
-        socket.on('newMessage', (message: MessageResponseType) => {
+        const handleNewMessage = (message: MessageResponseType) => {
+            console.log('Received newMessage event from server:', message);
+
             setMessages((prevMessages) => {
+                // Nếu tin nhắn không trùng ID thì thêm vào
                 if (
                     message &&
-                    !prevMessages.find((msg) => msg?._id === message?._id)
+                    !prevMessages.find((msg) => msg._id === message._id)
                 ) {
                     return [...prevMessages, message];
                 }
                 return prevMessages;
             });
-        });
+        };
+
+        socket.on('newMessage', handleNewMessage);
 
         return () => {
-            socket.off('newMessage');
+            socket.off('newMessage', handleNewMessage);
         };
     }, []);
-
     useEffect(() => {
         const fetchChatGroup = async () => {
             if (accessToken && id) {
@@ -120,7 +136,7 @@ function Messages() {
             };
             fetchMessages();
         }
-    }, [selectedGroupId, accessToken]);
+    }, [selectedGroupId]);
 
     useEffect(() => {
         if (groups.length > 0) {
@@ -143,6 +159,10 @@ function Messages() {
                 formData.append('attachments', image);
             });
         }
+
+        // Check if there is a message to send
+        if (!newMessage.trim() && images.length === 0) return;
+
         setIsSending(true);
         try {
             if (accessToken) {
@@ -154,7 +174,14 @@ function Messages() {
                     };
                     setMessages((prevMessages) => [...prevMessages, newData]);
 
-                    socket.emit('sendMessage', newData);
+                    // Emit socket event for new message
+
+                    socket.emit('sendMessage', {
+                        groupId: selectedGroupId,
+                        message: newData,
+                    });
+
+                    // Reset message input and images
                     setNewMessage('');
                     setImages([]);
                 } else {

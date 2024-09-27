@@ -1,10 +1,10 @@
+import { FreetimeSessionDetails } from '@/components/FreetimeForm';
 import { FreeTimeResponseType, FreeTimeType } from '@/types/response/freetime';
 import urls from '@/utils/constants/urls';
 import { fetchData } from '@/utils/functions/fetchData';
 interface FreetimeProps {
-    freeDate: Date;
-    startTime: string;
-    endTime: string;
+    freeDate: string;
+    freeTimeDetail: FreetimeSessionDetails[];
 }
 const freetimeApi = {
     async create(data: FreetimeProps, accessToken: string) {

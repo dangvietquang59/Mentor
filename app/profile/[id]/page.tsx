@@ -176,9 +176,14 @@ function Profiles() {
                                 </>
                             )}
                         </div>
-                        <div className="w-[40%]">
-                            <BookingTime id={profileId} />
-                        </div>
+                        {profileUser && (
+                            <div className="w-[40%]">
+                                <BookingTime
+                                    id={profileId}
+                                    user={profileUser}
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

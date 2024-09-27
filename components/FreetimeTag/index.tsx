@@ -1,19 +1,18 @@
 import Image from 'next/image';
 import icons from '@/assets/icons';
-import { FreeTimeType } from '@/types/response/freetime';
+import { FreeTimeDetailType, FreeTimeType } from '@/types/response/freetime';
 import { getFormattedDate } from '@/utils/functions/getFormattedDate';
 import freetimeApi from '@/apis/freetimeApi';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
 import { Modal, Pagination } from 'antd';
-import TimeItem from '../TimeItem';
 import ButtonCustom from '../ButtonCustom';
-import SelectComponent from '../Select';
-import { Image as ImageAnt } from 'antd';
-import images from '@/assets/img';
-import InputComponent from '../Input';
-import { useForm } from 'react-hook-form';
-import UploadCustom from '../UploadCustom';
+import { formatTime } from '@/utils/functions/formatTime';
+import { UserType } from '@/types/user';
+import { getProfile } from '@/utils/functions/getProfile';
+import { formatDate } from '@/utils/functions/formatDate';
+import { calculateTimeDifference } from '@/utils/functions/calculateTimeDifference';
+import { formatNumeric } from '@/utils/functions/formatNumeric';
 
 interface FreetimeTagProps {
     sessions: FreeTimeType[];
@@ -23,6 +22,7 @@ interface FreetimeTagProps {
     page: number;
     canEdit?: boolean;
     forBooking?: boolean;
+    user: UserType;
 }
 
 interface SessionData extends FreeTimeType {
@@ -42,11 +42,18 @@ function FreetimeTag({
     setPage,
     canEdit = true,
     forBooking = false,
+    user,
 }: FreetimeTagProps) {
     const [sessionData, setSessionData] = useState<SessionData[]>([]);
-    const [selectedTime, setSelectedTime] = useState<string>('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const profile: UserType = getProfile();
 
+    const handleBooking = () => {
+        if (!selectedSession) {
+            toast.error('You have choose sesstion before booking');
+        }
+        showModal();
+    };
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -68,7 +75,8 @@ function FreetimeTag({
         });
     };
     const [selected, setSelected] = useState<SessionData | null>(null);
-
+    const [selectedSession, setSelectedSession] =
+        useState<FreeTimeDetailType | null>(null);
     useEffect(() => {
         setSessionData(formatData(sessions));
     }, [sessions]);
@@ -92,70 +100,13 @@ function FreetimeTag({
     const handleClickSession = (item: SessionData) => {
         setSelected(item);
     };
-    function convertTo24Hour(time: string) {
-        const [hour, minute] = time.split(':').map(Number);
-        return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-    }
 
-    function generateTimeSlots(startTime: string, endTime: string) {
-        const slots = [];
-        let currentHour = parseInt(startTime.split(':')[0], 10);
-        const endHour = parseInt(endTime.split(':')[0], 10);
-
-        while (currentHour < endHour) {
-            const time = `${currentHour.toString().padStart(2, '0')}:00`;
-            slots.push(convertTo24Hour(time));
-            currentHour++;
-        }
-
-        return slots;
-    }
-    const timeSlots = generateTimeSlots(
-        selected?.startTime ?? '00:00',
-        selected?.endTime ?? '00:00',
-    );
-
-    const itemsPerPage = 6;
     const [currentPage, setCurrentPage] = useState(1);
-
-    const totalPagesTime = Math.ceil(timeSlots.length / itemsPerPage);
+    console.log('user', user);
     useEffect(() => {
         setCurrentPage(1);
     }, [selected?._id]);
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage((prev) => prev + 1);
-        }
-    };
 
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage((prev) => prev - 1);
-        }
-    };
-
-    const getCurrentPageItems = () => {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        return timeSlots.slice(startIndex, endIndex);
-    };
-    const generateHourOptions = () => {
-        const options = [];
-        for (let i = 1; i <= 24; i++) {
-            options.push({
-                value: i,
-                label: `${i} hour${i > 1 ? 's' : ''}`,
-            });
-        }
-        return options;
-    };
-    const {
-        control,
-        handleSubmit,
-        reset: resetProfileForm,
-        formState: { errors: profileErrors },
-    } = useForm<any>();
-    const onSubmit = async (data: any) => {};
     if (forBooking) {
         return (
             <>
@@ -170,7 +121,7 @@ function FreetimeTag({
                             needs
                         </span>
                     </div>
-                    <div className="min-h-[32rem]">
+                    <div className="">
                         <div className="grid grid-cols-4 gap-[0.8rem]">
                             {sessionData?.length > 0 &&
                                 sessionData.map((item, index) => (
@@ -184,9 +135,6 @@ function FreetimeTag({
                                         </p>
                                         <p className="text-[1.6rem] font-medium">
                                             {`${item?.formattedDate?.day} ${item?.formattedDate?.month} ${item?.formattedDate?.year}`}
-                                        </p>
-                                        <p className="text-[1.6rem] font-medium">
-                                            {`${item?.startTime} - ${item?.endTime}`}
                                         </p>
                                     </div>
                                 ))}
@@ -205,9 +153,8 @@ function FreetimeTag({
                                 <span className="text-[2rem] font-bold">
                                     Available time slots
                                 </span>
-                                <div className="flex items-center gap-[0.8rem]">
+                                {/* <div className="flex items-center gap-[0.8rem]">
                                     <button
-                                        onClick={handlePrevPage}
                                         disabled={currentPage === 1}
                                         className={`${currentPage === 1 ? 'cursor-not-allowed opacity-70' : ' '}`}
                                     >
@@ -217,50 +164,46 @@ function FreetimeTag({
                                             className="rotate-[90deg]"
                                         />
                                     </button>
-                                    <button
-                                        onClick={handleNextPage}
-                                        disabled={
-                                            currentPage === totalPagesTime
-                                        }
-                                        className={`${currentPage === totalPagesTime ? 'cursor-not-allowed opacity-70' : ' '}`}
-                                    >
+                                    <button>
                                         <Image
                                             src={icons.chevronDown}
                                             alt="icon"
                                             className="rotate-[-90deg]"
                                         />
                                     </button>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="mt-[2.4rem] grid grid-cols-3 gap-[0.8rem]">
-                                {getCurrentPageItems().length > 0 &&
-                                    getCurrentPageItems().map((item, index) => (
-                                        <TimeItem
-                                            name={item}
-                                            key={index}
-                                            isSelected={selectedTime}
-                                            onSelected={setSelectedTime}
-                                        />
-                                    ))}
+                                {selected?.freeTimeDetail?.length > 0 &&
+                                    selected?.freeTimeDetail?.map(
+                                        (item, index) => (
+                                            <div
+                                                key={index}
+                                                className={`flex cursor-pointer flex-col gap-[0.4rem] rounded-[0.8rem] p-[1rem] ${selectedSession?._id === item?._id ? 'bg-[#5dd62c] text-black' : 'border'}`}
+                                                onClick={() =>
+                                                    setSelectedSession(item)
+                                                }
+                                            >
+                                                <p className="text-[1.8rem] font-bold">
+                                                    {item?.name}
+                                                </p>
+                                                <p className="text-[1.4rem] font-medium">
+                                                    {formatTime(item?.from)} -{' '}
+                                                    {formatTime(item?.to)}
+                                                </p>
+                                            </div>
+                                        ),
+                                    )}
                             </div>
-                            {selectedTime.length > 0 && (
-                                <div className="mt-[2.4rem]">
-                                    <h3 className="mb-[1.2rem] text-[2rem] font-bold">
-                                        Temporary rental
-                                    </h3>
-                                    <SelectComponent
-                                        name="jobTitle"
-                                        options={generateHourOptions()}
-                                        placeholder="Chọn chức danh công việc"
-                                    />
-                                </div>
+
+                            {profile?._id !== user?._id && (
+                                <ButtonCustom
+                                    className="mt-[2.4rem] h-[7rem] w-full text-[2rem] text-white"
+                                    onClick={handleBooking}
+                                >
+                                    Book session
+                                </ButtonCustom>
                             )}
-                            <ButtonCustom
-                                className="mt-[2.4rem] h-[7rem] w-full text-[2rem] text-white"
-                                onClick={showModal}
-                            >
-                                Book session
-                            </ButtonCustom>
                         </div>
                     )}
                 </div>
@@ -270,29 +213,90 @@ function FreetimeTag({
                     onCancel={handleCancel}
                     footer={null}
                     closable={false}
+                    centered
                 >
-                    <div className="flex flex-col gap-[2.4rem]">
-                        <h2 className="text-center text-[3rem] font-bold text-white">
-                            Deposit coins
+                    <div className="flex flex-col gap-[2.4rem] text-white">
+                        <h2 className="text-center text-[2rem] font-bold">
+                            Booking Information
                         </h2>
-                        <div className="flex items-center justify-center">
-                            <div className=" size-[20rem]">
-                                <ImageAnt src={images.qrMomo.src} alt="qr" />
-                            </div>
+                        <div className="flex flex-col gap-[1.2rem]">
+                            <h3 className="text-[1.6rem] font-medium">
+                                Booking date:
+                            </h3>
+                            {selected && (
+                                <div className="flex items-center justify-between rounded-[0.8rem] bg-gradient-to-r from-[#03624c] to-[#5DD62C] p-[1rem]">
+                                    <p className="text-[1.6rem] font-medium">
+                                        {selected?.formattedDate?.dayOfWeek}
+                                    </p>
+                                    <p className="text-[1.4rem]">
+                                        {formatDate(selected?.freeDate)}
+                                    </p>
+                                </div>
+                            )}
                         </div>
-                        <form
-                            onSubmit={handleSubmit(onSubmit)}
-                            className="flex flex-col gap-[2.4rem]"
-                        >
-                            <InputComponent
-                                control={control}
-                                name="fullName"
-                                label="Total amount"
-                                placeholder="totalAmount"
-                            />
-                            <UploadCustom />
-                            <ButtonCustom>Send request</ButtonCustom>
-                        </form>
+                        <div className="flex flex-col gap-[1.2rem]">
+                            <h3 className="text-[1.6rem] font-medium">Time:</h3>
+                            {selectedSession && (
+                                <div className="flex items-center justify-between rounded-[0.8rem] bg-gradient-to-r from-[#03624c] to-[#5DD62C] p-[1rem]">
+                                    <p className="text-[1.6rem] font-medium">
+                                        {selectedSession?.name}
+                                    </p>
+                                    <div className="flex items-center gap-[0.8rem]">
+                                        <p className="text-[1.4rem]">
+                                            {formatTime(selectedSession?.from)}
+                                        </p>
+                                        <span>-</span>
+                                        <p className="text-[1.4rem]">
+                                            {formatTime(selectedSession?.to)}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        {selectedSession && (
+                            <div className="flex flex-col gap-[0.8rem]">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-[1.6rem] font-medium">
+                                        Total time :
+                                    </h3>
+                                    <p className="text-[1.6rem] font-medium">
+                                        {calculateTimeDifference(
+                                            formatTime(selectedSession?.from),
+                                            formatTime(selectedSession?.to),
+                                        )}{' '}
+                                        hours
+                                    </p>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-[1.6rem] font-medium">
+                                        Price per hours :
+                                    </h3>
+                                    <p className="text-[1.6rem] font-medium">
+                                        {formatNumeric(user?.pricePerHour)}đ
+                                    </p>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-[2rem] font-bold">
+                                        Total price :
+                                    </h3>
+                                    <p className="text-[2rem] font-bold">
+                                        {formatNumeric(
+                                            user?.pricePerHour *
+                                                calculateTimeDifference(
+                                                    formatTime(
+                                                        selectedSession?.from,
+                                                    ),
+                                                    formatTime(
+                                                        selectedSession?.to,
+                                                    ),
+                                                ),
+                                        )}
+                                        đ
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+                        <ButtonCustom>Book</ButtonCustom>
                     </div>
                 </Modal>
             </>
@@ -316,9 +320,6 @@ function FreetimeTag({
                                         {`${item?.formattedDate?.day} ${item?.formattedDate?.month} ${item?.formattedDate?.year}`}
                                     </p>
                                 </div>
-                                <p className="text-[1.6rem] font-medium">
-                                    {`${item?.startTime} - ${item?.endTime}`}
-                                </p>
                             </div>
 
                             {canEdit && (

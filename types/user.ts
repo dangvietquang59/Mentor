@@ -18,4 +18,6 @@ export type UserType = {
     createdAt: string | Date;
     updatedAt: string | Date;
     technologies: Technologies[];
+    coin: number;
+    pricePerHour: number;
 };

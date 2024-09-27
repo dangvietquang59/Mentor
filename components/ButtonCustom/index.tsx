@@ -8,6 +8,7 @@ interface IButtonCustom {
     path?: string;
     disabled?: boolean;
     onClick?: () => void;
+    type?: 'button' | 'submit' | 'reset'; // Add type property here
 }
 
 function ButtonCustom({
@@ -17,12 +18,14 @@ function ButtonCustom({
     path,
     disabled = false,
     onClick,
+    type = 'button', // Default type to "button"
 }: IButtonCustom) {
     const baseClassName = `rounded-[0.8rem] px-[1.5rem] py-[1rem] text-[1.6rem] font-medium ${className}`;
     const disabledClassName = 'opacity-50 cursor-not-allowed';
 
     const content = (
         <button
+            type={type} // Set the button type here
             className={`${baseClassName} ${outline ? 'border-[0.1rem] border-[#5DD62C] bg-transparent text-[#5DD62C]' : 'bg-gradient-to-r from-[#355429] to-[#5dd62c] text-[#202020]'} ${disabled ? disabledClassName : ''}`}
             disabled={disabled}
             onClick={onClick}

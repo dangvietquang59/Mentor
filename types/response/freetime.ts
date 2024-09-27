@@ -1,11 +1,20 @@
-export type FreeTimeType = {
-    userId: string;
-    freeDate: Date;
-    startTime: string;
-    endTime: string;
+export type FreeTimeDetailType = {
     _id: string;
-    createdAt: Date;
-    updatedAt: Date;
+    freeTimeId: string;
+    name: string;
+    from: string;
+    to: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+};
+export type FreeTimeType = {
+    _id: string;
+    userId: string;
+    freeDate: string;
+    freeTimeDetail: FreeTimeDetailType[];
+    createdAt: string;
+    updatedAt: string;
 };
 export type FreeTimeResponseType = {
     freetime: FreeTimeType[];

@@ -20,9 +20,9 @@ export const fetchData = async <T>(
             Cookies.remove(variables.ROLE);
             Cookies.remove(variables.PROFILE);
 
-            // if (typeof window !== 'undefined') {
-            //     window.location.href = paths.HOME;
-            // }
+            if (typeof window !== 'undefined') {
+                window.location.href = paths.HOME;
+            }
             return;
         }
 
@@ -51,8 +51,6 @@ export const fetchData = async <T>(
             ? process.env.NEXT_PUBLIC_SEARCH_API_URL ||
               process.env.NEXT_LOCAL_SEARCH_API_URL
             : process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_LOCAL_API_URL;
-
-        console.log('Using API URL:', apiUrl); // Debugging output
 
         // Ensure the endpoint is well-formed
         if (!endpoint) {

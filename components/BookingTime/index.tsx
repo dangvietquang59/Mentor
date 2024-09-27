@@ -11,8 +11,9 @@ import { UserType } from '@/types/user';
 
 interface BookingTimeProps {
     id: string;
+    user: UserType;
 }
-function BookingTime({ id }: BookingTimeProps) {
+function BookingTime({ id, user }: BookingTimeProps) {
     const [arraySession, setArraySession] = useState<FreeTimeType[]>([]);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -72,6 +73,7 @@ function BookingTime({ id }: BookingTimeProps) {
                         totalPages={totalPages}
                         setPage={setCurrentPage}
                         page={currentPage}
+                        user={user}
                         forBooking
                     />
                 </div>
