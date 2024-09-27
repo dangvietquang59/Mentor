@@ -4,7 +4,7 @@ import Image from 'next/image';
 import images from '@/assets/img';
 import SearchCategory from '@/components/SearchCategory';
 import OverviewBlog from '@/components/OverviewBlog';
-import NewsFeedItem from '@/components/NewsFeedItem';
+// import NewsFeedItem from '@/components/NewsFeedItem';
 import Devider from '@/components/Devider';
 import Introduce from '@/components/Introduce';
 import ReviewMentee from '@/components/ReviewMentee';
