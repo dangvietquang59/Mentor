@@ -11,7 +11,7 @@ function HeaderInfoChat({ user }: HeaderInfoChatProps) {
             <div className="ml-[1rem] flex flex-col gap-[0.2rem]">
                 <h2 className="text-[1.6rem] font-bold">{user?.fullName}</h2>
                 <span className="text-[1.4rem] text-[#6B7B8A]">
-                    {user?.bio}
+                    {user?.bio?.name}
                 </span>
             </div>
         </div>
