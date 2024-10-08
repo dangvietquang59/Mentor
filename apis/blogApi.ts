@@ -1,4 +1,5 @@
 import { BlogFromProps } from '@/components/BlogForm';
+import { BlogResponseType } from '@/types/response/blog';
 import urls from '@/utils/constants/urls';
 import { fetchData } from '@/utils/functions/fetchData';
 
@@ -20,9 +21,9 @@ const blogApi = {
             throw new Error('Error calling blog API');
         }
     },
-    async get() {
+    async getAll() {
         try {
-            const res = await fetchData<any>(
+            const res = await fetchData<BlogResponseType>(
                 `${urls.POSTS}/${urls.GET_ALL_BLOG}`,
                 null,
                 'GET',

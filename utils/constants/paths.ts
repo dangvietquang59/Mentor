@@ -9,6 +9,8 @@ const paths = {
     SIGNIN: '/signin',
     SIGNUP: '/signup',
     EDIT: 'edit',
+    CREATE: 'create',
+    VIEW: 'view',
 };
 
 export default paths;

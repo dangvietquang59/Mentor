@@ -1,19 +1,23 @@
 import { useForm } from 'react-hook-form';
 import InputComponent from '../Input';
-import SelectComponent from '../Select';
 import { formValidation } from '@/utils/constants/formValidation';
 import Editor from '../Editor';
 import { useState } from 'react';
 import ButtonCustom from '../ButtonCustom';
+import { toast } from 'sonner';
+import blogApi from '@/apis/blogApi';
+import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
+import { useRouter } from 'next/navigation';
+import paths from '@/utils/constants/paths';
 
 export type BlogFromProps = {
     title: string;
-    tags: string[];
     content: string;
 };
 function BlogForm() {
+    const router = useRouter();
     const [editorValue, setEditorValue] = useState<string>('');
-
+    const token = getAccessTokenClient();
     const handleEditorChange = (value: string) => {
         setEditorValue(value);
     };
@@ -23,7 +27,29 @@ function BlogForm() {
         reset,
         formState: { errors },
     } = useForm<BlogFromProps>();
-    const onSubmit = async (data: BlogFromProps) => {};
+    const onSubmit = async (data: BlogFromProps) => {
+        if (!editorValue) {
+            toast.error('You need to enter content !');
+        }
+
+        const newData = {
+            ...data,
+            content: editorValue,
+        };
+        if (token) {
+            await blogApi
+                .create(newData, token)
+                .then((res) => {
+                    if (res) {
+                        toast.success('New blog created successfully');
+                        router.push(paths.BLOGS);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    };
 
     return (
         <form
@@ -35,19 +61,18 @@ function BlogForm() {
                 name="title"
                 label="Blog title"
                 placeholder="Blog title"
-                rules={formValidation.date}
+                rules={formValidation.blogTitle}
             />
-            <SelectComponent control={control} label="Tags" name="tags" />
 
             <div className="flex flex-col gap-[0.8rem]">
                 <p className="font-medium text-white">Content</p>
                 <Editor
                     value={editorValue}
                     onChange={handleEditorChange}
-                    className=""
+                    className="text-[1.6rem] text-black"
                 />
             </div>
-            <ButtonCustom>Save</ButtonCustom>
+            <ButtonCustom type="submit">Save</ButtonCustom>
         </form>
     );
 }

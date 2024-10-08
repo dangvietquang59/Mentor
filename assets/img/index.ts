@@ -7,6 +7,7 @@ import defaultAvatar from './default-avatar.png';
 import qrMomo from './qr-momo.jpg';
 import qCoin from './q-coin.png';
 import test from './test.jpg';
+import blogDefault from './blog_default.png';
 
 const images = {
     logo,
@@ -18,6 +19,7 @@ const images = {
     qrMomo,
     qCoin,
     test,
+    blogDefault,
 };
 
 export default images;
