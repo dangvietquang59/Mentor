@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import dynamic from 'next/dynamic';
 import InputComponent from '../Input';
 import { formValidation } from '@/utils/constants/formValidation';
-import Editor from '../Editor';
-import { useState } from 'react';
 import ButtonCustom from '../ButtonCustom';
 import { toast } from 'sonner';
 import blogApi from '@/apis/blogApi';
@@ -10,32 +10,47 @@ import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { useRouter } from 'next/navigation';
 import paths from '@/utils/constants/paths';
 
+const Editor = dynamic(() => import('../Editor'), { ssr: false });
+
 export type BlogFromProps = {
     title: string;
     content: string;
 };
+
 function BlogForm() {
     const router = useRouter();
     const [editorValue, setEditorValue] = useState<string>('');
-    const token = getAccessTokenClient();
+    const [token, setToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        // Ensure token is fetched only on the client-side
+        const clientToken = getAccessTokenClient();
+        if (clientToken) {
+            setToken(clientToken);
+        }
+    }, []);
+
     const handleEditorChange = (value: string) => {
         setEditorValue(value);
     };
+
     const {
         control,
         handleSubmit,
-        reset,
         formState: { errors },
     } = useForm<BlogFromProps>();
+
     const onSubmit = async (data: BlogFromProps) => {
         if (!editorValue) {
-            toast.error('You need to enter content !');
+            toast.error('You need to enter content!');
+            return;
         }
 
         const newData = {
             ...data,
             content: editorValue,
         };
+
         if (token) {
             await blogApi
                 .create(newData, token)
@@ -46,7 +61,7 @@ function BlogForm() {
                     }
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.error(error);
                 });
         }
     };
@@ -72,6 +87,7 @@ function BlogForm() {
                     className="text-[1.6rem] text-black"
                 />
             </div>
+
             <ButtonCustom type="submit">Save</ButtonCustom>
         </form>
     );
