@@ -13,6 +13,7 @@ import { getProfile } from '@/utils/functions/getProfile';
 import { formatDate } from '@/utils/functions/formatDate';
 import { calculateTimeDifference } from '@/utils/functions/calculateTimeDifference';
 import { formatNumeric } from '@/utils/functions/formatNumeric';
+import bookingApi from '@/apis/bookingApi';
 
 interface FreetimeTagProps {
     sessions: FreeTimeType[];
@@ -64,6 +65,27 @@ function FreetimeTag({
 
     const handleCancel = () => {
         setIsModalOpen(false);
+    };
+
+    const handleBookingSession = async () => {
+        if (selectedSession && profile) {
+            const data = {
+                menteeId: profile?._id,
+                mentorId: user?._id,
+                freetimeDetailId: selectedSession?._id,
+            };
+            await bookingApi
+                .create(data, token)
+                .then((res) => {
+                    if (res) {
+                        toast.success('Booking session successful');
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    toast.error('Booking session error');
+                });
+        }
     };
     const formatData = (data: any[]) => {
         return data.map((item) => {
@@ -269,7 +291,7 @@ function FreetimeTag({
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <h3 className="text-[1.6rem] font-medium">
-                                        Price per hours :
+                                        Price per hour :
                                     </h3>
                                     <p className="text-[1.6rem] font-medium">
                                         {formatNumeric(user?.pricePerHour)}đ
@@ -296,7 +318,9 @@ function FreetimeTag({
                                 </div>
                             </div>
                         )}
-                        <ButtonCustom>Book</ButtonCustom>
+                        <ButtonCustom onClick={handleBookingSession}>
+                            Book
+                        </ButtonCustom>
                     </div>
                 </Modal>
             </>

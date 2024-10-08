@@ -105,7 +105,7 @@ function Profiles() {
                                     {profileUser?.fullName}
                                 </p>
                                 <span className="text-[1.6rem] font-bold text-[#6b7b8a]">
-                                    {profileUser?.bio}
+                                    {profileUser?.bio?.name}
                                 </span>
                             </div>
                             {profile?._id === profileId ? (

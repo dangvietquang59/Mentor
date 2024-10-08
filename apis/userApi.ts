@@ -5,9 +5,13 @@ import { fetchData } from '@/utils/functions/fetchData';
 import { stringify } from 'querystring';
 
 interface ParamsProps {
-    role: string;
-    page: number;
+    role: string; // Role of the user
+    page: number; // Current page number
+    experiencesYear?: number; // Years of experience (optional)
+    jobtitle?: string[]; // Array of job titles (optional)
+    technology?: string[]; // Array of technology IDs (optional)
 }
+
 const userApi = {
     async updateProfile(data: UserType, userId: string, accessToken: string) {
         try {
@@ -41,11 +45,16 @@ const userApi = {
     },
     async getAll(params: ParamsProps) {
         try {
-            const queryString = new URLSearchParams({
+            // Build query string from params
+            const queryString = stringify({
                 role: params.role,
-                page: params.page.toString(),
-            }).toString();
+                page: params.page,
+                experiencesYear: params.experiencesYear,
+                jobtitle: params.jobtitle,
+                technology: params.technology,
+            });
 
+            // Fetch data with query string included in the URL
             const res = await fetchData<UserTypeRespone>(
                 `${urls.USERS}/${urls.GET_ALL_USERS}?${queryString}`,
                 null,

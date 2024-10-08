@@ -39,6 +39,9 @@ import plus from './plus.svg';
 import editPen from './edit-3.svg';
 import trash from './trash.svg';
 import photo from './image.svg';
+import micOff from './mic-off.svg';
+import phoneOff from './phone-off.svg';
+import videoOff from './video-off.svg';
 
 const icons = {
     search,
@@ -82,6 +85,9 @@ const icons = {
     editPen,
     trash,
     photo,
+    micOff,
+    phoneOff,
+    videoOff,
 };
 
 export default icons;

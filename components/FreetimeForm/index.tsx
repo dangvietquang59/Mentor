@@ -190,7 +190,7 @@ function FreetimeForm() {
                     sessions?.map((item, index) => (
                         <div className="flex flex-col gap-[1.2rem]">
                             <span className="text-[2rem] font-medium">
-                                {formatDate(item?.freeDate)}
+                                {item?.freeDate && formatDate(item?.freeDate)}
                             </span>
                             <FreeTimeSections sections={item} key={index} />
                         </div>

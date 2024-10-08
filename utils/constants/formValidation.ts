@@ -17,6 +17,7 @@ export const formValidation = {
     }),
     experiemceYears: { required: 'Số năm kinh nghiệm không được để trống' },
     technologies: { required: 'Công nghệ không được để trống' },
+    bio: { required: 'Vị trí không được để trống' },
     date: { required: 'Ngày không được để trống' },
     from: { required: 'Giờ bắt đầu không được để trống' },
     to: { required: 'Giờ kết thúc không được để trống' },

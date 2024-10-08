@@ -22,7 +22,7 @@ function BlogFilter() {
         const fetchTags = async () => {
             await technologiesApi.getAll().then((res) => {
                 if (res) {
-                    setTags(res);
+                    setTags(res?.technologies);
                 }
             });
         };

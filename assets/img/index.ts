@@ -6,6 +6,7 @@ import aboutMentor2 from './aboutMentor2.png';
 import defaultAvatar from './default-avatar.png';
 import qrMomo from './qr-momo.jpg';
 import qCoin from './q-coin.png';
+import test from './test.jpg';
 
 const images = {
     logo,
@@ -16,6 +17,7 @@ const images = {
     defaultAvatar,
     qrMomo,
     qCoin,
+    test,
 };
 
 export default images;

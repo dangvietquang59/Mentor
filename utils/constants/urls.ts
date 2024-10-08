@@ -19,6 +19,8 @@ const urls = {
     POSTS: 'posts',
     CREATE_NEW_POST: 'create-new-post',
     GET_ALL_BLOG: 'get-all-post',
+    BOOKING: 'booking',
+    JOB_TITLE: 'jobTitle',
 };
 
 export default urls;

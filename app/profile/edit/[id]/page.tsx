@@ -8,7 +8,7 @@ import ButtonCustom from '@/components/ButtonCustom';
 import ExperienceTag, { ExperienceProps } from '@/components/ExperienceTag';
 import InputComponent from '@/components/Input';
 import SelectComponent from '@/components/Select';
-import { TechnologiesResponeType } from '@/types/response/technologies';
+import { TechnologiesType } from '@/types/response/technologies';
 import { UserType } from '@/types/user';
 import { formValidation } from '@/utils/constants/formValidation';
 import variables from '@/utils/constants/variables';
@@ -22,6 +22,8 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
 import FreetimeForm from '@/components/FreetimeForm';
+import { JobTitleType } from '@/types/response/jobTitle';
+import jobTitleApi from '@/apis/jobTitleApi';
 
 function EditProfile() {
     const mounted = useMounted();
@@ -30,9 +32,8 @@ function EditProfile() {
     const [experiences, setExperiences] = useState<ExperienceProps[]>([]);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
-    const [technologies, setTechnologies] = useState<TechnologiesResponeType[]>(
-        [],
-    );
+    const [technologies, setTechnologies] = useState<TechnologiesType[]>([]);
+    const [jobTitles, setJobTitles] = useState<JobTitleType[]>([]);
     const pathname = usePathname();
     const profileId = pathname.split('/profile/')[1]?.split('/')[1];
     const [profileUser, setProfileUser] = useState<UserType | null | undefined>(
@@ -85,7 +86,7 @@ function EditProfile() {
                 .getAll()
                 .then((res) => {
                     if (res) {
-                        setTechnologies(res);
+                        setTechnologies(res?.technologies);
                     }
                 })
                 .catch((error) => {
@@ -93,6 +94,19 @@ function EditProfile() {
                 });
         };
         fetchTechnologies();
+        const fetchJobTitILE = async () => {
+            await jobTitleApi
+                .getAll()
+                .then((res) => {
+                    if (res) {
+                        setJobTitles(res?.jobs);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        };
+        fetchJobTitILE();
     }, []);
 
     const handleUpload = async () => {
@@ -158,7 +172,9 @@ function EditProfile() {
     useEffect(() => {
         resetProfileForm({
             email: profileUser?.email || '',
-            bio: profileUser?.bio || '',
+            bio: profileUser?.bio
+                ? { _id: profileUser.bio._id, name: profileUser.bio.name }
+                : undefined,
             fullName: profileUser?.fullName || '',
             rating: profileUser?.rating || '',
             role: profileUser?.role || '',
@@ -273,13 +289,21 @@ function EditProfile() {
                                             disabled={!isEdit}
                                         />
                                     </div>
-                                    <InputComponent
-                                        control={profileControl}
+                                    <SelectComponent
                                         name="bio"
-                                        label="Bio"
-                                        placeholder="Bio"
+                                        control={profileControl}
+                                        label="Job title"
+                                        options={
+                                            jobTitles &&
+                                            jobTitles.map((item) => ({
+                                                label: item?.name,
+                                                value: item?._id,
+                                            }))
+                                        }
+                                        rules={formValidation.bio}
                                         disabled={!isEdit}
                                     />
+
                                     <div className="grid grid-cols-2 gap-[1.2rem]">
                                         <InputComponent
                                             control={profileControl}
@@ -433,7 +457,10 @@ function EditProfile() {
                                     errors={experienceErrors.experienceYears}
                                     rules={formValidation.experiemceYears}
                                 />
-                                <ButtonCustom className="mt-[1.2rem]">
+                                <ButtonCustom
+                                    className="mt-[1.2rem]"
+                                    type="submit"
+                                >
                                     Save
                                 </ButtonCustom>
                             </form>

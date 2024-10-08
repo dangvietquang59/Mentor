@@ -29,7 +29,7 @@ function MentorsProfile(props: MentorProfileProps) {
                     {mentor?.fullName}
                 </h3>
                 <div className="mt-[1.2rem] flex h-full flex-col gap-[0.8rem]">
-                    <p className="text-[1.4rem]">{mentor?.bio}</p>
+                    <p className="text-[1.4rem]">{mentor?.bio?.name}</p>
                     <ul className="flex flex-wrap items-center gap-[0.8rem]">
                         {mentor?.technologies?.length > 0 && (
                             <>
