@@ -5,11 +5,11 @@ import { fetchData } from '@/utils/functions/fetchData';
 import { stringify } from 'querystring';
 
 interface ParamsProps {
-    role: string; // Role of the user
-    page: number; // Current page number
-    experiencesYear?: number; // Years of experience (optional)
-    jobtitle?: string[]; // Array of job titles (optional)
-    technology?: string[]; // Array of technology IDs (optional)
+    role: string;
+    page: number;
+    experiencesYear?: number;
+    jobtitle?: string[];
+    technology?: string[];
 }
 
 const userApi = {
@@ -43,15 +43,15 @@ const userApi = {
             throw new Error('Error calling update profile API');
         }
     },
-    async getAll(params: ParamsProps) {
+    async getAll(params?: ParamsProps) {
         try {
             // Build query string from params
             const queryString = stringify({
-                role: params.role,
-                page: params.page,
-                experiencesYear: params.experiencesYear,
-                jobtitle: params.jobtitle,
-                technology: params.technology,
+                role: params?.role,
+                page: params?.page,
+                experiencesYear: params?.experiencesYear,
+                jobtitle: params?.jobtitle,
+                technology: params?.technology,
             });
 
             // Fetch data with query string included in the URL

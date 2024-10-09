@@ -12,3 +12,9 @@
     background: #5DD62C !important;
 }
 
+.swiper-partner .swiper-wrapper {
+    -webkit-transition-timing-function: linear;
+    -o-transition-timing-function: linear;
+    transition-timing-function: linear;
+    animation-play-state: running;
+  }
