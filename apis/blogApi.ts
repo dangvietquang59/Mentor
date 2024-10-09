@@ -1,5 +1,5 @@
 import { BlogFromProps } from '@/components/BlogForm';
-import { BlogResponseType } from '@/types/response/blog';
+import { BlogResponseType, BlogType } from '@/types/response/blog';
 import urls from '@/utils/constants/urls';
 import { fetchData } from '@/utils/functions/fetchData';
 
@@ -25,6 +25,22 @@ const blogApi = {
         try {
             const res = await fetchData<BlogResponseType>(
                 `${urls.POSTS}/${urls.GET_ALL_BLOG}`,
+                null,
+                'GET',
+            );
+            return res;
+        } catch (error: any) {
+            console.error(
+                'Error calling blog API:',
+                error?.response?.data || error.message || error,
+            );
+            throw new Error('Error calling blog API');
+        }
+    },
+    async getBySlug(slug: string) {
+        try {
+            const res = await fetchData<BlogType>(
+                `${urls.POSTS}/${urls.GET_POST_BY_SLUG}/${slug}`,
                 null,
                 'GET',
             );

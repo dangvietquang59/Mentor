@@ -42,8 +42,10 @@ import photo from './image.svg';
 import micOff from './mic-off.svg';
 import phoneOff from './phone-off.svg';
 import videoOff from './video-off.svg';
+import likeFill from './thumbs-up-fill.svg';
 
 const icons = {
+    likeFill,
     search,
     chevronDown,
     bell,

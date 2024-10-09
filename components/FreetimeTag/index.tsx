@@ -99,6 +99,7 @@ function FreetimeTag({
     const [selected, setSelected] = useState<SessionData | null>(null);
     const [selectedSession, setSelectedSession] =
         useState<FreeTimeDetailType | null>(null);
+    console.log('selectedSession', selectedSession);
     useEffect(() => {
         setSessionData(formatData(sessions));
     }, [sessions]);
@@ -218,7 +219,7 @@ function FreetimeTag({
                                     )}
                             </div>
 
-                            {profile?._id !== user?._id && (
+                            {profile?._id !== user?._id && selectedSession && (
                                 <ButtonCustom
                                     className="mt-[2.4rem] h-[7rem] w-full text-[2rem] text-white"
                                     onClick={handleBooking}
@@ -294,7 +295,8 @@ function FreetimeTag({
                                         Price per hour :
                                     </h3>
                                     <p className="text-[1.6rem] font-medium">
-                                        {formatNumeric(user?.pricePerHour)}đ
+                                        {formatNumeric(user?.pricePerHour) || 0}
+                                        đ
                                     </p>
                                 </div>
                                 <div className="flex items-center justify-between">
@@ -312,7 +314,7 @@ function FreetimeTag({
                                                         selectedSession?.to,
                                                     ),
                                                 ),
-                                        )}
+                                        ) || 0}
                                         đ
                                     </p>
                                 </div>
