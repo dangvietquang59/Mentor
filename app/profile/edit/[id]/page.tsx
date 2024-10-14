@@ -166,7 +166,7 @@ function EditProfile() {
         control: profileControl,
         handleSubmit: handleProfileSubmit,
         reset: resetProfileForm,
-        // formState: { errors: profileErrors },
+        formState: { errors: profileErrors },
     } = useForm<UserType>();
 
     useEffect(() => {
@@ -178,6 +178,7 @@ function EditProfile() {
             fullName: profileUser?.fullName || '',
             rating: profileUser?.rating || '',
             role: profileUser?.role || '',
+            pricePerHour: profileUser?.pricePerHour || 0,
         });
     }, [profileUser, resetProfileForm]);
 
@@ -196,11 +197,7 @@ function EditProfile() {
         };
 
         try {
-            const response = await userApi.updateProfile(
-                newProfileData,
-                profileId,
-                accessToken,
-            );
+            await userApi.updateProfile(newProfileData, profileId, accessToken);
             toast.success('Update profile successful');
             setIsEdit(false);
         } catch (error) {
@@ -319,6 +316,14 @@ function EditProfile() {
                                             label="Rating"
                                             placeholder="Rating"
                                             disabled
+                                            className="w-full"
+                                        />
+                                        <InputComponent
+                                            control={profileControl}
+                                            name="pricePerHour"
+                                            label="Price per hour"
+                                            placeholder="Price per hour"
+                                            disabled={!isEdit}
                                             className="w-full"
                                         />
                                     </div>

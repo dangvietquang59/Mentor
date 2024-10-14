@@ -51,7 +51,9 @@ const FreeTimeSections = ({ sections }: FreeTimeSectionsProps) => {
                         className="rounded-[0.8rem] bg-gradient-to-r from-[#03624c] to-[#5DD62C] p-[1rem] text-[1.4rem]"
                     >
                         <div className="flex flex-col gap-[0.8rem]">
-                            <p>{item?.name}</p>
+                            <p className="text-[1.6rem] font-bold">
+                                {item?.name}
+                            </p>
                             <span>
                                 {formatTime(item?.from)} -{' '}
                                 {formatTime(item?.to)}
@@ -175,6 +177,7 @@ function FreetimeForm() {
         setCurrentDetail({ name: '', from: '', to: '' });
         setShowInputs(false);
     };
+    const handleRemoveDetail = async () => {};
 
     return (
         <>

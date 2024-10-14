@@ -174,7 +174,7 @@ function SignUp() {
                                     Sign up
                                 </button>
                             </form>
-
+                            {/* 
                             <div>
                                 <p className="text-center text-[1.6rem] font-bold">
                                     Or sign up with
@@ -201,7 +201,7 @@ function SignUp() {
                                         </span>
                                     </div>
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

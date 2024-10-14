@@ -98,7 +98,7 @@ function Login() {
                         </button>
                     </form>
 
-                    <div>
+                    {/* <div>
                         <p className="text-center text-[1.6rem] font-bold">
                             Or sign in with
                         </p>
@@ -124,7 +124,7 @@ function Login() {
                                 </span>
                             </div>
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

@@ -56,5 +56,21 @@ const freetimeApi = {
             throw new Error('Error calling freetime API');
         }
     },
+    async deleteDetails(accessToken: string, id: string) {
+        try {
+            const res = await fetchData<FreeTimeType[]>(
+                `${urls.FREETIME}/${urls.DELETE_FREE_TIME}/${id}`,
+                accessToken,
+                'DELETE',
+            );
+            return res;
+        } catch (error: any) {
+            console.error(
+                'Error calling freetime API:',
+                error?.response?.data || error.message || error,
+            );
+            throw new Error('Error calling freetime API');
+        }
+    },
 };
 export default freetimeApi;

@@ -69,6 +69,22 @@ const userApi = {
             throw new Error('Error calling get all users API');
         }
     },
+    async getUserByID(id: string) {
+        try {
+            const res = await fetchData<UserType>(
+                `${urls.USERS}/${urls.USER}/${id}`,
+                null,
+                'GET',
+                null,
+                false,
+            );
+
+            return res;
+        } catch (error) {
+            console.error('Error calling get all users API:', error);
+            throw new Error('Error calling get all users API');
+        }
+    },
 };
 
 export default userApi;

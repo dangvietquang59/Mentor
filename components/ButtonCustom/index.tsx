@@ -8,7 +8,7 @@ interface IButtonCustom {
     path?: string;
     disabled?: boolean;
     onClick?: () => void;
-    type?: 'button' | 'submit' | 'reset'; // Add type property here
+    type?: 'button' | 'submit' | 'reset';
 }
 
 function ButtonCustom({

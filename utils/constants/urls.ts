@@ -17,11 +17,13 @@ const urls = {
     MESSAGES: 'messages',
     GROUP: 'group',
     POSTS: 'posts',
+    POST: 'post',
     CREATE_NEW_POST: 'create-new-post',
     GET_ALL_BLOG: 'get-all-post',
     BOOKING: 'booking',
     JOB_TITLE: 'jobTitle',
     GET_POST_BY_SLUG: 'get-post-by-slug',
+    COMMENTS: 'comments',
 };
 
 export default urls;
