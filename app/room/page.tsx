@@ -1,17 +1,20 @@
-// app/rooms/page.tsx
 import bookingApi from '@/apis/bookingApi';
 import RoomItem from '@/components/RoomItem';
 import { UserType } from '@/types/user';
 import variables from '@/utils/constants/variables';
 import { getAccessTokenServer } from '@/utils/functions/getAccessTokenServer';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 const Rooms = async () => {
+    const token = getAccessTokenServer()?.value;
+    if (!token) {
+        redirect('/signin');
+        return null;
+    }
     const profile: UserType = JSON.parse(
         cookies().get(variables.PROFILE)?.value || '',
     );
-    const token = getAccessTokenServer()?.value;
-    if (!token) return;
     const rooms = await bookingApi.getByUserId(profile?._id, token);
     return (
         <div className="mx-[10%] my-[1%]">

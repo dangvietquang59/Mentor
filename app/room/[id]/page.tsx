@@ -1,233 +1,153 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { io } from 'socket.io-client';
-import bookingApi from '@/apis/bookingApi';
-import icons from '@/assets/icons';
-import ButtonStreamAction from '@/components/ButtonSteamAction';
-import { BookingGetResponeType } from '@/types/response/booking';
-import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
-import { useGetIdFromUrl } from '@/utils/functions/getIdUrl';
+import Peer from 'peerjs';
+import ButtonCustom from '@/components/ButtonCustom';
 
-const socket = io('http://localhost:3001'); // Kết nối đến signaling server
+const DetailRoom: React.FC = () => {
+    const [peerId, setPeerId] = useState<string>('');
+    const [remotePeerId, setRemotePeerId] = useState<string>('');
+    const localVideoRef = useRef<HTMLVideoElement | null>(null);
+    const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
+    const peer = useRef<Peer | null>(null);
 
-function SteamingRoom() {
-    const [room, setRoom] = useState<BookingGetResponeType | null>(null);
-    const roomId = useGetIdFromUrl();
-    const token = getAccessTokenClient();
-
-    const [micOn, setMicOn] = useState(true);
-    const [cameraOn, setCameraOn] = useState(true);
-    const [screenSharing, setScreenSharing] = useState(false);
-
-    const localStream = useRef<MediaStream | null>(null);
-    const screenStream = useRef<MediaStream | null>(null);
-    const remoteStream = useRef<MediaStream | null>(null);
-    const localVideoRef = useRef<HTMLVideoElement>(null);
-    const remoteVideoRef = useRef<HTMLVideoElement>(null);
-    const peerConnection = useRef<RTCPeerConnection | null>(null);
-
-    // Function to initialize WebRTC connection and media streams
-    const initWebRTC = async () => {
-        try {
-            // Initialize PeerConnection
-            peerConnection.current = new RTCPeerConnection({
-                iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
-            });
-
-            peerConnection.current.onicecandidate = (event) => {
-                if (event.candidate) {
-                    socket.emit('ice-candidate', {
-                        candidate: event.candidate,
-                        target: roomId,
-                    });
-                }
-            };
-
-            peerConnection.current.ontrack = (event) => {
-                if (remoteVideoRef.current) {
-                    remoteVideoRef.current.srcObject = event.streams[0];
-                }
-            };
-
-            // Get local media stream from camera and microphone
-            localStream.current = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: micOn,
-            });
-
-            if (localVideoRef.current) {
-                localVideoRef.current.srcObject = localStream.current;
-            }
-
-            localStream.current.getTracks().forEach((track) => {
-                peerConnection.current?.addTrack(track, localStream.current!);
-            });
-
-            const offer = await peerConnection.current.createOffer();
-            await peerConnection.current.setLocalDescription(offer);
-            socket.emit('offer', { offer, target: roomId });
-        } catch (error) {
-            console.error('Error accessing media devices', error);
-        }
-    };
-
-    // Handle screen sharing functionality
-    const handleScreenSharing = async () => {
-        if (!screenSharing) {
-            try {
-                const stream = await navigator.mediaDevices.getDisplayMedia({
-                    video: true,
-                });
-                const screenTrack = stream.getTracks()[0];
-
-                // Replace camera video with screen share
-                screenStream.current = stream;
-                localStream.current
-                    ?.getTracks()
-                    .forEach((track) => track.stop());
-
-                // Display shared screen
-                if (localVideoRef.current) {
-                    localVideoRef.current.srcObject = screenStream.current;
-                }
-
-                // Add screen track to peer connection
-                peerConnection.current?.addTrack(
-                    screenTrack,
-                    screenStream.current!,
-                );
-                setScreenSharing(true);
-            } catch (error) {
-                console.error('Error sharing screen', error);
-            }
-        } else {
-            // Stop screen sharing
-            screenStream.current?.getTracks().forEach((track) => track.stop());
-            setScreenSharing(false);
-
-            // Reinitialize camera stream if camera is on
-            if (cameraOn) {
-                initWebRTC();
-            }
-        }
-    };
-
-    // Fetch room data and handle WebRTC signaling
     useEffect(() => {
-        if (token && roomId) {
-            const fetchRoom = async () => {
-                await bookingApi
-                    .getById(roomId, token)
-                    .then((res) => {
-                        if (res) setRoom(res);
-                    })
-                    .catch((error) => console.log(error));
-            };
-            fetchRoom();
-        }
+        peer.current = new Peer();
 
-        // Handle WebRTC signaling through socket
-        socket.on('offer', async (data) => {
-            if (peerConnection.current) {
-                await peerConnection.current.setRemoteDescription(
-                    new RTCSessionDescription(data.offer),
-                );
-                const answer = await peerConnection.current.createAnswer();
-                await peerConnection.current.setLocalDescription(answer);
-                socket.emit('answer', { answer, target: data.sender });
-            }
+        peer.current.on('open', (id) => {
+            setPeerId(id);
+            console.log('Your Peer ID:', id);
         });
 
-        socket.on('answer', async (data) => {
-            if (peerConnection.current) {
-                await peerConnection.current.setRemoteDescription(
-                    new RTCSessionDescription(data.answer),
-                );
+        peer.current.on('call', (call) => {
+            console.log('Incoming call from:', call.peer);
+            if (localVideoRef.current?.srcObject) {
+                call.answer(localVideoRef.current.srcObject as MediaStream);
+            } else {
+                console.error('Local video stream not available.');
             }
-        });
-
-        socket.on('ice-candidate', async (data) => {
-            if (peerConnection.current && data.candidate) {
-                await peerConnection.current.addIceCandidate(
-                    new RTCIceCandidate(data.candidate),
-                );
-            }
+            call.on('stream', (remoteStream) => {
+                console.log('Received remote stream:', remoteStream);
+                if (remoteVideoRef.current) {
+                    remoteVideoRef.current.srcObject = remoteStream;
+                } else {
+                    console.error('Remote video element not found.');
+                }
+            });
         });
 
         return () => {
-            socket.disconnect();
-            localStream.current?.getTracks().forEach((track) => track.stop());
-            screenStream.current?.getTracks().forEach((track) => track.stop());
+            peer.current?.destroy();
         };
-    }, [roomId, token]);
+    }, []);
+
+    const startCall = () => {
+        console.log('Starting call to:', remotePeerId);
+
+        if (remotePeerId && localVideoRef.current?.srcObject) {
+            const call = peer.current?.call(
+                remotePeerId,
+                localVideoRef.current.srcObject as MediaStream,
+            );
+
+            call?.on('stream', (remoteStream) => {
+                console.log('Received remote stream:', remoteStream);
+                if (remoteVideoRef.current) {
+                    remoteVideoRef.current.srcObject = remoteStream;
+                } else {
+                    console.error('Remote video element not found.');
+                }
+            });
+
+            call?.on('error', (error) => {
+                console.error('Error during call:', error);
+            });
+
+            call?.on('close', () => {
+                console.log('Call ended');
+            });
+        } else {
+            console.error(
+                'Remote Peer ID or local video stream is not available',
+            );
+        }
+    };
+
+    const getUserMedia = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: true,
+            });
+            if (localVideoRef.current) {
+                localVideoRef.current.srcObject = stream;
+                console.log('Local video stream initialized:', stream);
+            } else {
+                console.error('Local video element not found.');
+            }
+        } catch (error) {
+            console.error('Error accessing media devices.', error);
+        }
+    };
 
     return (
-        <div className="mx-[5%] my-[2%] flex gap-[2.4rem]">
-            <div className="flex w-[80%] flex-col items-center justify-center gap-[2.4rem]">
-                <div className="grid max-w-[70%] grid-cols-4 items-center justify-center gap-[1.2rem]">
-                    <ButtonStreamAction
-                        icon={cameraOn ? icons.video : icons.videoOff}
-                        name={cameraOn ? 'Camera on' : 'Camera off'}
-                        isActive={cameraOn}
-                        onClick={() => {
-                            setCameraOn(!cameraOn);
-                            if (cameraOn) {
-                                localStream.current
-                                    ?.getTracks()
-                                    .forEach((track) => track.stop());
-                            } else {
-                                initWebRTC();
-                            }
-                        }}
+        <div className="mx-[5%] mt-[2.4rem] rounded-[0.8rem] bg-[#242424] p-[2rem]">
+            <h1 className="text-center text-[2.4rem] font-bold">Meeting 1</h1>
+
+            <div className="grid grid-cols-2 gap-[2.4rem]">
+                <div className="flex flex-col gap-[0.8rem]">
+                    <h3 className="text-center text-[1.6rem] font-medium">
+                        My camera
+                    </h3>
+                    <video
+                        ref={localVideoRef}
+                        autoPlay
+                        muted
+                        className="h-[30rem] w-full rounded-[0.8rem] bg-black"
                     />
-                    <ButtonStreamAction
-                        icon={micOn ? icons.mic : icons.micOff}
-                        name={micOn ? 'Mic on' : 'Mic off'}
-                        isActive={micOn}
-                        onClick={() => setMicOn(!micOn)}
-                    />
-                    <ButtonStreamAction
-                        icon={icons.share}
-                        name={screenSharing ? 'Stop Share' : 'Share Screen'}
-                        isActive={screenSharing}
-                        onClick={handleScreenSharing}
-                    />
-                    <ButtonStreamAction
-                        icon={icons.phoneOff}
-                        name="Ngắt kết nối"
-                        isActive={true}
-                        onClick={() => {
-                            peerConnection.current?.close();
-                            setCameraOn(false);
-                            setMicOn(false);
-                            setScreenSharing(false);
-                        }}
+                    <>
+                        <ButtonCustom type="button" onClick={getUserMedia}>
+                            Start Video
+                        </ButtonCustom>
+                        <div className="mt-[2.4rem] flex flex-col gap-[1.2rem]">
+                            <h2 className="text-[1.6rem]">Your ID: {peerId}</h2>
+                            <div className="flex w-full items-center gap-[2.4rem]">
+                                <div className="flex-1 rounded-[0.8rem] bg-black p-[1rem]">
+                                    <input
+                                        type="text"
+                                        placeholder="Enter remote Peer ID"
+                                        value={remotePeerId}
+                                        onChange={(e) =>
+                                            setRemotePeerId(e.target.value)
+                                        }
+                                        className="h-[3rem] w-full bg-transparent text-[1.6rem] text-white focus-within:outline-none"
+                                    />
+                                </div>
+                                <ButtonCustom
+                                    onClick={startCall}
+                                    outline
+                                    className="w-[10rem]"
+                                    type="button"
+                                >
+                                    Call
+                                </ButtonCustom>
+                            </div>
+                        </div>
+                    </>
+                </div>
+                <div className="flex flex-col gap-[0.8rem]">
+                    <h3 className="text-center text-[1.6rem] font-medium">
+                        Remote camera
+                    </h3>
+                    <video
+                        ref={remoteVideoRef}
+                        autoPlay
+                        muted
+                        className="h-[30rem] w-full rounded-[0.8rem] bg-black"
                     />
                 </div>
             </div>
-            <div className="flex w-[20%] flex-col gap-[1.6rem]">
-                {room && (
-                    <>
-                        <div className="relative flex min-h-[24rem] w-full items-center justify-center overflow-hidden rounded-[0.8rem] bg-[#1A1A1A]">
-                            <video
-                                ref={localVideoRef}
-                                autoPlay
-                                muted
-                                className="absolute inset-0 h-full w-full object-cover"
-                            />
-                        </div>
-                        <div className="relative flex min-h-[24rem] w-full items-center justify-center overflow-hidden rounded-[0.8rem] bg-[#1A1A1A]">
-                            <video
-                                ref={remoteVideoRef}
-                                autoPlay
-                                className="absolute inset-0 h-full w-full object-cover"
-                            />
-                        </div>
-                    </>
-                )}
-            </div>
         </div>
     );
-}
+};
 
-export default SteamingRoom;
+export default DetailRoom;
