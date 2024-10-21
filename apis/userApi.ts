@@ -7,6 +7,8 @@ import { stringify } from 'querystring';
 interface ParamsProps {
     role: string;
     page: number;
+    search?: string;
+    rating?: 'DESC' | 'ASC';
     experiencesYear?: number;
     jobtitle?: string[];
     technology?: string[];
@@ -49,6 +51,8 @@ const userApi = {
             const queryString = stringify({
                 role: params?.role,
                 page: params?.page,
+                search: params?.search,
+                rating: params?.rating,
                 experiencesYear: params?.experiencesYear,
                 jobtitle: params?.jobtitle,
                 technology: params?.technology,

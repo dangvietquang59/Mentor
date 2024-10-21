@@ -52,8 +52,7 @@ function LoggedIn() {
                             className="size-[3rem]"
                         />
                         <span className="text-[1.4rem] font-bold">
-                            {/* <Button icon={<UploadOutlined />}>Upload</Button> */}
-                            {formatNumeric(10000000000000)}
+                            {formatNumeric(profile?.coin) || 0}
                         </span>
                     </div>
                 </li>
