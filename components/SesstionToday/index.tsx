@@ -40,19 +40,11 @@ function SesionToday() {
                         alt="icon"
                         className="h-[1.5rem] w-[1.5rem]"
                     />
-                    <h2 className="text-[1.6rem] font-bold text-[#5DD62C]">
-                        Session today
-                    </h2>
+                    <h2 className="text-[1.6rem] font-bold">Session today</h2>
                 </div>
-                {/* <Link
-                    href={paths.SCHEDULES}
-                    className="cursor-pointer text-[1.6rem] font-bold text-[#5DD62C] hover:underline"
-                >
-                    Open schedule
-                </Link> */}
             </div>
             <div className="mt-[2.4rem] flex flex-col gap-[2.4rem]">
-                <ul>
+                <ul className="flex flex-col gap-[1.2rem]">
                     {sessions &&
                         sessions?.length > 0 &&
                         sessions.map((item, index) => (
@@ -67,9 +59,8 @@ function SesionToday() {
                                                 {formatTime(
                                                     item?.freetimeDetailId
                                                         ?.from,
-                                                )}
-                                            </span>
-                                            <span className="rounded-[0.8rem] bg-gradient-to-r from-[#355429] to-[#5dd62c] p-[1rem] text-[1.4rem] font-bold text-white">
+                                                )}{' '}
+                                                -{' '}
                                                 {formatTime(
                                                     item?.freetimeDetailId?.to,
                                                 )}

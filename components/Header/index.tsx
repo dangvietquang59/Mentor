@@ -33,10 +33,10 @@ const Header = () => {
             title: 'Blogs',
             url: paths.BLOGS,
         },
-        {
-            title: 'Rooms',
-            url: paths.ROOM,
-        },
+        // {
+        //     title: 'Rooms',
+        //     url: paths.ROOM,
+        // },
     ];
 
     const pathname = usePathname();

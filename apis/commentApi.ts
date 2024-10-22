@@ -26,6 +26,41 @@ const commentApi = {
             throw new Error('Error calling comment API');
         }
     },
+    async update(id: string, payload: { content: string }, token: string) {
+        try {
+            const res = await fetchData<CommentResponseType>(
+                `${urls.COMMENTS}/${id}`,
+                token,
+                'PUT',
+                payload,
+            );
+            return res;
+        } catch (error: any) {
+            console.error(
+                'Error calling comment API:',
+                error?.response?.data || error.message || error,
+            );
+            throw new Error('Error calling comment API');
+        }
+    },
+    async delete(id: string, token: string) {
+        try {
+            const res = await fetchData<CommentResponseType>(
+                `${urls.COMMENTS}/${id}`,
+                token,
+                'DELETE',
+                null,
+            );
+            return res;
+        } catch (error: any) {
+            console.error(
+                'Error calling comment API:',
+                error?.response?.data || error.message || error,
+            );
+            throw new Error('Error calling comment API');
+        }
+    },
+
     async getCommentByPost(id: string) {
         try {
             const res = await fetchData<CommentResponseType>(

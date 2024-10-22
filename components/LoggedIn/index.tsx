@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NotificationItem from '../NotificationItem';
 import Image from 'next/image';
 import icons from '@/assets/icons';
@@ -16,6 +16,10 @@ import images from '@/assets/img';
 import { getProfile } from '@/utils/functions/getProfile';
 import { UserType } from '@/types/user';
 import { formatNumeric } from '@/utils/functions/formatNumeric';
+import ChatUser from '../Chat/ChatUser';
+import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
+import groupChatApi from '@/apis/groupChatApi';
+import { GroupChatResponseType } from '@/types/response/groupChat';
 
 function LoggedIn() {
     const router = useRouter();
@@ -30,6 +34,7 @@ function LoggedIn() {
         name: string;
     } | null>(null);
     const profile: UserType = getProfile() || {};
+    const [groups, setGroups] = useState<GroupChatResponseType[]>([]);
 
     const logout = () => {
         Cookies.remove(variables.ACCESS_TOKEN);
@@ -37,7 +42,25 @@ function LoggedIn() {
         router.push(paths.HOME);
         toast.success('Logout successfull');
     };
-
+    const accessToken = getAccessTokenClient();
+    useEffect(() => {
+        const fetchChatGroup = async () => {
+            if (accessToken && profile?._id) {
+                try {
+                    const res = await groupChatApi.getById(
+                        accessToken,
+                        profile?._id,
+                    );
+                    if (res) {
+                        setGroups(res);
+                    }
+                } catch (error) {
+                    console.error('Error fetching chat groups:', error);
+                }
+            }
+        };
+        fetchChatGroup();
+    }, [accessToken, profile?._id]);
     const RenderContentUser = () => {
         return (
             <ul className="text-white">
@@ -63,6 +86,24 @@ function LoggedIn() {
                         router.push(`${paths.PROFILE}/${profile?._id}`);
                     }}
                 >
+                    Rooms
+                </li>
+                <li
+                    className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
+                    onClick={() => {
+                        setIsOpenInfo(false);
+                        router.push(`${paths.PROFILE}/${profile?._id}`);
+                    }}
+                >
+                    Blogs
+                </li>
+                <li
+                    className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
+                    onClick={() => {
+                        setIsOpenInfo(false);
+                        router.push(`${paths.PROFILE}/${profile?._id}`);
+                    }}
+                >
                     Profile
                 </li>
                 <li
@@ -79,25 +120,9 @@ function LoggedIn() {
         return (
             <div className="text-white">
                 <h2 className="my-[0.8rem] text-[1.6rem] font-bold">Message</h2>
-                <div
-                    onClick={() => {
-                        setSelectedUser({ id: '1', name: 'John Doe' });
-                        setIsopenMessage(false);
-                    }}
-                >
-                    {/* <ChatUser /> */}
-                </div>
-                <div
-                    onClick={() => {
-                        setSelectedUser({
-                            id: '2',
-                            name: 'Jane Smith',
-                        });
-                        setIsopenMessage(false);
-                    }}
-                >
-                    {/* <ChatUser /> */}
-                </div>
+
+                <ChatUser userId={profile?._id} groups={groups} />
+
                 <ul className="flex h-[3rem] items-center justify-between">
                     <li onClick={() => setIsopenMessage(false)}>
                         <Link href={`${paths.MESSAGES}/${profile?._id}`}>
