@@ -24,6 +24,8 @@ const urls = {
     JOB_TITLE: 'jobTitle',
     GET_POST_BY_SLUG: 'get-post-by-slug',
     COMMENTS: 'comments',
+    DELETE_POST: 'delete-post',
+    UPDATE_POST: 'update-post',
 };
 
 export default urls;

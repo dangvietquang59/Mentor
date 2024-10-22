@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Avatar, Drawer } from 'antd';
+import { Avatar, Drawer, Popover } from 'antd';
 import TextAreaComponent from '../TextArea';
 import ButtonCustom from '../ButtonCustom';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -17,6 +17,9 @@ import { formatDate } from '@/utils/functions/formatDate';
 import { UserType } from '@/types/user';
 import { getProfile } from '@/utils/functions/getProfile';
 import Image from 'next/image';
+import blogApi from '@/apis/blogApi';
+import { toast } from 'sonner';
+import ConfirmDeleteModal from '../ConfirmDeleteModal';
 
 interface ActionBlogProp {
     blog: BlogType;
@@ -34,8 +37,15 @@ function ActionBlog({ blog }: ActionBlogProp) {
     const [commnetCount, setCommentCount] = useState<number>(0);
     const [open, setOpen] = useState(false);
     const [comments, setComments] = useState<CommentType[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    console.log('comments', comments);
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
     const profile: UserType = getProfile();
     const router = useRouter();
     const token = getAccessTokenClient();
@@ -94,24 +104,68 @@ function ActionBlog({ blog }: ActionBlogProp) {
             router.push(paths.SIGNIN);
         }
     };
-
+    const handleDeletePost = async () => {
+        if (token) {
+            await blogApi
+                .delete(blog?._id, token)
+                .then((res) => {
+                    if (res) {
+                        toast.success('Delete blog successful');
+                        setIsModalOpen(false);
+                        router.push(paths.BLOGS);
+                    }
+                })
+                .catch(() => toast.error('Delete blog failed'));
+        }
+    };
+    const contentAction = (
+        <div className="flex flex-col gap-[1.2rem]">
+            <button
+                className="w-[10rem] text-[1.4rem] font-medium text-white duration-300 hover:opacity-70"
+                onClick={() =>
+                    router.push(`${paths.BLOGS}/${paths.EDIT}/${blog?.slug}`)
+                }
+            >
+                Edit
+            </button>
+            <button
+                className="w-[10rem] text-[1.4rem] font-medium text-white duration-300 hover:opacity-70"
+                onClick={showModal}
+            >
+                Delete
+            </button>
+        </div>
+    );
     return (
         <>
             <div className="sticky top-[10%] h-fit w-full rounded-[0.8rem] bg-[#2D2F2E] p-[2rem]">
-                <div className="flex items-center gap-[0.8rem]">
-                    <Avatar
-                        src={blog?.userId?.imageUrl || images.defaultAvatar.src}
-                        alt="avatar"
-                        size={60}
-                    />
-                    <div className="flex flex-col gap-[0.2rem]">
-                        <h3 className="text-justify text-[1.6rem] font-bold">
-                            {blog?.userId?.fullName}
-                        </h3>
-                        <p className="text-[1.4rem]">
-                            {formatDate(blog?.createdAt)}
-                        </p>
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-[0.8rem]">
+                        <Avatar
+                            src={
+                                blog?.userId?.imageUrl ||
+                                images.defaultAvatar.src
+                            }
+                            alt="avatar"
+                            size={60}
+                        />
+
+                        <div className="flex flex-col gap-[0.2rem]">
+                            <h3 className="text-justify text-[1.6rem] font-bold">
+                                {blog?.userId?.fullName}
+                            </h3>
+                            <p className="text-[1.4rem]">
+                                {formatDate(blog?.createdAt)}
+                            </p>
+                        </div>
                     </div>
+                    {profile?._id === blog?.userId?._id && (
+                        <Popover content={contentAction} placement="bottom">
+                            <button>
+                                <Image src={icons.moreHorizontal} alt="icon" />
+                            </button>
+                        </Popover>
+                    )}
                 </div>
                 <div className="mt-[2.4rem] flex items-center gap-[2.4rem] border-t pt-[2.4rem]">
                     <button
@@ -168,6 +222,12 @@ function ActionBlog({ blog }: ActionBlogProp) {
                         ))}
                 </div>
             </Drawer>
+            <ConfirmDeleteModal
+                isModalOpen={isModalOpen}
+                content="Would you like to delete this blog ?"
+                handleOk={handleDeletePost}
+                handleCancel={handleCancel}
+            />
         </>
     );
 }

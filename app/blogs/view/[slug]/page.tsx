@@ -1,10 +1,5 @@
-import blogApi from '@/apis/blogApi'; // Đảm bảo blogApi đúng đường dẫn
-import icons from '@/assets/icons';
-import images from '@/assets/img';
+import blogApi from '@/apis/blogApi';
 import ActionBlog from '@/components/ActionBlog';
-import { formatDate } from '@/utils/functions/formatDate';
-import { Avatar } from 'antd';
-import Image from 'next/image';
 
 interface Params {
     slug: string;

@@ -21,6 +21,39 @@ const blogApi = {
             throw new Error('Error calling blog API');
         }
     },
+    async update(id: string, payload: BlogFromProps, token: string) {
+        try {
+            const res = await fetchData<BlogType>(
+                `${urls.POSTS}/${urls.UPDATE_POST}/${id}`,
+                token,
+                'PUT',
+                payload,
+            );
+            return res;
+        } catch (error: any) {
+            console.error(
+                'Error calling blog API:',
+                error?.response?.data || error.message || error,
+            );
+            throw new Error('Error calling blog API');
+        }
+    },
+    async delete(id: string, token: string) {
+        try {
+            const res = await fetchData<BlogType>(
+                `${urls.POSTS}/${urls.DELETE_POST}/${id}`,
+                token,
+                'DELETE',
+            );
+            return res;
+        } catch (error: any) {
+            console.error(
+                'Error calling blog API:',
+                error?.response?.data || error.message || error,
+            );
+            throw new Error('Error calling blog API');
+        }
+    },
     async getAll() {
         try {
             const res = await fetchData<BlogResponseType>(

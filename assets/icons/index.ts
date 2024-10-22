@@ -43,8 +43,10 @@ import micOff from './mic-off.svg';
 import phoneOff from './phone-off.svg';
 import videoOff from './video-off.svg';
 import likeFill from './thumbs-up-fill.svg';
+import moreHorizontal from './more-horizontal.svg';
 
 const icons = {
+    moreHorizontal,
     likeFill,
     search,
     chevronDown,

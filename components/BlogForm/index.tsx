@@ -9,6 +9,7 @@ import blogApi from '@/apis/blogApi';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { useRouter } from 'next/navigation';
 import paths from '@/utils/constants/paths';
+import { BlogType } from '@/types/response/blog';
 
 const Editor = dynamic(() => import('../Editor'), { ssr: false });
 
@@ -17,13 +18,37 @@ export type BlogFromProps = {
     content: string;
 };
 
-function BlogForm() {
+interface EditForm {
+    slug?: string | string[];
+}
+
+function BlogForm({ slug }: EditForm) {
     const router = useRouter();
+    const resolvedId = Array.isArray(slug) ? slug[0] : slug;
     const [editorValue, setEditorValue] = useState<string>('');
     const [token, setToken] = useState<string | null>(null);
+    const [isEdit, setIsEdit] = useState(false);
+    const [blog, setBlog] = useState<BlogType>();
 
     useEffect(() => {
-        // Ensure token is fetched only on the client-side
+        const fetchBlog = async () => {
+            if (resolvedId) {
+                await blogApi
+                    .getBySlug(resolvedId)
+                    .then((res) => {
+                        if (res) {
+                            setBlog(res);
+                            setValue('title', res?.title);
+                            setEditorValue(res?.content);
+                        }
+                    })
+                    .catch((error) => console.log(error));
+            }
+        };
+        fetchBlog();
+    }, []);
+
+    useEffect(() => {
         const clientToken = getAccessTokenClient();
         if (clientToken) {
             setToken(clientToken);
@@ -37,6 +62,7 @@ function BlogForm() {
     const {
         control,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm<BlogFromProps>();
 
@@ -45,7 +71,24 @@ function BlogForm() {
             toast.error('You need to enter content!');
             return;
         }
-
+        if (isEdit) {
+            const updateData = {
+                ...data,
+                content: editorValue,
+            };
+            if (blog && token) {
+                await blogApi
+                    .update(blog?._id, updateData, token)
+                    .then((res) => {
+                        if (res) {
+                            toast.success('Update post successfull');
+                            router.push(paths.BLOGS);
+                        }
+                    })
+                    .catch(() => toast.error('Update post failed'));
+            }
+            return;
+        }
         const newData = {
             ...data,
             content: editorValue,
@@ -65,6 +108,12 @@ function BlogForm() {
                 });
         }
     };
+
+    useEffect(() => {
+        if (resolvedId) {
+            setIsEdit(true);
+        }
+    }, [resolvedId]);
 
     return (
         <form
