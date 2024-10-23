@@ -14,6 +14,7 @@ import { useGetIdFromUrl } from '@/utils/functions/getIdUrl';
 import { FreeTimeType } from '@/types/response/freetime';
 import { formatDate } from '@/utils/functions/formatDate';
 import { formatTime } from '@/utils/functions/formatTime';
+import ConfirmDeleteModal from '../ConfirmDeleteModal';
 
 // Function to generate a list of 24-hour time slots
 export function generate24Hours(): string[] {
@@ -40,15 +41,21 @@ export type FreetimeSessionDetails = {
 };
 interface FreeTimeSectionsProps {
     sections: FreeTimeType;
+    showIcon?: boolean;
+    onDelete: () => void;
 }
-const FreeTimeSections = ({ sections }: FreeTimeSectionsProps) => {
+const FreeTimeSections = ({
+    sections,
+    showIcon = true,
+    onDelete,
+}: FreeTimeSectionsProps) => {
     return (
         <ul className="grid grid-cols-3 gap-[1.2rem]">
             {sections?.freeTimeDetail?.length > 0 &&
                 sections?.freeTimeDetail?.map((item, index) => (
                     <li
                         key={index}
-                        className="rounded-[0.8rem] bg-gradient-to-r from-[#03624c] to-[#5DD62C] p-[1rem] text-[1.4rem]"
+                        className="group flex items-center justify-between rounded-[0.8rem] bg-gradient-to-r from-[#03624c] to-[#5DD62C] p-[1rem] text-[1.4rem]"
                     >
                         <div className="flex flex-col gap-[0.8rem]">
                             <p className="text-[1.6rem] font-bold">
@@ -59,6 +66,18 @@ const FreeTimeSections = ({ sections }: FreeTimeSectionsProps) => {
                                 {formatTime(item?.to)}
                             </span>
                         </div>
+                        {showIcon && (
+                            <div
+                                className="cursor-pointer rounded-full bg-[rgba(255,255,255,0.5)] p-[1rem] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+                                onClick={onDelete}
+                            >
+                                <Image
+                                    src={icons.trash}
+                                    alt="icon"
+                                    className="size-[2rem]"
+                                />
+                            </div>
+                        )}
                     </li>
                 ))}
         </ul>
@@ -73,13 +92,23 @@ function FreetimeForm() {
     const [sessions, setSessions] = useState<FreeTimeType[]>([]);
     const [showInputs, setShowInputs] = useState(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [selectedFreetimeDetail, setSelectedFreetimeDetail] =
+        useState<string>('');
     const [currentDetail, setCurrentDetail] = useState<FreetimeSessionDetails>({
         name: '',
         from: '',
         to: '',
     });
+    const [showConfirm, setShowConfirm] = useState(false);
     const token = getAccessTokenClient();
 
+    const showConfirmModal = (id: string) => {
+        setShowConfirm(true);
+        setSelectedFreetimeDetail(id);
+    };
+    const cancelConfirmModal = () => {
+        setShowConfirm(false);
+    };
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -177,7 +206,18 @@ function FreetimeForm() {
         setCurrentDetail({ name: '', from: '', to: '' });
         setShowInputs(false);
     };
-    const handleRemoveDetail = async () => {};
+    const handleRemoveDetail = async () => {
+        if (token && selectedFreetimeDetail) {
+            await freetimeApi
+                .deleteDetails(token, selectedFreetimeDetail)
+                .then((res) => {
+                    if (res) {
+                        toast.success('Delete free time detail successfull');
+                    }
+                })
+                .catch(() => toast.error('Delete free time detail failed'));
+        }
+    };
 
     return (
         <>
@@ -195,11 +235,20 @@ function FreetimeForm() {
                             <span className="text-[2rem] font-medium">
                                 {item?.freeDate && formatDate(item?.freeDate)}
                             </span>
-                            <FreeTimeSections sections={item} key={index} />
+                            <FreeTimeSections
+                                sections={item}
+                                key={index}
+                                onDelete={() => showConfirmModal(item?._id)}
+                            />
                         </div>
                     ))}
             </div>
-
+            <ConfirmDeleteModal
+                content="Would you like to delete this free time section?"
+                isModalOpen={showConfirm}
+                handleCancel={cancelConfirmModal}
+                handleOk={handleRemoveDetail}
+            />
             <Modal
                 open={isModalOpen}
                 onOk={handleOk}

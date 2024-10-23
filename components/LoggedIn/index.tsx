@@ -64,11 +64,11 @@ function LoggedIn() {
     const RenderContentUser = () => {
         return (
             <ul className="text-white">
-                <li className="mb-[0.8rem] flex flex-col gap-[0.8rem] border-b-[0.1rem] py-[1rem]">
+                <li className="mb-[0.8rem] flex flex-col gap-[0.8rem] border-b-[0.1rem] p-[1rem]">
                     <p className="text-[1.4rem] font-bold text-[#6B7B8A]">
                         @{profile?.slug}
                     </p>
-                    <div className="flex items-center gap-[0.4rem]">
+                    <div className="flex items-center gap-[0.8rem]">
                         <Image
                             src={images.qCoin}
                             alt="coin"
@@ -80,37 +80,31 @@ function LoggedIn() {
                     </div>
                 </li>
                 <li
-                    className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
+                    className="flex cursor-pointer items-center gap-[0.8rem] rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
+                    onClick={() => {
+                        setIsOpenInfo(false);
+                        router.push(`${paths.BOOKINGS}/${profile?._id}`);
+                    }}
+                >
+                    <Image src={icons.clock} alt="icon-log-out" />
+                    Your bookings
+                </li>
+                <li
+                    className="flex cursor-pointer items-center gap-[0.8rem] rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
                     onClick={() => {
                         setIsOpenInfo(false);
                         router.push(`${paths.PROFILE}/${profile?._id}`);
                     }}
                 >
-                    Rooms
+                    <Image src={icons.User} alt="icon-log-out" />
+                    Your profile
                 </li>
                 <li
-                    className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
-                    onClick={() => {
-                        setIsOpenInfo(false);
-                        router.push(`${paths.PROFILE}/${profile?._id}`);
-                    }}
-                >
-                    Blogs
-                </li>
-                <li
-                    className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
-                    onClick={() => {
-                        setIsOpenInfo(false);
-                        router.push(`${paths.PROFILE}/${profile?._id}`);
-                    }}
-                >
-                    Profile
-                </li>
-                <li
-                    className="cursor-pointer rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
+                    className="flex cursor-pointer items-center gap-[0.8rem] rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
                     onClick={logout}
                 >
-                    Sign out
+                    <Image src={icons.logOut} alt="icon-log-out" />
+                    <p>Sign out</p>
                 </li>
             </ul>
         );
@@ -195,7 +189,7 @@ function LoggedIn() {
                 trigger="click"
                 open={isOpenInfo}
                 onOpenChange={() => setIsOpenInfo(!isOpenInfo)}
-                overlayStyle={{ width: '20rem' }}
+                overlayStyle={{ width: '25rem' }}
             >
                 {profile ? (
                     <Avatar

@@ -94,7 +94,7 @@ function EditProfile() {
                 });
         };
         fetchTechnologies();
-        const fetchJobTitILE = async () => {
+        const fetchJobTittle = async () => {
             await jobTitleApi
                 .getAll()
                 .then((res) => {
@@ -106,7 +106,7 @@ function EditProfile() {
                     console.log(error);
                 });
         };
-        fetchJobTitILE();
+        fetchJobTittle();
     }, []);
 
     const handleUpload = async () => {
@@ -249,7 +249,9 @@ function EditProfile() {
                                 ) : (
                                     <div className="flex items-center gap-[1.2rem]">
                                         <ButtonCustom
+                                            outline
                                             onClick={() => setIsEdit(false)}
+                                            className="w-[10rem]"
                                         >
                                             Cancel
                                         </ButtonCustom>
@@ -257,6 +259,7 @@ function EditProfile() {
                                             onClick={handleProfileSubmit(
                                                 onSubmitProfile,
                                             )}
+                                            className="w-[10rem]"
                                         >
                                             Save
                                         </ButtonCustom>
@@ -362,6 +365,7 @@ function EditProfile() {
                                                             index,
                                                         )
                                                     }
+                                                    showIcon={isEdit}
                                                 />
                                             </li>
                                         ))}

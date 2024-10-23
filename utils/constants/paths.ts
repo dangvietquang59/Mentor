@@ -11,6 +11,7 @@ const paths = {
     EDIT: 'edit',
     CREATE: 'create',
     VIEW: 'view',
+    BOOKINGS: '/bookings',
 };
 
 export default paths;

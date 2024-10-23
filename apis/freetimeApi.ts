@@ -58,8 +58,8 @@ const freetimeApi = {
     },
     async deleteDetails(accessToken: string, id: string) {
         try {
-            const res = await fetchData<FreeTimeType[]>(
-                `${urls.FREETIME}/${urls.DELETE_FREE_TIME}/${id}`,
+            const res = await fetchData<any>(
+                `${urls.FREETIME_DETAILS}/${id}`,
                 accessToken,
                 'DELETE',
             );

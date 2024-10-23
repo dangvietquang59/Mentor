@@ -44,8 +44,15 @@ import phoneOff from './phone-off.svg';
 import videoOff from './video-off.svg';
 import likeFill from './thumbs-up-fill.svg';
 import moreHorizontal from './more-horizontal.svg';
-
+import logOut from './log-out.svg';
+import User from './user.svg';
+import clock from './clock.svg';
+import check from './check.svg';
 const icons = {
+    check,
+    User,
+    clock,
+    logOut,
     moreHorizontal,
     likeFill,
     search,

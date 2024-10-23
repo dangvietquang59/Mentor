@@ -99,7 +99,6 @@ function FreetimeTag({
     const [selected, setSelected] = useState<SessionData | null>(null);
     const [selectedSession, setSelectedSession] =
         useState<FreeTimeDetailType | null>(null);
-    console.log('selectedSession', selectedSession);
     useEffect(() => {
         setSessionData(formatData(sessions));
     }, [sessions]);
@@ -125,7 +124,6 @@ function FreetimeTag({
     };
 
     const [currentPage, setCurrentPage] = useState(1);
-    console.log('user', user);
     useEffect(() => {
         setCurrentPage(1);
     }, [selected?._id]);

@@ -26,6 +26,7 @@ const urls = {
     COMMENTS: 'comments',
     DELETE_POST: 'delete-post',
     UPDATE_POST: 'update-post',
+    FREETIME_DETAILS: 'freetimeDetails',
 };
 
 export default urls;

@@ -28,8 +28,14 @@ const SelectComponent = (props: ISelectComponentProps) => {
         labelClassName,
         label,
         isRequired,
+        disabled, // Extract the disabled prop
         ...rest
     } = props;
+
+    // Define the class for disabled state
+    const disabledClass = disabled
+        ? 'bg-[#1F1F20] text-[#A1A1A1] cursor-not-allowed' // Apply custom color and styles for disabled state
+        : '';
 
     if (!control)
         return (
@@ -54,7 +60,9 @@ const SelectComponent = (props: ISelectComponentProps) => {
                     className={clsx(
                         'min-h-[4.2rem] w-full border-[#000] text-[1.4rem] font-[500] leading-[2rem] text-black hover:!border-[#000] focus:border-[#000] focus:shadow-none',
                         className,
+                        disabledClass, // Add the disabled class here
                     )}
+                    disabled={disabled} // Pass the disabled prop to the Select component
                     {...rest}
                 >
                     {options?.map((option) => (
@@ -104,11 +112,13 @@ const SelectComponent = (props: ISelectComponentProps) => {
                             className={clsx(
                                 'min-h-[4.2rem] w-full border-[#000] text-[1.4rem] font-[500] leading-[2rem] hover:!border-[#000] focus:border-[#000] focus:shadow-none',
                                 className,
+                                disabledClass, // Add the disabled class here
                             )}
                             onChange={onChange}
                             onBlur={onBlur}
                             value={value}
                             ref={ref}
+                            disabled={disabled} // Pass the disabled prop to the Select component
                             {...rest}
                         >
                             {options?.map((option) => (

@@ -24,6 +24,23 @@ const bookingApi = {
             throw new Error('Error calling booking API');
         }
     },
+    async update(id: string, payload: { status: string }, token: string) {
+        try {
+            const res = await fetchData<BookingCreateResponeType>(
+                `${urls.BOOKING}/${id}`,
+                token,
+                'PUT',
+                payload,
+            );
+            return res;
+        } catch (error: any) {
+            console.error(
+                'Error calling booking API:',
+                error?.response?.data || error.message || error,
+            );
+            throw new Error('Error calling booking API');
+        }
+    },
     async getByUserId(payload: string, token: string) {
         try {
             const res = await fetchData<BookingGetResponeType[]>(
