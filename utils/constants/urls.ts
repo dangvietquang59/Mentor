@@ -27,6 +27,7 @@ const urls = {
     DELETE_POST: 'delete-post',
     UPDATE_POST: 'update-post',
     FREETIME_DETAILS: 'freetimeDetails',
+    NOTIFICATIONS: 'notifications',
 };
 
 export default urls;

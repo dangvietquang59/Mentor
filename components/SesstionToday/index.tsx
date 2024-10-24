@@ -30,7 +30,8 @@ function SesionToday() {
             };
             fetchSessions();
         }
-    }, []);
+    }, [profile?._id]);
+
     return (
         <div className="rounded-[0.8rem] p-[1rem] text-white">
             <div className="flex items-center justify-between border-b p-[1rem]">
@@ -45,8 +46,7 @@ function SesionToday() {
             </div>
             <div className="mt-[2.4rem] flex flex-col gap-[2.4rem]">
                 <ul className="flex flex-col gap-[1.2rem]">
-                    {sessions &&
-                        sessions?.length > 0 &&
+                    {sessions && sessions?.length > 0 ? (
                         sessions.map((item, index) => (
                             <li key={index}>
                                 <Link href={`${paths.ROOM}/${item?._id}`}>
@@ -69,7 +69,14 @@ function SesionToday() {
                                     </div>
                                 </Link>
                             </li>
-                        ))}
+                        ))
+                    ) : (
+                        <div className="flex items-center justify-center">
+                            <p className="text-[1.6rem]">
+                                No section booking found
+                            </p>
+                        </div>
+                    )}
                 </ul>
             </div>
         </div>

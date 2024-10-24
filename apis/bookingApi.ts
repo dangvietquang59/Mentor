@@ -41,13 +41,12 @@ const bookingApi = {
             throw new Error('Error calling booking API');
         }
     },
-    async getByUserId(payload: string, token: string) {
+    async getByUserId(id: string, token: string) {
         try {
             const res = await fetchData<BookingGetResponeType[]>(
-                urls.BOOKING,
+                `${urls.BOOKING}/${urls.USER}/${id}`,
                 token,
                 'GET',
-                payload,
             );
             return res;
         } catch (error: any) {
