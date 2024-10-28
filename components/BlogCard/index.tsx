@@ -31,7 +31,7 @@ function BlogCard({ blog }: BlogCardProps) {
                         </h3>
                     </Link>
                     <div
-                        className="mt-[1.4rem] line-clamp-4 text-[1.2rem]"
+                        className="mt-[1.4rem] line-clamp-4 text-[1.4rem]"
                         dangerouslySetInnerHTML={{ __html: processedContent }}
                     />
                 </div>

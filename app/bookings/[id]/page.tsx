@@ -23,6 +23,7 @@ function BookingDetail() {
                 .catch((errors) => console.log(errors));
         }
     };
+    console.log(bookings);
     useEffect(() => {
         fetchBooking();
     }, []);

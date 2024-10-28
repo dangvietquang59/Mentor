@@ -22,4 +22,5 @@ export const formValidation = {
     from: { required: 'Giờ bắt đầu không được để trống' },
     to: { required: 'Giờ kết thúc không được để trống' },
     blogTitle: { required: 'Tiêu đề không được để trống' },
+    content: { required: 'Nội dung không được để trống' },
 };

@@ -20,8 +20,7 @@ export type FreetimeDetailType = {
 };
 export type BookingGetResponeType = {
     _id: string;
-    menteeId: UserType;
-    mentorId: UserType;
+    participants: UserType[];
     freetimeDetailId: FreetimeDetailType;
     status: string;
     createdAt: string;

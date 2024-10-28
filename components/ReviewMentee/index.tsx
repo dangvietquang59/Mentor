@@ -13,7 +13,7 @@ function ReviewMentee() {
                 <div>
                     <p className="text-[2.7rem] text-[#F8F8F8]">Lê Duy</p>
                     <p className="text-[2.1rem] text-[#5DD62C]">
-                        Mentor: Đặng Việt Quang
+                        Đặng Việt Quang (Mentor)
                     </p>
                 </div>
             </div>

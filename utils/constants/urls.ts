@@ -28,6 +28,8 @@ const urls = {
     UPDATE_POST: 'update-post',
     FREETIME_DETAILS: 'freetimeDetails',
     NOTIFICATIONS: 'notifications',
+    REVIEWS: 'reviews',
+    UPDATE_RATING: 'update-rating',
 };
 
 export default urls;

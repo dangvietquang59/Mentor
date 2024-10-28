@@ -1,6 +1,7 @@
 import images from '@/assets/img';
 import { NotificationType } from '@/types/response/notification';
 import paths from '@/utils/constants/paths';
+import { formatDate } from '@/utils/functions/formatDate';
 import { Avatar } from 'antd';
 import Link from 'next/link';
 
@@ -11,13 +12,14 @@ function NotificationItem({ noti }: NotificationItemProps) {
     const getPaths = (type: string): string | undefined => {
         const mapping: { [key: string]: string } = {
             Booking: paths.BOOKINGS,
-            Blog: paths.BLOGS,
-            Comment: paths.BLOGS,
+            Blog: `${paths.BLOGS}`,
+            Comment: `${paths.BLOGS}/${paths.VIEW}`,
         };
 
         return mapping[type];
     };
     const path = getPaths(noti?.entityType);
+    console.log(noti);
     return (
         <Link
             href={`${path}/${noti?.entityId}`}
@@ -28,11 +30,14 @@ function NotificationItem({ noti }: NotificationItemProps) {
                 size={50}
                 className="size-[5rem]"
             />
-            <span
-                className={`text-[1.4rem] ${noti?.isRead ? 'font-normal' : 'font-bold'}`}
-            >
-                {noti?.content}
-            </span>
+            <div>
+                <p
+                    className={`text-[1.4rem] ${noti?.isRead ? 'font-normal' : 'font-bold'}`}
+                >
+                    {noti?.content}
+                </p>
+                <span>{formatDate(noti?.createdAt)}</span>
+            </div>
         </Link>
     );
 }

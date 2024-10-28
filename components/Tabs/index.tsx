@@ -35,7 +35,7 @@ function Tabs({
     return (
         <div className={`relative flex ${className}`}>
             <div
-                className="absolute bottom-0 h-[0.2rem] bg-[#5b8c00] transition-all duration-500"
+                className="absolute bottom-0 h-[0.2rem] bg-[#5DD52C] transition-all duration-500"
                 style={borderStyle}
             />
             {arrayTabs.map((tab, index) => (
@@ -46,12 +46,12 @@ function Tabs({
                     }}
                     className={`flex cursor-pointer flex-col items-center justify-center transition-all duration-300 ${
                         isSelectedTab === index
-                            ? 'text-[#7cb305]'
+                            ? 'text-[#5DD52C]'
                             : 'text-[#6B7B8A]'
                     }`}
                     onClick={() => handleSelectedTab(index)}
                 >
-                    <span className="p-[1rem] text-[2rem] font-bold hover:text-[#7cb305]">
+                    <span className="p-[1rem] text-[2rem] font-bold hover:text-[#5DD52C]">
                         {tab.title}
                     </span>
                 </div>

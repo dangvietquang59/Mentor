@@ -1,5 +1,4 @@
 export type BookingRequestType = {
-    menteeId: string;
-    mentorId: string;
+    participants: string[];
     freetimeDetailId: string;
 };

@@ -16,6 +16,9 @@ import { UserType } from '@/types/user';
 import { getProfile } from '@/utils/functions/getProfile';
 import ExperienceTag from '@/components/ExperienceTag';
 import groupChatApi from '@/apis/groupChatApi';
+import reviewApi from '@/apis/reviewApi';
+import { ReviewType } from '@/types/response/review';
+import ReviewCard from '@/components/ReviewCard';
 
 function Profiles() {
     const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -27,7 +30,9 @@ function Profiles() {
     const [profileUser, setProfileUser] = useState<UserType | null | undefined>(
         null,
     );
+    const [reviews, setReviews] = useState<ReviewType[]>([]);
     const accessToken = getAccessTokenClient() || '';
+
     useEffect(() => {
         if (profileId) {
             const fetchProfile = async () => {
@@ -42,6 +47,17 @@ function Profiles() {
             };
             fetchProfile();
         }
+        const fetchReviews = async () => {
+            await reviewApi
+                .getByUserId(profileId, accessToken)
+                .then((res) => {
+                    if (res) {
+                        setReviews(res?.reviews);
+                    }
+                })
+                .catch((errors) => console.log(errors));
+        };
+        fetchReviews();
     }, [profileId]);
 
     const arrayTabs: TabType[] = [
@@ -152,27 +168,43 @@ function Profiles() {
                             {selectedTab === 0 && (
                                 <>
                                     <h3 className="text-[2rem] font-medium">
-                                        Experiences
-                                        <ul className="mt-[1.2rem] grid grid-cols-4 gap-[0.8rem]">
-                                            {profileUser?.technologies?.map(
-                                                (technology, index) => (
-                                                    <li key={index}>
-                                                        <ExperienceTag
-                                                            technology={
-                                                                technology
-                                                                    ?.technology
-                                                                    ?.name
-                                                            }
-                                                            experienceYears={
-                                                                technology?.experienceYears
-                                                            }
-                                                            showIcon={false}
-                                                        />
-                                                    </li>
-                                                ),
-                                            )}
-                                        </ul>
+                                        {profileUser &&
+                                            profileUser?.technologies?.length >
+                                                0 &&
+                                            'Experiences'}
                                     </h3>
+
+                                    <ul className="mt-[1.2rem] grid grid-cols-4 gap-[0.8rem]">
+                                        {profileUser?.technologies?.map(
+                                            (technology, index) => (
+                                                <li key={index}>
+                                                    <ExperienceTag
+                                                        technology={
+                                                            technology
+                                                                ?.technology
+                                                                ?.name
+                                                        }
+                                                        experienceYears={
+                                                            technology?.experienceYears
+                                                        }
+                                                        showIcon={false}
+                                                    />
+                                                </li>
+                                            ),
+                                        )}
+                                    </ul>
+                                </>
+                            )}
+                            {selectedTab === 1 && (
+                                <>
+                                    <div className="mt-[1.2rem]">
+                                        {reviews?.map((review, index) => (
+                                            <ReviewCard
+                                                key={index}
+                                                review={review}
+                                            />
+                                        ))}
+                                    </div>
                                 </>
                             )}
                         </div>

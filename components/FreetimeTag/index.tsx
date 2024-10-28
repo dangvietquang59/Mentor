@@ -70,8 +70,7 @@ function FreetimeTag({
     const handleBookingSession = async () => {
         if (selectedSession && profile) {
             const data = {
-                menteeId: profile?._id,
-                mentorId: user?._id,
+                participants: [user?._id, profile?._id],
                 freetimeDetailId: selectedSession?._id,
             };
             await bookingApi
@@ -79,11 +78,12 @@ function FreetimeTag({
                 .then((res) => {
                     if (res) {
                         toast.success('Booking session successful');
+                        handleOk();
                     }
                 })
                 .catch((error) => {
                     console.log(error);
-                    toast.error('Booking session error');
+                    toast.error('Booking session failed');
                 });
         }
     };

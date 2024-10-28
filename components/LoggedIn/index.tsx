@@ -57,6 +57,7 @@ function LoggedIn() {
                     );
                     if (res) {
                         setNotis(res?.notifications);
+                        console.log(res);
                         setCountRead(res?.unreadCount);
                     }
                 } catch (error) {

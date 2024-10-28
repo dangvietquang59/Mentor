@@ -15,6 +15,25 @@ interface ParamsProps {
 }
 
 const userApi = {
+    async updateRating(
+        data: { newRating: string },
+        userId: string,
+        accessToken: string,
+    ) {
+        try {
+            const res = await fetchData<UserType>(
+                `${urls.USERS}/${urls.UPDATE_RATING}/${userId}`,
+                accessToken,
+                'PUT',
+                data,
+                false,
+            );
+            return res;
+        } catch (error) {
+            console.error('Error calling update profile API:', error);
+            throw new Error('Error calling update profile API');
+        }
+    },
     async updateProfile(data: UserType, userId: string, accessToken: string) {
         try {
             const res = await fetchData<UserType>(
