@@ -14,6 +14,7 @@ import { formatDate } from '@/utils/functions/formatDate';
 import { calculateTimeDifference } from '@/utils/functions/calculateTimeDifference';
 import { formatNumeric } from '@/utils/functions/formatNumeric';
 import bookingApi from '@/apis/bookingApi';
+import paymentApi from '@/apis/paymentApi';
 
 interface FreetimeTagProps {
     sessions: FreeTimeType[];
@@ -66,13 +67,29 @@ function FreetimeTag({
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-
     const handleBookingSession = async () => {
         if (selectedSession && profile) {
             const data = {
                 participants: [user?._id, profile?._id],
                 freetimeDetailId: selectedSession?._id,
             };
+            const amount =
+                user?.pricePerHour *
+                calculateTimeDifference(
+                    formatTime(selectedSession?.from),
+                    formatTime(selectedSession?.to),
+                );
+            const dataPayment = {
+                amount: amount,
+            };
+            const response = await paymentApi.create(dataPayment, token);
+            if (response?.vnpUrl) {
+                window.location.replace(response.vnpUrl);
+                return;
+            } else {
+                console.log('Không nhận được URL thanh toán.');
+                toast.error('Không thể tạo thanh toán.');
+            }
             await bookingApi
                 .create(data, token)
                 .then((res) => {

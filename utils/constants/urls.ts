@@ -30,6 +30,8 @@ const urls = {
     NOTIFICATIONS: 'notifications',
     REVIEWS: 'reviews',
     UPDATE_RATING: 'update-rating',
+    PAYMENT: 'payment',
+    CREATE_PAYMENT: 'create-payment',
 };
 
 export default urls;

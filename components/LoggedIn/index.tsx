@@ -168,7 +168,7 @@ function LoggedIn() {
 
     const RenderNotification = () => {
         return (
-            <div className="text-white">
+            <div className="max-h-[50rem] overflow-y-auto text-white">
                 <h2 className="my-[0.8rem] text-[1.6rem] font-bold">
                     Notification
                 </h2>
