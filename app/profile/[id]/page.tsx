@@ -127,7 +127,7 @@ function Profiles() {
                             {profile?._id === profileId ? (
                                 <div className="flex items-center gap-[1.2rem] px-[2rem]">
                                     <button
-                                        className="flex items-center gap-[1.6rem] rounded-[0.8rem] bg-[#5DD52C] p-[10px_20px]"
+                                        className="flex items-center gap-[1.6rem] rounded-[0.8rem] border border-[#5DD52C] p-[10px_20px]"
                                         onClick={() =>
                                             router.push(
                                                 `${paths.PROFILE}/${paths.EDIT}/${profileUser?._id}`,
@@ -135,7 +135,7 @@ function Profiles() {
                                         }
                                     >
                                         <Image src={icons.editPen} alt="icon" />
-                                        <p className="text-[1.6rem] text-white">
+                                        <p className="text-[1.6rem] text-[#5DD52C]">
                                             Edit profile
                                         </p>
                                     </button>

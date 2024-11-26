@@ -1,11 +1,7 @@
 import { MessageRespone, MessageResponseType } from '@/types/response/messages';
 import urls from '@/utils/constants/urls';
 import { fetchData } from '@/utils/functions/fetchData';
-// interface MessageProps {
-//     senderId: string;
-//     content: string;
-//     groupId: string;
-// }
+
 const messageApi = {
     async create(data: FormData, accessToken: string) {
         try {

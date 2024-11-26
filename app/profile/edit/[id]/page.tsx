@@ -17,7 +17,7 @@ import { useMounted } from '@/utils/hooks/useMounted';
 import { Avatar, Modal } from 'antd';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
@@ -34,6 +34,10 @@ function EditProfile() {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [technologies, setTechnologies] = useState<TechnologiesType[]>([]);
     const [jobTitles, setJobTitles] = useState<JobTitleType[]>([]);
+    const [currentPageJobTitle, setCurrentPageJobTitle] = useState<number>(1);
+    const [currentPageTech, setCurrentPageTech] = useState<number>(1);
+    const [totalPageJobTitle, setTotalPageJobTitle] = useState<number>(0);
+    const [totalPageTech, setTotalPageTech] = useState<number>(0);
     const pathname = usePathname();
     const profileId = pathname.split('/profile/')[1]?.split('/')[1];
     const [profileUser, setProfileUser] = useState<UserType | null | undefined>(
@@ -54,6 +58,7 @@ function EditProfile() {
             showModalImage();
         }
     };
+
     useEffect(() => {
         if (profileId) {
             const fetchProfile = async () => {
@@ -80,35 +85,64 @@ function EditProfile() {
             fetchProfile();
         }
     }, [profileId]);
-    useEffect(() => {
-        const fetchTechnologies = async () => {
-            await technologiesApi
-                .getAll()
-                .then((res) => {
-                    if (res) {
-                        setTechnologies(res?.technologies);
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        };
-        fetchTechnologies();
-        const fetchJobTittle = async () => {
-            await jobTitleApi
-                .getAll()
-                .then((res) => {
-                    if (res) {
-                        setJobTitles(res?.jobs);
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        };
-        fetchJobTittle();
-    }, []);
+    const fetchJobTittle = async () => {
+        await jobTitleApi
+            .getAll(currentPageJobTitle)
+            .then((res) => {
+                if (res) {
+                    setTotalPageJobTitle(res?.totalPages);
+                    setJobTitles((prevJobs) => [...prevJobs, ...res?.jobs]);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
+    const fetchTechnologies = async () => {
+        await technologiesApi
+            .getAll(currentPageTech)
+            .then((res) => {
+                if (res) {
+                    setTotalPageTech(res?.totalPages);
+                    setTechnologies((prevJobs) => [
+                        ...prevJobs,
+                        ...res?.technologies,
+                    ]);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    useEffect(() => {
+        fetchTechnologies();
+
+        fetchJobTittle();
+    }, [currentPageJobTitle, currentPageTech]);
+
+    const handleScrollPopUpJobTitle = (e: React.UIEvent<HTMLDivElement>) => {
+        if (e && e.currentTarget) {
+            const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+            if (
+                scrollTop + clientHeight >= scrollHeight &&
+                currentPageJobTitle < (totalPageJobTitle || 1)
+            ) {
+                setCurrentPageJobTitle((prevPage) => prevPage + 1);
+            }
+        }
+    };
+    const handleScrollPopUpTech = (e: React.UIEvent<HTMLDivElement>) => {
+        if (e && e.currentTarget) {
+            const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+            if (
+                scrollTop + clientHeight >= scrollHeight &&
+                currentPageTech < (totalPageTech || 1)
+            ) {
+                setCurrentPageTech((prevPage) => prevPage + 1);
+            }
+        }
+    };
     const handleUpload = async () => {
         if (!imageFile) return;
 
@@ -127,6 +161,8 @@ function EditProfile() {
                     .then((res) => {
                         toast.success('Upload image successful');
                         setSelectedImage(res.result.url);
+                        console.log(res);
+                        localStorage.setItem(variables.PROFILE, res.result.url);
                     })
                     .catch((error) => {
                         console.log(error);
@@ -172,9 +208,11 @@ function EditProfile() {
     useEffect(() => {
         resetProfileForm({
             email: profileUser?.email || '',
-            bio: profileUser?.bio
-                ? { _id: profileUser.bio._id, name: profileUser.bio.name }
-                : undefined,
+            bio:
+                typeof profileUser?.bio === 'object'
+                    ? profileUser?.bio?._id
+                    : { _id: undefined, name: undefined },
+
             fullName: profileUser?.fullName || '',
             rating: profileUser?.rating || '',
             role: profileUser?.role || '',
@@ -300,6 +338,9 @@ function EditProfile() {
                                                 value: item?._id,
                                             }))
                                         }
+                                        onPopupScroll={
+                                            handleScrollPopUpJobTitle
+                                        }
                                         rules={formValidation.bio}
                                         disabled={!isEdit}
                                     />
@@ -391,7 +432,7 @@ function EditProfile() {
                             onClick={() => fileInputRef.current?.click()}
                             className="mt-4 rounded bg-[#59C82C] p-[1rem_2rem] px-4 py-2 text-[1.6rem] text-black"
                         >
-                            Chọn ảnh
+                            Choose image
                         </button>
                     </div>
                 </div>
@@ -453,6 +494,7 @@ function EditProfile() {
                                             value: item?._id,
                                         }))
                                     }
+                                    onPopupScroll={handleScrollPopUpTech}
                                     errors={experienceErrors.technology}
                                     rules={formValidation.technologies}
                                 />

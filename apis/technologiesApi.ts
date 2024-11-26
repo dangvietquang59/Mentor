@@ -6,10 +6,10 @@ import urls from '@/utils/constants/urls';
 import { fetchData } from '@/utils/functions/fetchData';
 
 const technologiesApi = {
-    async getAll() {
+    async getAll(page?: number) {
         try {
             const res = await fetchData<TechnologiesResponseType>(
-                urls.TECHNOLOGIES,
+                `${urls.TECHNOLOGIES}?page=${page}`,
                 null,
                 'GET',
             );

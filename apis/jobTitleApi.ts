@@ -3,10 +3,10 @@ import urls from '@/utils/constants/urls';
 import { fetchData } from '@/utils/functions/fetchData';
 
 const jobTitleApi = {
-    async getAll() {
+    async getAll(page?: number) {
         try {
             const res = await fetchData<JobtitleResponeType>(
-                urls.JOB_TITLE,
+                `${urls.JOB_TITLE}?page=${page}`,
                 null,
                 'GET',
             );

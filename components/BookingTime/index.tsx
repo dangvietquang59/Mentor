@@ -55,6 +55,7 @@ function BookingTime({ id, user }: BookingTimeProps) {
                     {profile?._id === id && (
                         <ButtonCustom
                             path={`${paths.PROFILE}/${paths.EDIT}/${id}`}
+                            outline
                         >
                             Add new now
                         </ButtonCustom>

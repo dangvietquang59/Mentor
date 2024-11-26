@@ -6,6 +6,8 @@ const variables = {
     ROLE: 'role',
     CART_STORAGE: 'cart-storage',
     ID_VOUCHER: 'id_voucher',
+    ACCEPTED: 'Accepted',
+    PENDING: 'Pending',
 };
 
 export default variables;

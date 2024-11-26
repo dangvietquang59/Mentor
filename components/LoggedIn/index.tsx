@@ -47,25 +47,24 @@ function LoggedIn() {
         toast.success('Logout successfull');
     };
     const accessToken = getAccessTokenClient();
-    useEffect(() => {
-        const fetchNotification = async () => {
-            if (accessToken && profile?._id) {
-                try {
-                    const res = await notificationApi.getByUserId(
-                        profile._id,
-                        accessToken,
-                    );
-                    if (res) {
-                        setNotis(res?.notifications);
-                        console.log(res);
-                        setCountRead(res?.unreadCount);
-                    }
-                } catch (error) {
-                    console.error('Error fetching notifications:', error);
+    const fetchNotification = async () => {
+        if (accessToken && profile?._id) {
+            try {
+                const res = await notificationApi.getByUserId(
+                    profile._id,
+                    accessToken,
+                );
+                if (res) {
+                    setNotis(res?.notifications);
+                    console.log(res);
+                    setCountRead(res?.unreadCount);
                 }
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
             }
-        };
-
+        }
+    };
+    useEffect(() => {
         fetchNotification();
 
         const intervalId = setInterval(
@@ -175,7 +174,14 @@ function LoggedIn() {
                 <div className="flex flex-col gap-[0.8rem]">
                     {notis.length > 0 &&
                         notis.map((item, index) => (
-                            <NotificationItem noti={item} key={index} />
+                            <NotificationItem
+                                noti={item}
+                                key={index}
+                                onClose={() =>
+                                    setIsOpenNotification(!isOpenNotification)
+                                }
+                                mutate={fetchNotification}
+                            />
                         ))}
                 </div>
             </div>
