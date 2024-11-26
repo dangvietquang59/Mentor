@@ -48,7 +48,10 @@ import logOut from './log-out.svg';
 import User from './user.svg';
 import clock from './clock.svg';
 import check from './check.svg';
+import minus from './minus.svg';
+
 const icons = {
+    minus,
     check,
     User,
     clock,

@@ -73,23 +73,7 @@ function FreetimeTag({
                 participants: [user?._id, profile?._id],
                 freetimeDetailId: selectedSession?._id,
             };
-            const amount =
-                user?.pricePerHour *
-                calculateTimeDifference(
-                    formatTime(selectedSession?.from),
-                    formatTime(selectedSession?.to),
-                );
-            // const dataPayment = {
-            //     amount: amount,
-            // };
-            // const response = await paymentApi.create(dataPayment, token);
-            // if (response?.vnpUrl) {
-            //     window.location.replace(response.vnpUrl);
-            //     return;
-            // } else {
-            //     console.log('Không nhận được URL thanh toán.');
-            //     toast.error('Không thể tạo thanh toán.');
-            // }
+
             await bookingApi
                 .create(data, token)
                 .then((res) => {

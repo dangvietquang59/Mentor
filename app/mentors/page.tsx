@@ -43,6 +43,11 @@ function Mentors() {
     const [mentors, setMentors] = useState<UserType[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalUsers, setTotalUser] = useState<number>(0);
+    const [currentPageTitleJob, setCurrentPageTitleJob] = useState<number>(1);
+    const [currentPageTechnologies, setCurrebtTechnologies] =
+        useState<number>(1);
+    const [totalPageJobtitle, setTotalPageJobTitle] = useState<number>(0);
+    const [totalPageTech, setTotalPageTech] = useState<number>(0);
     const [params, setParams] = useState<ParamsType>({
         role: 'Mentor',
         page: currentPage,
@@ -79,38 +84,36 @@ function Mentors() {
         };
         fetchMentors();
     }, [params]);
-
+    const fetchJobTitle = async () => {
+        await jobTitleApi
+            .getAll(currentPageTitleJob)
+            .then((res) => {
+                if (res) {
+                    setTotalPageJobTitle(res?.totalPages);
+                    setJobTitles(res?.jobs);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    const fetchTechnologies = async () => {
+        await technologiesApi
+            .getAll(currentPageTechnologies)
+            .then((res) => {
+                if (res) {
+                    setTotalPageTech(res?.totalPages);
+                    setTechnologies(res?.technologies);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
     useEffect(() => {
-        const fetchJobTitle = async () => {
-            await jobTitleApi
-                .getAll()
-                .then((res) => {
-                    if (res) {
-                        setJobTitles(res?.jobs);
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        };
         fetchJobTitle();
-    }, []);
-
-    useEffect(() => {
-        const fetchTechnologies = async () => {
-            await technologiesApi
-                .getAll()
-                .then((res) => {
-                    if (res) {
-                        setTechnologies(res?.technologies);
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        };
         fetchTechnologies();
-    }, []);
+    }, [currentPageTechnologies, currentPageTitleJob]);
 
     const onSubmit = async (data: FilterProps) => {
         const newParams: ParamsType = {
@@ -175,14 +178,44 @@ function Mentors() {
             rating: (urlParams.get('rating') as 'ASC' | 'DESC') || undefined,
         });
     }, [reset]);
-
+    const resetForm = () => {
+        reset({
+            search: '',
+            rating: 'ASC',
+            experiencesYear: undefined,
+            jobtitle: [],
+            technology: [],
+        });
+    };
+    const handleScrollPopUpJobTitle = (e: React.UIEvent<HTMLDivElement>) => {
+        if (e && e.currentTarget) {
+            const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+            if (
+                scrollTop + clientHeight >= scrollHeight &&
+                currentPageTitleJob < (totalPageJobtitle || 1)
+            ) {
+                setCurrentPageTitleJob((prevPage) => prevPage + 1);
+            }
+        }
+    };
+    const handleScrollPopUpTech = (e: React.UIEvent<HTMLDivElement>) => {
+        if (e && e.currentTarget) {
+            const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+            if (
+                scrollTop + clientHeight >= scrollHeight &&
+                currentPageTechnologies < (totalPageTech || 1)
+            ) {
+                setCurrebtTechnologies((prevPage) => prevPage + 1);
+            }
+        }
+    };
     return (
         <div className="flex flex-col gap-[4.8rem] bg-[#1A1A1A] px-[5%] py-[2rem]">
             <div className="flex w-full items-center justify-between">
                 <div className="flex w-full items-center gap-[1.6rem]">
                     <form
                         onSubmit={handleSubmit(onSubmit)}
-                        className="flex w-full flex-col gap-[1.2rem] rounded-[0.8rem] bg-[#242424] p-[2rem] shadow-lg"
+                        className="flex w-full flex-col gap-[1.2rem] rounded-[0.8rem] bg-[#222222] p-[2rem] shadow-lg"
                     >
                         <div className="flex items-center gap-[1.2rem]">
                             <div className="flex h-[5.2rem] w-full flex-1 items-center gap-[0.8rem] rounded-[0.8rem] bg-[#1A1A1A] px-[1rem]">
@@ -207,11 +240,18 @@ function Mentors() {
                                 )}
                             </div>
                             <ButtonCustom
+                                type="button"
+                                className="w-[20rem]"
+                                onClick={resetForm}
+                            >
+                                Reset
+                            </ButtonCustom>
+                            <ButtonCustom
                                 type="submit"
                                 outline
                                 className="w-[20rem]"
                             >
-                                Submit
+                                Search
                             </ButtonCustom>
                         </div>
                         <div className="grid grid-cols-4 gap-[1.2rem]">
@@ -230,6 +270,7 @@ function Mentors() {
                                 name="jobtitle"
                                 control={control}
                                 label="Job titles"
+                                onPopupScroll={handleScrollPopUpJobTitle}
                                 options={
                                     jobTitles &&
                                     jobTitles.map((item) => ({
@@ -247,6 +288,7 @@ function Mentors() {
                                 name="technology"
                                 control={control}
                                 label="Technologies"
+                                onPopupScroll={handleScrollPopUpTech}
                                 options={
                                     technologies &&
                                     technologies.map((item) => ({

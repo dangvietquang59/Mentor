@@ -10,9 +10,9 @@ interface MentorProfileProps {
 function MentorsProfile(props: MentorProfileProps) {
     const { mentor } = props;
 
-    const totalExperienceYears = mentor?.technologies?.reduce(
-        (total, tech) => total + tech.experienceYears,
-        0,
+    const maxExperienceYears = mentor?.technologies?.reduce(
+        (max, tech) => Math.max(max, tech.experienceYears),
+        0, // Giá trị khởi tạo là 0, đảm bảo rằng nếu không có công nghệ nào, kết quả sẽ là 0
     );
 
     return (
@@ -66,7 +66,7 @@ function MentorsProfile(props: MentorProfileProps) {
                                 Experiences
                             </p>
                             <p className="text-[1.2rem]">
-                                {totalExperienceYears} years
+                                {maxExperienceYears} years
                             </p>
                         </div>
                     </div>
@@ -75,7 +75,7 @@ function MentorsProfile(props: MentorProfileProps) {
 
             <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-[rgba(0,0,0,0.5)] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <ButtonCustom outline path={`${paths.PROFILE}/${mentor?._id}`}>
-                    View more
+                    View profile
                 </ButtonCustom>
             </div>
         </div>

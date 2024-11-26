@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import images from '../../assets/img';
-import icons from '@/assets/icons';
 import { toast } from 'sonner';
 import InputComponent from '../../components/Input';
 import { formValidation } from '@/utils/constants/formValidation';

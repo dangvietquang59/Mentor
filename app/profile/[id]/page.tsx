@@ -67,9 +67,6 @@ function Profiles() {
         {
             title: 'Reviews',
         },
-        {
-            title: 'Group sessions',
-        },
     ];
     const handleCreateChatOneVOne = async () => {
         if (profileUser && profile) {
@@ -198,12 +195,20 @@ function Profiles() {
                             {selectedTab === 1 && (
                                 <>
                                     <div className="mt-[1.2rem]">
-                                        {reviews?.map((review, index) => (
-                                            <ReviewCard
-                                                key={index}
-                                                review={review}
-                                            />
-                                        ))}
+                                        {reviews?.length > 0 ? (
+                                            reviews?.map((review, index) => (
+                                                <ReviewCard
+                                                    key={index}
+                                                    review={review}
+                                                />
+                                            ))
+                                        ) : (
+                                            <div className="flex h-[20rem] items-center justify-center">
+                                                <p className="text-[1.6rem] font-medium">
+                                                    No reviews founds
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
                                 </>
                             )}
