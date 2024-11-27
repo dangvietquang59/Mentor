@@ -24,6 +24,7 @@ import Cookies from 'js-cookie';
 import FreetimeForm from '@/components/FreetimeForm';
 import { JobTitleType } from '@/types/response/jobTitle';
 import jobTitleApi from '@/apis/jobTitleApi';
+import useRequireAuth from '@/utils/hooks/useRequireAuth';
 
 function EditProfile() {
     const mounted = useMounted();
@@ -45,6 +46,7 @@ function EditProfile() {
     );
 
     const accessToken = getAccessTokenClient() || '';
+    useRequireAuth(accessToken);
 
     const [imageFile, setImageFile] = useState<File | null>(null);
     const acessToken = getAccessTokenClient() || '';

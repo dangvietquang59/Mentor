@@ -34,6 +34,8 @@ const urls = {
     CREATE_PAYMENT: 'create-payment',
     ME: 'me',
     SEARCH: 'search',
+    TRANSFER: 'transfer',
+    TRANSACTIONS: 'transactions',
 };
 
 export default urls;

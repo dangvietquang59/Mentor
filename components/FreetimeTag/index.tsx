@@ -14,7 +14,9 @@ import { formatDate } from '@/utils/functions/formatDate';
 import { calculateTimeDifference } from '@/utils/functions/calculateTimeDifference';
 import { formatNumeric } from '@/utils/functions/formatNumeric';
 import bookingApi from '@/apis/bookingApi';
-import paymentApi from '@/apis/paymentApi';
+import images from '@/assets/img';
+import transactionsApi from '@/apis/transactionsApi';
+import userApi from '@/apis/userApi';
 
 interface FreetimeTagProps {
     sessions: FreeTimeType[];
@@ -49,7 +51,10 @@ function FreetimeTag({
     const [sessionData, setSessionData] = useState<SessionData[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const profile: UserType = getProfile();
-
+    const [me, setMe] = useState<UserType>();
+    const [selected, setSelected] = useState<SessionData | null>(null);
+    const [selectedSession, setSelectedSession] =
+        useState<FreeTimeDetailType | null>(null);
     const handleBooking = () => {
         if (!selectedSession) {
             toast.error('You have choose sesstion before booking');
@@ -67,27 +72,65 @@ function FreetimeTag({
     const handleCancel = () => {
         setIsModalOpen(false);
     };
+    const fetchMe = async () => {
+        await userApi
+            .getMe(token)
+            .then((res) => {
+                if (res) {
+                    setMe(res);
+                }
+            })
+            .catch((err) => console.log(err));
+    };
+    useEffect(() => {
+        fetchMe();
+    }, [selectedSession]);
     const handleBookingSession = async () => {
-        if (selectedSession && profile) {
+        if (selectedSession && profile && user && me) {
             const data = {
-                participants: [user?._id, profile?._id],
-                freetimeDetailId: selectedSession?._id,
+                participants: [user._id, profile._id],
+                freetimeDetailId: selectedSession._id,
             };
 
-            await bookingApi
-                .create(data, token)
-                .then((res) => {
+            try {
+                const amount =
+                    formatNumeric(
+                        user?.pricePerHour *
+                            calculateTimeDifference(
+                                formatTime(selectedSession?.from),
+                                formatTime(selectedSession?.to),
+                            ),
+                    ) || 0;
+                if (me?.coin > Number(amount) * 1000) {
+                    const res = await bookingApi.create(data, token);
                     if (res) {
-                        toast.success('Booking session successful');
-                        handleOk();
+                        const transactionData = {
+                            userId: me._id,
+                            recipientId: user._id,
+                            amount: Number(amount) * 1000,
+                        };
+                        const transactions = await transactionsApi.transfer(
+                            transactionData,
+                            token,
+                        );
+                        if (transactions) {
+                            toast.success('Booking session successful');
+                            handleOk();
+                        }
                     }
-                })
-                .catch((error) => {
-                    console.log(error);
-                    toast.error('Booking session failed');
-                });
+                } else {
+                    toast.error('Insufficient balance');
+                }
+            } catch (error) {
+                console.log(error);
+                toast.error('Booking session failed');
+            }
+        } else {
+            // Optionally handle the case where required variables aren't defined
+            toast.error('Required information is missing for booking');
         }
     };
+
     const formatData = (data: any[]) => {
         return data.map((item) => {
             const formattedDate = getFormattedDate(new Date(item.freeDate));
@@ -97,9 +140,7 @@ function FreetimeTag({
             };
         });
     };
-    const [selected, setSelected] = useState<SessionData | null>(null);
-    const [selectedSession, setSelectedSession] =
-        useState<FreeTimeDetailType | null>(null);
+
     useEffect(() => {
         setSessionData(formatData(sessions));
     }, [sessions]);
@@ -293,29 +334,45 @@ function FreetimeTag({
                                     <h3 className="text-[1.6rem] font-medium">
                                         Price per hour :
                                     </h3>
-                                    <p className="text-[1.6rem] font-medium">
-                                        {formatNumeric(user?.pricePerHour) || 0}
-                                        đ
-                                    </p>
+                                    <div className="flex items-center gap-[0.8rem]">
+                                        <p className="text-[1.6rem] font-medium">
+                                            {formatNumeric(
+                                                user?.pricePerHour,
+                                            ) || 0}
+                                        </p>
+                                        <Image
+                                            src={images.qCoin}
+                                            alt="coin"
+                                            width={20}
+                                            height={20}
+                                        />
+                                    </div>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <h3 className="text-[2rem] font-bold">
                                         Total price :
                                     </h3>
-                                    <p className="text-[2rem] font-bold">
-                                        {formatNumeric(
-                                            user?.pricePerHour *
-                                                calculateTimeDifference(
-                                                    formatTime(
-                                                        selectedSession?.from,
+                                    <div className="flex items-center gap-[0.8rem]">
+                                        <p className="text-[2rem] font-bold">
+                                            {formatNumeric(
+                                                user?.pricePerHour *
+                                                    calculateTimeDifference(
+                                                        formatTime(
+                                                            selectedSession?.from,
+                                                        ),
+                                                        formatTime(
+                                                            selectedSession?.to,
+                                                        ),
                                                     ),
-                                                    formatTime(
-                                                        selectedSession?.to,
-                                                    ),
-                                                ),
-                                        ) || 0}
-                                        đ
-                                    </p>
+                                            ) || 0}
+                                        </p>
+                                        <Image
+                                            src={images.qCoin}
+                                            alt="coin"
+                                            width={20}
+                                            height={20}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         )}
