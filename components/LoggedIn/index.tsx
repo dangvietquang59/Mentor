@@ -23,6 +23,8 @@ import { GroupChatResponseType } from '@/types/response/groupChat';
 import notificationApi from '@/apis/notificationApi';
 import { NotificationType } from '@/types/response/notification';
 import ModalCoin from '@/components/ModalCoin';
+import authApi from '@/apis/authApi';
+import userApi from '@/apis/userApi';
 
 function LoggedIn() {
     const router = useRouter();
@@ -38,19 +40,34 @@ function LoggedIn() {
         name: string;
     } | null>(null);
     const [openModalCoin, setOpenModalCoin] = useState(false);
-
+    const [me, setMe] = useState<UserType>();
     const [notis, setNotis] = useState<NotificationType[]>([]);
     const [countRead, setCountRead] = useState<number>(0);
     const profile: UserType = getProfile() || {};
     const [groups, setGroups] = useState<GroupChatResponseType[]>([]);
+    const accessToken = getAccessTokenClient();
 
+    const fetchMe = async () => {
+        if (accessToken) {
+            await userApi
+                .getMe(accessToken)
+                .then((res) => {
+                    if (res) {
+                        setMe(res);
+                    }
+                })
+                .catch((err) => console.log(err));
+        }
+    };
+    useEffect(() => {
+        fetchMe();
+    }, []);
     const logout = () => {
         Cookies.remove(variables.ACCESS_TOKEN);
         Cookies.remove(variables.PROFILE);
         router.push(paths.HOME);
         toast.success('Logout successfull');
     };
-    const accessToken = getAccessTokenClient();
     const showModalCoin = () => {
         setOpenModalCoin(true);
     };
@@ -237,7 +254,7 @@ function LoggedIn() {
                     onOpenChange={() => setOpenCoin(!isOpenCoin)}
                     overlayStyle={{ width: '15rem' }}
                 >
-                    <button className="flex min-w-[15rem] items-center justify-between gap-[1.4rem] rounded-[0.8rem] bg-[#484848] p-[0.5rem_1rem]">
+                    <button className="flex min-w-[15rem] items-center justify-between gap-[1.4rem] rounded-[0.8rem] bg-[#363636] p-[0.5rem_1rem]">
                         <div className="flex items-center gap-[0.8rem]">
                             <Image
                                 src={images.qCoin}
@@ -245,13 +262,13 @@ function LoggedIn() {
                                 className="size-[3rem]"
                             />
                             <span className="text-[1.4rem] font-bold">
-                                {formatNumeric(profile?.coin) || 0}
+                                {formatNumeric(me?.coin || profile?.coin) || 0}
                             </span>
                         </div>
                         <Image
                             src={icons.chevronDown}
                             alt="icons"
-                            className="size-[2rem]"
+                            className={`size-[2rem] ${isOpenCoin ? 'rotate-180' : 'rotate-0'} duration-300`}
                         />
                     </button>
                 </Popover>

@@ -1,6 +1,7 @@
 import paymentApi from '@/apis/paymentApi';
 import images from '@/assets/img';
 import ButtonCustom from '@/components/ButtonCustom';
+import { formatNumeric } from '@/utils/functions/formatNumeric';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { Modal } from 'antd';
 import Image from 'next/image';
@@ -17,7 +18,9 @@ interface PriceCoinProps {
 }
 
 function ModalCoin({ open, handleCancel, handleOk }: ModalCoinProps) {
-    const coins = [10, 20, 50, 100, 200, 500, 1000, 2000];
+    const coins = [
+        100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000,
+    ];
     const [selectedCoins, setSelectedCoins] = useState<number>(0);
     const token = getAccessTokenClient();
     const PriceCoin = ({ coin }: PriceCoinProps) => {
@@ -27,14 +30,15 @@ function ModalCoin({ open, handleCancel, handleOk }: ModalCoinProps) {
                 onClick={() => setSelectedCoins(coin)}
             >
                 <Image src={images.qCoin} alt="icon" width={50} height={50} />
-                <span className="text-lg font-medium">{coin} Coins</span>
+                <span className="text-lg font-medium">
+                    {formatNumeric(coin)} Coins
+                </span>
             </button>
         );
     };
     const handleDepositCoins = async () => {
         if (token) {
-            const amount = selectedCoins * 10000;
-            console.log(amount);
+            const amount = selectedCoins;
 
             const dataPayment = {
                 amount: amount,
@@ -68,8 +72,8 @@ function ModalCoin({ open, handleCancel, handleOk }: ModalCoinProps) {
                     ))}
                 </div>
                 <p className="text-xl text-white">
-                    Amount to deposit/withdraw: {selectedCoins} coins (1 coin =
-                    10.000vnd)
+                    Amount to deposit/withdraw: {formatNumeric(selectedCoins)}{' '}
+                    coins
                 </p>
                 <ButtonCustom className="mt-4" onClick={handleDepositCoins}>
                     Confirm

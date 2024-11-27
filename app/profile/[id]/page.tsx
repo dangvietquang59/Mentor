@@ -79,6 +79,7 @@ function Profiles() {
                 .then((res) => {
                     if (res) {
                         console.log(res);
+                        router.push(`${paths.MESSAGES}/${profile?._id}`);
                     }
                 })
                 .catch((error) => {

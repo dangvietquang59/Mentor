@@ -33,7 +33,7 @@ const Blogs = () => {
                 <ButtonCustom outline>New Blog</ButtonCustom>
             </Link>
 
-            <div className="grid grid-cols-4 gap-[1.2rem]">
+            <div className="grid grid-cols-3 gap-[1.2rem]">
                 {blogs.length > 0 ? (
                     blogs.map((blog, index) => (
                         <BlogCard key={index} blog={blog} />

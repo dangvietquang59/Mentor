@@ -4,7 +4,7 @@ import ChatUser from '../../../components/Chat/ChatUser';
 import ActionChat from '../../../components/Chat/ActionChat';
 import SearchInput from '../../../components/SearchInput';
 import HeaderInfoChat from '../../../components/Chat/HeaderInfoChat';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { GroupChatResponseType } from '@/types/response/groupChat';
 import { useGetIdFromUrl } from '@/utils/functions/getIdUrl';
@@ -18,6 +18,8 @@ import icons from '@/assets/icons';
 import MessageItem from '../../../components/Chat/MessageItem';
 import { getProfile } from '@/utils/functions/getProfile';
 import { useScrollToBottom } from '@/utils/hooks/useScrollToBottom';
+import { Avatar } from 'antd';
+import { debounce } from 'lodash';
 
 // Initialize socket outside of component
 const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`);
@@ -31,10 +33,13 @@ function Messages() {
     const [images, setImages] = useState<File[]>([]);
     const [isSending, setIsSending] = useState(false);
     const accessToken = getAccessTokenClient();
+    const [openImages, setOpenImages] = useState(false);
+    const [openMembers, setOpenMembers] = useState(false);
     const id = useGetIdFromUrl();
     const profile: UserType = getProfile();
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [openInfo, setOpenInfo] = useState<boolean>(false);
     const handleIconClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
@@ -125,9 +130,7 @@ function Messages() {
                         accessToken,
                     );
                     if (res) {
-                        const validMessages = res.filter(
-                            (msg) => msg && msg.content,
-                        );
+                        const validMessages = res.filter((msg) => msg);
                         setMessages(validMessages);
                     }
                 } catch (error) {
@@ -207,11 +210,40 @@ function Messages() {
         textarea.style.height = 'auto';
         textarea.style.height = `${textarea.scrollHeight}px`;
     };
+    const [query, setQuery] = useState<string>('');
+    const [results, setResults] = useState<any[]>([]);
+    const fetchGroupSearch = useCallback(
+        debounce(async (searchText: string) => {
+            if (searchText.trim() === '') {
+                setResults([]);
+                return;
+            }
+
+            try {
+                const res = await groupChatApi.search(searchText);
+                setResults(res || []);
+                console.log('Search results:', res);
+            } catch (err) {
+                console.error('Error fetching search results:', err);
+            }
+        }, 500), // Chờ 500ms sau khi nhập xong
+        [],
+    );
+
+    // Gọi debounce hàm khi query thay đổi
+    useEffect(() => {
+        fetchGroupSearch(query);
+        return fetchGroupSearch.cancel; // Hủy debounce nếu component bị unmount
+    }, [query, fetchGroupSearch]);
     return (
-        <div className="mx-[5%] mt-[2%] flex max-h-[85vh] min-h-[85vh] gap-[1.2rem]">
-            <div className="w-[30%] rounded-[0.8rem] bg-[#242526] p-[1rem] pt-[1rem]">
+        <div className="mx-[1rem] mt-[1%] flex max-h-[85vh] min-h-[85vh] gap-[1.2rem]">
+            <div className="w-[50rem] rounded-[0.8rem] bg-[#242526] p-[1rem] pt-[1rem]">
                 <ActionChat />
-                <SearchInput className="my-[2.4rem]" />
+                <SearchInput
+                    className="my-[2.4rem]"
+                    query={query}
+                    setQuery={setQuery}
+                />
                 <div className="flex flex-col gap-[0.8rem]">
                     {id && (
                         <ChatUser
@@ -224,10 +256,15 @@ function Messages() {
                     )}
                 </div>
             </div>
-            <div className="flex w-full flex-col justify-between gap-[1.2rem] overflow-hidden rounded-[0.8rem] bg-[#242526]">
-                {selectedGroup && <HeaderInfoChat user={selectedGroup} />}
+            <div className="flex w-full flex-col justify-between overflow-hidden rounded-[0.8rem] bg-[#242526]">
+                {selectedGroup && (
+                    <HeaderInfoChat
+                        user={selectedGroup}
+                        setOpen={() => setOpenInfo(!openInfo)}
+                    />
+                )}
                 <div
-                    className="no-scrollbar flex max-h-[50vh] min-h-[30rem] flex-col gap-[2.4rem] overflow-y-auto p-[1rem]"
+                    className="flex max-h-[60vh] min-h-[30rem] flex-col gap-[2.4rem] overflow-y-auto p-[1rem]"
                     ref={messagesEndRef}
                 >
                     {messages.map((item, index) => (
@@ -330,6 +367,73 @@ function Messages() {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div
+                className={`transition-all duration-500 ease-in-out ${
+                    openInfo ? 'max-w-[50rem] opacity-100' : 'max-w-0 opacity-0'
+                } w-[50rem] overflow-hidden rounded-[10px] bg-[#242526]`}
+            >
+                <div className="mt-[2.4rem] flex flex-col items-center gap-[1.2rem]">
+                    <Avatar src={profile?.imageUrl} alt="images" size={80} />
+                    <span className="text-[1.6rem] font-medium">
+                        {profile?.fullName}
+                    </span>
+                </div>
+                <button
+                    className="flex h-[4rem] w-full items-center justify-between p-[1rem]"
+                    onClick={() => setOpenImages(!openImages)}
+                >
+                    <div className="flex items-center gap-[0.8rem]">
+                        <Image src={icons.photo} alt="icon" width={20} />
+                        <span className="text-[1.4rem]">Images</span>
+                    </div>
+                    <Image
+                        src={icons.chevronDown}
+                        alt="icon"
+                        width={20}
+                        className={`transition-transform duration-300 ${
+                            openImages ? 'rotate-180' : ''
+                        }`}
+                    />
+                </button>
+                {openImages && (
+                    <div className="rounded-[0.8rem] p-[1rem]">
+                        <p>Images content goes here...</p>
+                    </div>
+                )}
+
+                {/* Members Button */}
+                <button
+                    className="flex h-[4rem] w-full items-center justify-between p-[1rem]"
+                    onClick={() => setOpenMembers(!openMembers)}
+                >
+                    <div className="flex items-center gap-[0.8rem]">
+                        <Image src={icons.User} alt="icon" width={20} />
+                        <span className="text-[1.4rem]">Members</span>
+                    </div>
+                    <Image
+                        src={icons.chevronDown}
+                        alt="icon"
+                        width={20}
+                        className={`transition-transform duration-300 ${
+                            openMembers ? 'rotate-180' : ''
+                        }`}
+                    />
+                </button>
+                {openMembers && (
+                    <div className="rounded-[0.8rem] p-[1rem]">
+                        <p>Members content goes here...</p>
+                    </div>
+                )}
+                <button
+                    className="flex h-[4rem] w-full items-center justify-between p-[1rem]"
+                    // onClick={() => setOpenMembers(!openMembers)}
+                >
+                    <div className="flex items-center gap-[0.8rem]">
+                        <Image src={icons.logOut} alt="icon" width={20} />
+                        <span className="text-[1.4rem]">Remove room</span>
+                    </div>
+                </button>
             </div>
         </div>
     );

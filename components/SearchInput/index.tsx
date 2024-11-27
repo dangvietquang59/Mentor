@@ -2,8 +2,10 @@ import icons from '@/assets/icons';
 import Image from 'next/image';
 interface SearchInputProps {
     className?: string;
+    query: string;
+    setQuery: (value: string) => void;
 }
-function SearchInput({ className }: SearchInputProps) {
+function SearchInput({ className, query, setQuery }: SearchInputProps) {
     return (
         <div
             className={`flex h-[4rem] items-center rounded-[0.8rem] bg-[#3A3B3C] p-[1rem] ${className}`}
@@ -12,6 +14,8 @@ function SearchInput({ className }: SearchInputProps) {
             <input
                 placeholder="Enter name user"
                 className="h-full grow bg-transparent p-[1rem] text-[1.4rem] focus-within:outline-none"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
             />
         </div>
     );

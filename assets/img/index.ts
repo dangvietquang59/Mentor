@@ -10,8 +10,10 @@ import test from './test.jpg';
 import blogDefault from './blog_default.png';
 import check from './check.png';
 import fail from './fail.png';
+import thumbnailBlog from './thumb-blog.webp';
 
 const images = {
+    thumbnailBlog,
     check,
     fail,
     logo,

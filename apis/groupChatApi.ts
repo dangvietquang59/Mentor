@@ -42,5 +42,24 @@ const groupChatApi = {
             throw new Error('Error calling chat group API');
         }
     },
+    async search(query: string) {
+        try {
+            const params = new URLSearchParams({ query });
+            const apiUrl = `${urls.GROUP_CHAT}/${urls.USER}/${urls.SEARCH}?${params.toString()}`;
+
+            const res = await fetchData<GroupChatResponseType[]>(
+                `${apiUrl}`,
+                null,
+                'GET',
+            );
+            return res;
+        } catch (error: any) {
+            console.error(
+                'Error calling chat group API:',
+                error?.response?.data || error.message || error,
+            );
+            throw new Error('Error calling chat group API');
+        }
+    },
 };
 export default groupChatApi;

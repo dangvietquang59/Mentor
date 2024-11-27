@@ -49,8 +49,10 @@ import User from './user.svg';
 import clock from './clock.svg';
 import check from './check.svg';
 import minus from './minus.svg';
+import column from './columns.svg';
 
 const icons = {
+    column,
     minus,
     check,
     User,

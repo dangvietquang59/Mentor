@@ -32,6 +32,8 @@ const urls = {
     UPDATE_RATING: 'update-rating',
     PAYMENT: 'payment',
     CREATE_PAYMENT: 'create-payment',
+    ME: 'me',
+    SEARCH: 'search',
 };
 
 export default urls;

@@ -42,12 +42,14 @@ export type FreetimeSessionDetails = {
 interface FreeTimeSectionsProps {
     sections: FreeTimeType;
     showIcon?: boolean;
-    onDelete: () => void;
+    onDelete: (value: string) => void;
+    confirm: () => void;
 }
 const FreeTimeSections = ({
     sections,
     showIcon = true,
     onDelete,
+    confirm,
 }: FreeTimeSectionsProps) => {
     return (
         <ul className="grid grid-cols-3 gap-[1.2rem]">
@@ -69,7 +71,10 @@ const FreeTimeSections = ({
                         {showIcon && (
                             <div
                                 className="cursor-pointer rounded-full bg-[rgba(255,255,255,0.5)] p-[1rem] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
-                                onClick={onDelete}
+                                onClick={() => {
+                                    onDelete(item?._id);
+                                    confirm();
+                                }}
                             >
                                 <Image
                                     src={icons.trash}
@@ -94,6 +99,7 @@ function FreetimeForm() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [selectedFreetimeDetail, setSelectedFreetimeDetail] =
         useState<string>('');
+    console.log(selectedFreetimeDetail);
     const [currentDetail, setCurrentDetail] = useState<FreetimeSessionDetails>({
         name: '',
         from: '',
@@ -102,9 +108,8 @@ function FreetimeForm() {
     const [showConfirm, setShowConfirm] = useState(false);
     const token = getAccessTokenClient();
 
-    const showConfirmModal = (id: string) => {
+    const showConfirmModal = () => {
         setShowConfirm(true);
-        setSelectedFreetimeDetail(id);
     };
     const cancelConfirmModal = () => {
         setShowConfirm(false);
@@ -238,7 +243,8 @@ function FreetimeForm() {
                             <FreeTimeSections
                                 sections={item}
                                 key={index}
-                                onDelete={() => showConfirmModal(item?._id)}
+                                onDelete={setSelectedFreetimeDetail}
+                                confirm={showConfirmModal}
                             />
                         </div>
                     ))}

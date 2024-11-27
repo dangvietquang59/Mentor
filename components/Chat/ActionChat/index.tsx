@@ -44,7 +44,7 @@ function ActionChat() {
         <>
             <div className="flex items-center justify-between">
                 <h2 className="text-[2rem] font-bold">Messages</h2>
-                <div className="flex items-end justify-center gap-[0.8rem]">
+                {/* <div className="flex items-end justify-center gap-[0.8rem]">
                     <button onClick={showModal}>
                         <Image
                             src={icons.squarePlus}
@@ -59,7 +59,7 @@ function ActionChat() {
                             className="h-[2rem] w-[2rem]"
                         />
                     </button>
-                </div>
+                </div> */}
             </div>
             <Modal
                 open={isModalOpen}

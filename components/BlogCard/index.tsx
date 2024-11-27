@@ -18,7 +18,7 @@ function BlogCard({ blog }: BlogCardProps) {
         <div className="h-[40rem] overflow-hidden rounded-[0.8rem] bg-[#2D2F2E]">
             <div className="h-[20rem] w-full">
                 <img
-                    src={firstImage ? firstImage : images.blogDefault.src}
+                    src={firstImage || images.thumbnailBlog.src}
                     alt="image-thumb"
                     className="h-full w-full object-cover"
                 />
