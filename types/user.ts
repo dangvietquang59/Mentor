@@ -16,7 +16,7 @@ export type UserType = {
     email: string;
     role: string;
     imageUrl: string;
-    bio?: Bio | string;
+    bio: Bio;
     slug: string;
     rating?: string;
     createdAt: string | Date;

@@ -25,6 +25,7 @@ import FreetimeForm from '@/components/FreetimeForm';
 import { JobTitleType } from '@/types/response/jobTitle';
 import jobTitleApi from '@/apis/jobTitleApi';
 import useRequireAuth from '@/utils/hooks/useRequireAuth';
+import { UserTypeRequest } from '@/types/request/user';
 
 function EditProfile() {
     const mounted = useMounted();
@@ -205,16 +206,12 @@ function EditProfile() {
         handleSubmit: handleProfileSubmit,
         reset: resetProfileForm,
         formState: { errors: profileErrors },
-    } = useForm<UserType>();
+    } = useForm<UserTypeRequest>();
 
     useEffect(() => {
         resetProfileForm({
             email: profileUser?.email || '',
-            bio:
-                typeof profileUser?.bio === 'object'
-                    ? profileUser?.bio?._id
-                    : { _id: undefined, name: undefined },
-
+            bio: profileUser?.bio?._id,
             fullName: profileUser?.fullName || '',
             rating: profileUser?.rating || '',
             role: profileUser?.role || '',
@@ -222,7 +219,7 @@ function EditProfile() {
         });
     }, [profileUser, resetProfileForm]);
 
-    const onSubmitProfile = async (data: UserType) => {
+    const onSubmitProfile = async (data: UserTypeRequest) => {
         const formatedExperiences =
             experiences.length > 0
                 ? experiences.map((item) => ({

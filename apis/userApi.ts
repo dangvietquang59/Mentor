@@ -1,3 +1,4 @@
+import { UserTypeRequest } from '@/types/request/user';
 import { UserTypeRespone } from '@/types/response/user';
 import { UserType } from '@/types/user';
 import urls from '@/utils/constants/urls';
@@ -34,7 +35,11 @@ const userApi = {
             throw new Error('Error calling update profile API');
         }
     },
-    async updateProfile(data: UserType, userId: string, accessToken: string) {
+    async updateProfile(
+        data: UserTypeRequest,
+        userId: string,
+        accessToken: string,
+    ) {
         try {
             const res = await fetchData<UserType>(
                 `${urls.USERS}/${urls.UPDATE_PROFILE}/${userId}`,

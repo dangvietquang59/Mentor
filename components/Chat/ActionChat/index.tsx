@@ -90,7 +90,7 @@ function ActionChat() {
                             />
                         </div>
                     </div>
-                    <SearchInput />
+                    {/* <SearchInput /> */}
                     <div className="flex flex-col gap-[1.2rem]">
                         <h3 className="text-[1.6rem] font-medium">List user</h3>
                         <div className="max-h-[30rem] overflow-y-auto pr-[1rem]">

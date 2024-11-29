@@ -16,4 +16,5 @@ export type UserTypeRequest = {
     updatedAt: Date;
     technologies: Technologies[];
     pricePerHour: number;
+    coin: number;
 };
