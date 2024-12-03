@@ -169,7 +169,30 @@ function FreetimeTag({
     useEffect(() => {
         setCurrentPage(1);
     }, [selected?._id]);
+    const itemsPerPage = 6;
 
+    const total = Math.ceil(
+        (selected?.freeTimeDetail?.length ?? 0) / itemsPerPage,
+    );
+
+    // Get the sessions for the current page
+    const displayedSessions = selected?.freeTimeDetail?.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage,
+    );
+
+    // Handle next and previous page
+    const handleNextPage = () => {
+        if (currentPage < total) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
     if (forBooking) {
         return (
             <>
@@ -216,10 +239,11 @@ function FreetimeTag({
                                 <span className="text-[2rem] font-bold">
                                     Available time slots
                                 </span>
-                                {/* <div className="flex items-center gap-[0.8rem]">
+                                <div className="flex items-center gap-[0.8rem]">
                                     <button
                                         disabled={currentPage === 1}
-                                        className={`${currentPage === 1 ? 'cursor-not-allowed opacity-70' : ' '}`}
+                                        className={`${currentPage === 1 ? 'cursor-not-allowed opacity-70' : ''}`}
+                                        onClick={handlePrevPage}
                                     >
                                         <Image
                                             src={icons.chevronDown}
@@ -227,36 +251,45 @@ function FreetimeTag({
                                             className="rotate-[90deg]"
                                         />
                                     </button>
-                                    <button>
+                                    <button
+                                        disabled={currentPage === total}
+                                        className={`${currentPage === total ? 'cursor-not-allowed opacity-70' : ''}`}
+                                        onClick={handleNextPage}
+                                    >
                                         <Image
                                             src={icons.chevronDown}
                                             alt="icon"
                                             className="rotate-[-90deg]"
                                         />
                                     </button>
-                                </div> */}
+                                </div>
                             </div>
+
                             <div className="mt-[2.4rem] grid grid-cols-3 gap-[0.8rem]">
-                                {selected?.freeTimeDetail?.length > 0 &&
-                                    selected?.freeTimeDetail?.map(
-                                        (item, index) => (
-                                            <div
-                                                key={index}
-                                                className={`flex cursor-pointer flex-col gap-[0.4rem] rounded-[0.8rem] p-[1rem] ${selectedSession?._id === item?._id ? 'bg-[#5dd62c] text-black' : 'border'}`}
-                                                onClick={() =>
-                                                    setSelectedSession(item)
-                                                }
-                                            >
-                                                <p className="text-[1.8rem] font-bold">
-                                                    {item?.name}
-                                                </p>
-                                                <p className="text-[1.4rem] font-medium">
-                                                    {formatTime(item?.from)} -{' '}
-                                                    {formatTime(item?.to)}
-                                                </p>
-                                            </div>
-                                        ),
-                                    )}
+                                {displayedSessions &&
+                                    displayedSessions?.length > 0 &&
+                                    displayedSessions.map((item, index) => (
+                                        <div
+                                            key={index}
+                                            className={`flex cursor-pointer flex-col gap-[0.4rem] rounded-[0.8rem] p-[1rem] ${
+                                                selectedSession?._id ===
+                                                item?._id
+                                                    ? 'bg-[#5dd62c] text-black'
+                                                    : 'border'
+                                            }`}
+                                            onClick={() =>
+                                                setSelectedSession(item)
+                                            }
+                                        >
+                                            <p className="text-[1.8rem] font-bold">
+                                                {item?.name}
+                                            </p>
+                                            <p className="text-[1.4rem] font-medium">
+                                                {formatTime(item?.from)} -{' '}
+                                                {formatTime(item?.to)}
+                                            </p>
+                                        </div>
+                                    ))}
                             </div>
 
                             {profile?._id !== user?._id && selectedSession && (

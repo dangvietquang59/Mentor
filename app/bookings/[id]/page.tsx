@@ -5,12 +5,14 @@ import { BookingGetResponeType } from '@/types/response/booking';
 import { UserType } from '@/types/user';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { getProfile } from '@/utils/functions/getProfile';
+import useRequireAuth from '@/utils/hooks/useRequireAuth';
 import { useEffect, useState } from 'react';
 
 function BookingDetail() {
-    const [bookings, setBooking] = useState<BookingGetResponeType[]>([]);
+    const [booking, setBooking] = useState<BookingGetResponeType[]>([]);
     const profile: UserType = getProfile();
     const token = getAccessTokenClient();
+    useRequireAuth(token);
     const fetchBooking = async () => {
         if (token && profile) {
             await bookingApi
@@ -23,7 +25,7 @@ function BookingDetail() {
                 .catch((errors) => console.log(errors));
         }
     };
-    console.log(bookings);
+    console.log(booking);
     useEffect(() => {
         fetchBooking();
     }, []);
@@ -33,9 +35,9 @@ function BookingDetail() {
                 Booking List
             </h2>
             <div className="mt-[2.4rem] grid grid-cols-3 gap-[1.2rem]">
-                {bookings.length > 0 &&
+                {booking.length > 0 &&
                     token &&
-                    bookings?.map((item, index) => (
+                    booking?.map((item, index) => (
                         <BookingCard
                             key={index}
                             booking={item}

@@ -18,8 +18,10 @@ import icons from '@/assets/icons';
 import MessageItem from '../../../components/Chat/MessageItem';
 import { getProfile } from '@/utils/functions/getProfile';
 import { useScrollToBottom } from '@/utils/hooks/useScrollToBottom';
-import { Avatar } from 'antd';
+import { Avatar, Image as AntImage } from 'antd';
 import { debounce } from 'lodash';
+import useRequireAuth from '@/utils/hooks/useRequireAuth';
+import { Attachments } from '@/types/message';
 
 // Initialize socket outside of component
 const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`);
@@ -40,6 +42,7 @@ function Messages() {
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [openInfo, setOpenInfo] = useState<boolean>(false);
+    useRequireAuth(accessToken);
     const handleIconClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
@@ -235,6 +238,17 @@ function Messages() {
         fetchGroupSearch(query);
         return fetchGroupSearch.cancel; // Hủy debounce nếu component bị unmount
     }, [query, fetchGroupSearch]);
+
+    const listImage: Attachments[] =
+        messages
+            ?.filter(
+                (item) => item?.attachments && item?.attachments.length > 0,
+            )
+            .map((item) => item.attachments)
+            .flat()
+            .filter((attachment) => attachment !== undefined) || [];
+
+    console.log(groups);
     return (
         <div className="mx-[1rem] mt-[1%] flex max-h-[85vh] min-h-[85vh] gap-[1.2rem]">
             <div className="w-[50rem] rounded-[0.8rem] bg-[#242526] p-[1rem] pt-[1rem]">
@@ -264,7 +278,7 @@ function Messages() {
                     />
                 )}
                 <div
-                    className="flex max-h-[60vh] min-h-[30rem] flex-col gap-[2.4rem] overflow-y-auto p-[1rem]"
+                    className="flex max-h-[60vh] min-h-[30rem] flex-col gap-[2.4rem] overflow-hidden overflow-y-auto p-[1rem]"
                     ref={messagesEndRef}
                 >
                     {messages.map((item, index) => (
@@ -277,13 +291,13 @@ function Messages() {
                             attachments={item.attachments || []}
                         />
                     ))}
-                    {isSending && (
-                        <div className="flex justify-end">
-                            <span className="text-[1.4rem] text-[#6B7B8A]">
-                                Đang gửi...
-                            </span>
-                        </div>
-                    )}
+                    <div
+                        className={`flex justify-end ${isSending ? 'opacity-100' : 'opacity-0'}`}
+                    >
+                        <span className="text-[1.4rem] text-[#6B7B8A]">
+                            Đang gửi...
+                        </span>
+                    </div>
                 </div>
 
                 <div className="flex h-auto flex-col gap-[1.2rem] bg-[#2E2D2D] p-[1rem]">
@@ -371,7 +385,7 @@ function Messages() {
             <div
                 className={`transition-all duration-500 ease-in-out ${
                     openInfo ? 'max-w-[50rem] opacity-100' : 'max-w-0 opacity-0'
-                } w-[50rem] overflow-hidden rounded-[10px] bg-[#242526]`}
+                } no-scrollbar max-h-[50rem] w-[50rem] overflow-hidden overflow-y-auto rounded-[10px] bg-[#242526]`}
             >
                 <div className="mt-[2.4rem] flex flex-col items-center gap-[1.2rem]">
                     <Avatar src={profile?.imageUrl} alt="images" size={80} />
@@ -398,7 +412,20 @@ function Messages() {
                 </button>
                 {openImages && (
                     <div className="rounded-[0.8rem] p-[1rem]">
-                        <p>Images content goes here...</p>
+                        {Array.isArray(listImage) && listImage.length > 0 ? (
+                            <div className="grid grid-cols-3 gap-[1rem]">
+                                {listImage.map((item) => (
+                                    <AntImage
+                                        src={item?.url}
+                                        alt={item?.filename || 'image'}
+                                        key={item._id || item.filename}
+                                        className="h-[3rem] w-full object-cover"
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <p>Not found</p>
+                        )}
                     </div>
                 )}
 
@@ -421,8 +448,24 @@ function Messages() {
                     />
                 </button>
                 {openMembers && (
-                    <div className="rounded-[0.8rem] p-[1rem]">
-                        <p>Members content goes here...</p>
+                    <div className="flex flex-col gap-[1rem] rounded-[0.8rem] p-[1rem]">
+                        {groups?.map((item, index) =>
+                            item?.members?.map((member, memberIndex) => (
+                                <div
+                                    className="flex items-center gap-[1rem]"
+                                    key={`${index}-${memberIndex}`}
+                                >
+                                    <Avatar
+                                        src={member?.imageUrl}
+                                        alt="avatar"
+                                        size={30}
+                                    />
+                                    <span className="text-[1.4rem] font-medium">
+                                        {member?.fullName || 'No name'}
+                                    </span>{' '}
+                                </div>
+                            )),
+                        )}
                     </div>
                 )}
                 <button

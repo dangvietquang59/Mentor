@@ -43,9 +43,9 @@ function MessageItem({ msg, time, user, id, attachments }: MessageType) {
                     {msg !== '' && (
                         <div className="group flex items-center gap-[0.8rem]">
                             <div
-                                className={`flex ${isLongMessage ? 'max-w-[30%]' : 'w-full'} flex-col gap-[0.8rem] rounded-[0.8rem] bg-[#191818] p-[1rem]`}
+                                className={`flex ${isLongMessage ? 'max-w-[50rem]' : 'w-full'} flex-col gap-[0.8rem] rounded-[0.8rem] bg-[#191818] p-[1rem]`}
                             >
-                                <p className="overflow-wrap break-words text-[1.6rem]">
+                                <p className="overflow-wrap max-w-full break-words text-[1.6rem]">
                                     {msg}
                                 </p>
                                 {time && (

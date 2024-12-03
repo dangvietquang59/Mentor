@@ -10,4 +10,9 @@ export type GroupChatResponseType = {
     _id: string;
     name: string;
     members: UserType[];
+    latestMessage: {
+        sender: string;
+        content: string;
+        timestamp: string;
+    };
 };

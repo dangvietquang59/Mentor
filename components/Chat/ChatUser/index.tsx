@@ -53,7 +53,8 @@ function ChatUser({
                                     : item?.members?.[1]?.fullName}
                             </h2>
                             <span className="text-[1.4rem] text-[#96A1AB]">
-                                Chưa có tin nhắn mới
+                                {item?.latestMessage?.content ||
+                                    'Chưa có tin nhắn mới'}
                             </span>
                         </div>
                     </div>

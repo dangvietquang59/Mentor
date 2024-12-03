@@ -13,26 +13,40 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import ReviewModal from '../ReviewModal';
+import { useRouter } from 'next/navigation';
 
 interface BookingCardProps {
     booking: BookingGetResponeType;
     token: string;
     refreshData: () => void;
 }
+
 function BookingCard({ booking, token, refreshData }: BookingCardProps) {
     const profile: UserType = getProfile();
     const isMentor = profile?._id === booking?.participants?.[0]?._id;
     const [openReview, setOpenReview] = useState(false);
+    const router = useRouter();
 
-    const showReview = () => {
-        setOpenReview(true);
-    };
-    const creatReview = () => {
-        setOpenReview(true);
-    };
-    const cancleReview = () => {
-        setOpenReview(false);
-    };
+    const isAfter = isCurrentDateAfterBookingDate(
+        booking?.freetimeDetailId?.to,
+    );
+    function isCurrentDateAfterBookingDate(bookingDate: string) {
+        const currentDate = new Date();
+        const bookingDateObj = new Date(bookingDate);
+
+        if (currentDate.getTime() > bookingDateObj.getTime()) {
+            return true; // Ngày hiện tại sau ngày giờ đặt
+        } else if (currentDate.getTime() < bookingDateObj.getTime()) {
+            return false; // Ngày hiện tại trước ngày giờ đặt
+        } else {
+            return false; // Ngày giờ giống nhau
+        }
+    }
+
+    const showReview = () => setOpenReview(true);
+    const createReview = () => setOpenReview(true);
+    const cancelReview = () => setOpenReview(false);
+
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'Pending':
@@ -45,136 +59,132 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
                 return 'gray';
         }
     };
+
     const handleUpdateBooking = async (status: string) => {
-        const data = {
-            status,
-        };
-        await bookingApi
-            .update(booking?._id, data, token)
-            .then((res) => {
-                if (res) {
-                    toast.success('Update successfuly');
-                    refreshData();
-                }
-            })
-            .catch(() => toast.error('Update failed'));
+        const data = { status };
+        try {
+            await bookingApi.update(booking?._id, data, token);
+            toast.success('Update successful');
+            refreshData();
+        } catch {
+            toast.error('Update failed');
+        }
     };
+
     const content = (
-        <>
-            <div className="flex w-[8rem] flex-col items-start justify-start gap-[1.2rem]">
-                {booking?.status === 'Pending' && (
-                    <>
-                        {booking?.participants?.[0]?._id === profile?._id ? (
-                            <>
-                                <button
-                                    className="flex items-center gap-[0.8rem] text-[1.6rem] font-medium text-white hover:opacity-70"
-                                    onClick={() =>
-                                        handleUpdateBooking('Accepted')
-                                    }
-                                >
-                                    <Image
-                                        src={icons.check}
-                                        alt="check-icon"
-                                        className="w-[1.8rem]"
-                                    />
-                                    <p>Accept</p>
-                                </button>
-                                <button
-                                    className="flex items-center gap-[0.8rem] text-[1.6rem] font-medium text-white hover:opacity-70"
-                                    onClick={() =>
-                                        handleUpdateBooking('Refused')
-                                    }
-                                >
-                                    <Image
-                                        src={icons.xIcon}
-                                        alt="check-icon"
-                                        className="w-[1.8rem]"
-                                    />
-                                    <p>Refuse</p>
-                                </button>
-                            </>
-                        ) : (
+        <div className="flex flex-col gap-[1.2rem]">
+            {booking?.status === 'Pending' && (
+                <>
+                    {booking?.participants?.[0]?._id === profile?._id ? (
+                        <>
                             <button
-                                className="flex items-center gap-[0.8rem] text-[1.6rem] font-medium text-white hover:opacity-70"
-                                onClick={() => handleUpdateBooking('Canceled')}
+                                className="flex items-center gap-[0.8rem] rounded px-2 py-1 text-[1.6rem] font-medium text-white "
+                                onClick={() => handleUpdateBooking('Accepted')}
+                            >
+                                <Image
+                                    src={icons.check}
+                                    alt="check-icon"
+                                    className="w-[1.8rem]"
+                                />
+                                Accept
+                            </button>
+                            <button
+                                className="flex items-center gap-[0.8rem] rounded px-2 py-1 text-[1.6rem] font-medium text-white "
+                                onClick={() => handleUpdateBooking('Refused')}
                             >
                                 <Image
                                     src={icons.xIcon}
                                     alt="check-icon"
                                     className="w-[1.8rem]"
                                 />
-                                <p>Cancel</p>
+                                Refuse
                             </button>
-                        )}
-                    </>
-                )}
-                {booking?.status === 'Accepted' && (
-                    <div className="flex flex-col gap-[0.8rem]">
+                        </>
+                    ) : (
                         <button
-                            className="flex items-center gap-[0.8rem] text-[1.6rem] font-medium text-white hover:opacity-70"
-                            onClick={showReview}
+                            className="flex items-center gap-[0.8rem] rounded px-2 py-1 text-[1.6rem] font-medium text-white "
+                            onClick={() => handleUpdateBooking('Canceled')}
                         >
                             <Image
-                                src={icons.comment}
-                                alt="check-icon"
+                                src={icons.xIcon}
+                                alt="cancel-icon"
                                 className="w-[1.8rem]"
                             />
-                            Review
+                            Cancel
                         </button>
-                        <Link
-                            href={`${paths.ROOM}/${booking?._id}`}
-                            className="flex items-center gap-[0.8rem] text-[1.6rem] font-medium text-white hover:opacity-70"
-                        >
-                            <Image
-                                src={icons.video}
-                                alt="check-icon"
-                                className="w-[1.8rem]"
-                            />
-                            View
-                        </Link>
-                    </div>
-                )}
-            </div>
-        </>
+                    )}
+                </>
+            )}
+            {booking?.status === 'Accepted' && (
+                <>
+                    <button
+                        className="flex items-center gap-[0.8rem] rounded px-2 py-1 text-[1.6rem] font-medium text-white "
+                        onClick={showReview}
+                    >
+                        <Image
+                            src={icons.comment}
+                            alt="review-icon"
+                            className="w-[1.8rem]"
+                        />
+                        Review
+                    </button>
+                    <button
+                        className={`flex items-center gap-[0.8rem] rounded px-2 py-1 text-[1.6rem] font-medium text-white ${isAfter ? 'hidden' : 'block'}`}
+                        onClick={() =>
+                            router.push(`${paths.ROOM}/${booking?._id}`)
+                        }
+                        disabled={isAfter}
+                    >
+                        <Image
+                            src={icons.video}
+                            alt="view-icon"
+                            className="w-[1.8rem]"
+                        />
+                        View
+                    </button>
+                </>
+            )}
+        </div>
     );
+
     return (
         <>
-            <div className="flex min-h-[15rem] w-full flex-col gap-[1.2rem] rounded-[0.8rem] bg-[#0F0F0F] p-[1rem]">
+            <div className="flex min-h-[18rem] w-full flex-col gap-[1.4rem] rounded-[1rem] bg-[#1E1E1E] p-[1.4rem] shadow-lg transition-all hover:shadow-2xl">
                 <div className="flex items-center justify-between">
-                    {' '}
-                    <h3 className="text-[1.6rem] font-bold uppercase">
+                    <h3 className="text-[1.8rem] font-bold text-white">
                         {booking?.freetimeDetailId?.name}
                     </h3>
                     <Popover
                         content={booking?.status !== 'Refused' ? content : null}
                         placement="bottomRight"
                     >
-                        <button>
+                        <button className="text-[1.8rem]">
                             <Image
                                 src={icons.moreHorizontal}
                                 alt="menu"
-                                className="w-[2rem]"
+                                className="w-[2.4rem]"
                             />
                         </button>
                     </Popover>
                 </div>
+
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-[0.8rem]">
-                        <p className="text-[1.4rem]">
+                    <div className="flex items-center gap-[1rem]">
+                        <p className="text-[1.4rem] text-white">
                             {formatTime(booking?.freetimeDetailId?.from)}
                         </p>
-                        <p className="text-[1.4rem]">-</p>
-                        <p className="text-[1.4rem]">
+                        <span className="text-[1.4rem] text-white">-</span>
+                        <p className="text-[1.4rem] text-white">
                             {formatTime(booking?.freetimeDetailId?.to)}
                         </p>
                     </div>
-                    <p className="text-[1.4rem]">
+                    <p className="text-[1.4rem] text-[#A1A1A1]">
                         {formatDate(booking?.freetimeDetailId?.from)}
                     </p>
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-[0.8rem]">
+                    <div className="flex items-center gap-[1rem]">
                         <Avatar
                             src={
                                 isMentor
@@ -182,37 +192,38 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
                                     : booking?.participants?.[0]?.imageUrl
                             }
                             alt="avatar"
-                            size={40}
+                            size={48}
                         />
-                        <div className="">
-                            <h4 className="text-[1.4rem] font-bold">
+                        <div>
+                            <h4 className="text-[1.6rem] font-semibold text-white">
                                 {isMentor
                                     ? booking?.participants?.[1]?.fullName
                                     : booking?.participants?.[0]?.fullName}
                             </h4>
                             <p className="text-[1.4rem] text-[#5DD62C]">
                                 {isMentor
-                                    ? 'Request to you'
+                                    ? 'Requested by you'
                                     : booking?.status !== 'Accepted'
-                                      ? 'Waiting confim'
+                                      ? 'Waiting for confirmation'
                                       : ''}
                             </p>
                         </div>
                     </div>
                     <Tag
                         color={getStatusColor(booking?.status)}
-                        className="w-fit"
+                        className="w-fit text-[1.4rem] font-medium"
                     >
                         {booking?.status}
                     </Tag>
                 </div>
             </div>
+
             <ReviewModal
                 bookingId={booking?._id}
                 mentor={booking?.participants?.[0]}
                 open={openReview}
-                handleOk={creatReview}
-                handleCancel={cancleReview}
+                handleOk={createReview}
+                handleCancel={cancelReview}
             />
         </>
     );
