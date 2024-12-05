@@ -136,7 +136,7 @@ function LoggedIn() {
                     }}
                 >
                     <Image src={icons.clock} alt="icon-log-out" />
-                    Your bookings
+                    Lịch đặt
                 </li>
                 <li
                     className="flex cursor-pointer items-center gap-[0.8rem] rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
@@ -146,56 +146,56 @@ function LoggedIn() {
                     }}
                 >
                     <Image src={icons.User} alt="icon-log-out" />
-                    Your profile
+                    Cá nhân
                 </li>
                 <li
                     className="flex cursor-pointer items-center gap-[0.8rem] rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
                     onClick={logout}
                 >
                     <Image src={icons.logOut} alt="icon-log-out" />
-                    <p>Sign out</p>
+                    <p>Đăng xuất</p>
                 </li>
             </ul>
         );
     };
 
-    const RenderChat = () => {
-        return (
-            <div className="text-white">
-                <h2 className="my-[0.8rem] text-[1.6rem] font-bold">Message</h2>
+    // const RenderChat = () => {
+    //     return (
+    //         <div className="text-white">
+    //             <h2 className="my-[0.8rem] text-[1.6rem] font-bold">Message</h2>
 
-                {groups?.length > 0 ? (
-                    <>
-                        <ChatUser userId={profile?._id} groups={groups} />
+    //             {groups?.length > 0 ? (
+    //                 <>
+    //                     <ChatUser userId={profile?._id} groups={groups} />
 
-                        <ul className="flex h-[3rem] items-center justify-between">
-                            <li onClick={() => setIsopenMessage(false)}>
-                                <Link
-                                    href={`${paths.MESSAGES}/${profile?._id}`}
-                                >
-                                    <span className="text-[1.4rem] font-bold text-[#5DD62C]">
-                                        Open all message
-                                    </span>
-                                </Link>
-                            </li>
-                        </ul>
-                    </>
-                ) : (
-                    <div className="flex items-center justify-center">
-                        <p className="text-[1.6rem] font-medium">
-                            No messages groups found
-                        </p>
-                    </div>
-                )}
-            </div>
-        );
-    };
+    //                     <ul className="flex h-[3rem] items-center justify-between">
+    //                         <li onClick={() => setIsopenMessage(false)}>
+    //                             <Link
+    //                                 href={`${paths.MESSAGES}/${profile?._id}`}
+    //                             >
+    //                                 <span className="text-[1.4rem] font-bold text-[#5DD62C]">
+    //                                     Open all message
+    //                                 </span>
+    //                             </Link>
+    //                         </li>
+    //                     </ul>
+    //                 </>
+    //             ) : (
+    //                 <div className="flex items-center justify-center">
+    //                     <p className="text-[1.6rem] font-medium">
+    //                         No messages groups found
+    //                     </p>
+    //                 </div>
+    //             )}
+    //         </div>
+    //     );
+    // };
 
     const RenderNotification = () => {
         return (
             <div className="max-h-[50rem] overflow-y-auto text-white">
                 <h2 className="my-[0.8rem] text-[1.6rem] font-bold">
-                    Notification
+                    Thông báo
                 </h2>
                 <div className="flex flex-col gap-[0.8rem]">
                     {notis.length > 0 ? (
@@ -212,7 +212,7 @@ function LoggedIn() {
                     ) : (
                         <div className="flex items-center justify-center">
                             <p className="text-[1.6rem] font-medium">
-                                No notifications found
+                                Bạn chưa có thông báo
                             </p>
                         </div>
                     )}
@@ -229,7 +229,7 @@ function LoggedIn() {
                         onClick={showModalCoin}
                     >
                         <Image src={icons.plus} alt="icon" width={16} />
-                        <p>Deposit</p>
+                        <p>Nạp tiền</p>
                     </button>
                 </li>
                 <li>
@@ -238,7 +238,7 @@ function LoggedIn() {
                         onClick={showModalCoin}
                     >
                         <Image src={icons.minus} alt="icon" width={16} />
-                        <p>Withdraw</p>
+                        <p>Rút tiền</p>
                     </button>
                 </li>
             </ul>
@@ -289,7 +289,7 @@ function LoggedIn() {
                         />
                     </div>
                 </Popover>
-                <Popover
+                {/* <Popover
                     content={<RenderChat />}
                     trigger="click"
                     open={isOpenMessage}
@@ -299,7 +299,7 @@ function LoggedIn() {
                     <div className="relative cursor-pointer rounded-full bg-[rgba(255,255,255,0.2)] p-[1rem]">
                         <Image src={icons.message} alt="bell" width={20} />
                     </div>
-                </Popover>
+                </Popover> */}
                 <Popover
                     content={<RenderNotification />}
                     trigger="click"

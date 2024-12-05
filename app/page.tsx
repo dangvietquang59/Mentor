@@ -36,7 +36,7 @@ const Home = () => {
                     <Devider />
                     <div className="my-[3rem]">
                         <h2 className="mb-[4rem] text-[3.6rem] font-medium">
-                            The mentee's remarks
+                            Phản hồi từ học viên
                         </h2>
                         <div className="grid grid-cols-3 gap-[1rem]">
                             <ReviewMentee />

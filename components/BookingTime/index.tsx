@@ -50,14 +50,14 @@ function BookingTime({ id, user }: BookingTimeProps) {
             <div className="flex min-h-[40rem] items-center justify-center rounded-[0.4rem] bg-[#242526] p-[2rem]">
                 <div className="flex flex-col items-center justify-center gap-[1.2rem]">
                     <p className="text-[1.8rem] font-medium">
-                        There are no calendars displayed yet
+                        Không có lịch nào được hiển thị
                     </p>
                     {profile?._id === id && (
                         <ButtonCustom
                             path={`${paths.PROFILE}/${paths.EDIT}/${id}`}
                             outline
                         >
-                            Add new now
+                            Thêm lịch mới
                         </ButtonCustom>
                     )}
                 </div>

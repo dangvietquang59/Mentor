@@ -43,7 +43,7 @@ function ActionChat() {
     return (
         <>
             <div className="flex items-center justify-between">
-                <h2 className="text-[2rem] font-bold">Messages</h2>
+                <h2 className="text-[2rem] font-bold">Phòng chat</h2>
                 {/* <div className="flex items-end justify-center gap-[0.8rem]">
                     <button onClick={showModal}>
                         <Image

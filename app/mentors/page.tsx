@@ -225,8 +225,8 @@ function Mentors() {
                                     width={20}
                                 />
                                 <input
-                                    placeholder="Search mentor"
-                                    className="h-full flex-1 bg-transparent text-[1.4rem] placeholder:text-[#f1f1f1] focus:outline-none"
+                                    placeholder="Nhập tên cố vấn để tìm kiếm ...."
+                                    className="h-full flex-1 bg-transparent text-[1.4rem] placeholder:text-[#adadad] focus:outline-none"
                                     {...control.register('search')}
                                 />
                                 {searchValue && (
@@ -244,22 +244,22 @@ function Mentors() {
                                 className="w-[20rem]"
                                 onClick={resetForm}
                             >
-                                Reset
+                                Đặt lại
                             </ButtonCustom>
                             <ButtonCustom
                                 type="submit"
                                 outline
                                 className="w-[20rem]"
                             >
-                                Search
+                                Tìm kiếm
                             </ButtonCustom>
                         </div>
                         <div className="grid grid-cols-4 gap-[1.2rem]">
                             <InputComponent
                                 control={control}
                                 name="experiencesYear"
-                                label="Experience years"
-                                placeholder="Experience years"
+                                label="Số năm kinh nghiệm"
+                                placeholder="Số năm kinh nghiệm"
                                 type="number"
                                 rules={{
                                     ...formValidation.date,
@@ -269,7 +269,7 @@ function Mentors() {
                             <SelectComponent
                                 name="jobtitle"
                                 control={control}
-                                label="Job titles"
+                                label="Chức danh"
                                 onPopupScroll={handleScrollPopUpJobTitle}
                                 options={
                                     jobTitles &&
@@ -287,7 +287,7 @@ function Mentors() {
                             <SelectComponent
                                 name="technology"
                                 control={control}
-                                label="Technologies"
+                                label="Công nghệ sử dụng"
                                 onPopupScroll={handleScrollPopUpTech}
                                 options={
                                     technologies &&
@@ -304,17 +304,23 @@ function Mentors() {
                             />
                             <SelectComponent
                                 name="rating"
-                                label="Filter by rating"
+                                label="Lọc với đánh giá"
                                 control={control}
                                 options={[
+                                    // {
+                                    //     label: 'Lọc với điểm đánh giá',
+                                    //     value: '',
+                                    // },
                                     {
-                                        label: 'Filter by rating point',
-                                        value: '',
+                                        label: 'Điểm từ cao đến thấp',
+                                        value: 'DESC',
                                     },
-                                    { label: 'Descend', value: 'DESC' },
-                                    { label: 'Ascend', value: 'ASC' },
+                                    {
+                                        label: 'Điểm từ thấp đến cao',
+                                        value: 'ASC',
+                                    },
                                 ]}
-                                defaultValue={'Filter by rating point'}
+                                // defaultValue={'Lọc với điểm đánh giá'}
                                 className="w-full"
                             />
                         </div>
@@ -342,7 +348,7 @@ function Mentors() {
             ) : (
                 <div className="flex h-[40rem] items-center justify-center">
                     <p className="text-[2.4rem] font-bold">
-                        No suitable mentors were found
+                        Không có cố vấn nào phù hợp
                     </p>
                 </div>
             )}

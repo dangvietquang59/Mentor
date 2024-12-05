@@ -66,7 +66,7 @@ function Login() {
             </div>
             <div className="my-[2.4rem]">
                 <h2 className="text-center text-[2rem] font-bold">
-                    Sign in with{' '}
+                    Đăng nhập với{' '}
                     <span className="text-[#5dd62c]">Mentors system</span>
                 </h2>
 
@@ -87,13 +87,13 @@ function Login() {
                         <InputComponent
                             control={control}
                             name="password"
-                            label="Password"
+                            label="Mật khẩu"
                             rules={formValidation.password}
                             errors={errors.password}
                             isPassword
                         />
                         <button className="h-[4rem] w-full rounded-[0.8rem] bg-[#5dd62c] p-[1rem] text-[1.4rem] font-bold text-white duration-300 hover:opacity-70">
-                            Sign in
+                            Đăng nhập ngay
                         </button>
                     </form>
 

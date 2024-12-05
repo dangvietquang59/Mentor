@@ -72,14 +72,14 @@ function SignUp() {
                 <div className="mt-[2.4rem]">
                     <div className="flex items-center justify-center">
                         <p className="text-center text-[2.4rem] font-medium md:text-nowrap">
-                            Welcome new member to {''}
+                            Chào mừng đến với {''}
                             <span className="text-nowrap text-[2.4rem] font-medium text-[#5DD62C]">
                                 Mentors system
                             </span>
                         </p>
                     </div>
                     <h3 className="mt-[2.4rem] text-[1.6rem]">
-                        What are your aspirations?
+                        Để bắt đầu hãy cho chúng tôi biết bạn muốn trở thành?
                     </h3>
 
                     <ul className="mt-[2.4rem] flex flex-col gap-[1.2rem]">
@@ -90,7 +90,7 @@ function SignUp() {
                                 onClick={() => setOption(item)}
                             >
                                 <p className="text-[2rem] font-medium">
-                                    {item}
+                                    {item === 'Mentor' ? 'Cố vấn' : 'Người học'}
                                 </p>
                             </li>
                         ))}
@@ -99,7 +99,7 @@ function SignUp() {
                         onClick={handleNextStep}
                         className="mt-[2.4rem] w-full"
                     >
-                        Continue
+                        Tiếp tục
                     </ButtonCustom>
                 </div>
             </div>
@@ -121,7 +121,7 @@ function SignUp() {
                     </div>
                     <div className="my-[2.4rem]">
                         <h2 className="text-center text-[2rem] font-bold">
-                            Sign up with{' '}
+                            Đăng ký với{' '}
                             <span className="text-[#7cb305]">
                                 Mentors system
                             </span>
@@ -134,7 +134,7 @@ function SignUp() {
                                 <InputComponent
                                     control={control}
                                     name="fullName"
-                                    label="Full name"
+                                    label="Họ và tên"
                                     placeholder="David Abala"
                                     rules={formValidation.fullName}
                                     errors={errors.fullName}
@@ -153,7 +153,7 @@ function SignUp() {
                                 <InputComponent
                                     control={control}
                                     name="password"
-                                    label="Password"
+                                    label="Mật khẩu"
                                     rules={formValidation.password}
                                     errors={errors.password}
                                     isPassword
@@ -162,7 +162,7 @@ function SignUp() {
                                 <InputComponent
                                     control={control}
                                     name="confirmPassword"
-                                    label="Confirm password"
+                                    label="Xác nhận mật khẩu"
                                     rules={formValidation.confirmPassword(
                                         password,
                                     )}
@@ -171,7 +171,7 @@ function SignUp() {
                                     isRequired
                                 />
                                 <button className="h-[4rem] w-full rounded-[0.8rem] bg-[#5dd62c] p-[1rem] text-[1.4rem] font-bold text-white duration-300 hover:opacity-70">
-                                    Sign up
+                                    Đăng ký
                                 </button>
                             </form>
                             {/* 

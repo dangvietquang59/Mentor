@@ -336,9 +336,9 @@ function FreetimeForm() {
             <div className="flex max-h-[50rem] min-h-[40rem] flex-col gap-[2.4rem] overflow-y-auto rounded-[0.8rem] bg-[#242526] p-[2rem]">
                 <div className="flex items-center justify-between">
                     <h2 className="text-[2.4rem] font-bold text-[#5dd62c]">
-                        Freetime sessions
+                        Danh sách lịch rảnh
                     </h2>
-                    <ButtonCustom onClick={showModal}>Add new</ButtonCustom>
+                    <ButtonCustom onClick={showModal}>Thêm lịch</ButtonCustom>
                 </div>
 
                 {sessions?.length > 0 &&
@@ -384,7 +384,7 @@ function FreetimeForm() {
                     /> */}
                     <div className="mt-4">
                         <h4 className="mb-[1rem] text-[1.6rem] text-white">
-                            Select Date Range
+                            Chọn khoảng ngày
                         </h4>
                         <DatePicker.RangePicker
                             onChange={handleDateChange}
@@ -422,8 +422,8 @@ function FreetimeForm() {
                         <div className="flex flex-col gap-[0.8rem]">
                             <InputComponent
                                 name="name"
-                                label="Name"
-                                placeholder="Enter name"
+                                label="Tên khoảng thời gian"
+                                placeholder="Khoảng 1, khoảng 2"
                                 value={currentDetail.name}
                                 onChange={(e: any) =>
                                     setCurrentDetail({
@@ -436,7 +436,7 @@ function FreetimeForm() {
                                 {/* Select for "From" Time */}
                                 <div className="flex flex-col gap-[1.2rem]">
                                     <h3 className="font-medium text-white">
-                                        From
+                                        Từ
                                     </h3>
                                     <SelectComponent
                                         name="from"
@@ -457,7 +457,7 @@ function FreetimeForm() {
                                 {/* Select for "To" Time */}
                                 <div className="flex flex-col gap-[1.2rem]">
                                     <h3 className="font-medium text-white">
-                                        To
+                                        Đến
                                     </h3>
                                     <SelectComponent
                                         name="to"
@@ -497,7 +497,9 @@ function FreetimeForm() {
                             className="flex w-full items-center justify-center gap-[0.8rem] rounded-[0.8rem] border-[0.1rem] border-[#5dd62c] p-[1rem] text-white"
                         >
                             <Image src={icons.plus} alt="icon" />
-                            <span className="text-[1.6rem]">Add details</span>
+                            <span className="text-[1.6rem]">
+                                Thêm khoảng thời gian rảnh
+                            </span>
                         </button>
                     )}
 

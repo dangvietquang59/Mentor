@@ -14,7 +14,7 @@ import { TechnologiesType } from '@/types/response/technologies';
 import technologiesApi from '@/apis/technologiesApi';
 import SelectComponent from '../Select';
 import { formValidation } from '@/utils/constants/formValidation';
-
+import StarRatings from 'react-star-ratings';
 interface ReviewModalProps {
     open: boolean;
     mentor: UserType;
@@ -39,9 +39,13 @@ function ReviewModal({
     const token = getAccessTokenClient();
     const { control, handleSubmit } = useForm<FormProps>();
     const [selectedPoint, setSelectedPoint] = useState<string>('');
-    const points = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+    // const points = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
     const [technologies, setTechnologies] = useState<TechnologiesType[]>([]);
+    const [rating, setRating] = useState(0);
 
+    const handleRatingChange = (newRating: number) => {
+        setRating(newRating);
+    };
     useEffect(() => {
         const fetchTechnologies = async () => {
             await technologiesApi
@@ -61,10 +65,10 @@ function ReviewModal({
             bookingId,
             content: data?.content,
             technologies: data?.technologies,
-            point: selectedPoint,
+            point: rating,
         };
         const dataRating = {
-            newRating: selectedPoint,
+            newRating: rating,
         };
         if (token) {
             await userApi
@@ -111,7 +115,7 @@ function ReviewModal({
                         <h4>{mentor?.bio?.name || 'Job title'}</h4>
                     </div>
                 </div>
-                <div className="flex flex-wrap items-center gap-[0.8rem]">
+                {/* <div className="flex flex-wrap items-center gap-[0.8rem]">
                     {points.map((item, index) => (
                         <button
                             key={index}
@@ -122,6 +126,17 @@ function ReviewModal({
                             {item}
                         </button>
                     ))}
+                </div> */}
+                <div className="flex items-center justify-center">
+                    <StarRatings
+                        rating={rating}
+                        starRatedColor="green"
+                        changeRating={handleRatingChange}
+                        numberOfStars={5}
+                        name="rating"
+                        starDimension="30px"
+                        starSpacing="5px"
+                    />
                 </div>
                 <SelectComponent
                     name="technologies"

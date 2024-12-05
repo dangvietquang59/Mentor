@@ -54,7 +54,9 @@ function MentorsProfile(props: MentorProfileProps) {
 
                     <div className="grid grid-cols-2 gap-[0.8rem]">
                         <div className="flex flex-col gap-[0.4rem] rounded-[0.8rem] bg-[#1A1A1A] p-[1rem]">
-                            <p className="text-[1.4rem] font-medium">Rating</p>
+                            <p className="text-[1.4rem] font-medium">
+                                Điểm đánh giá
+                            </p>
                             <p className="text-[1.2rem]">
                                 {mentor?.rating
                                     ? `${mentor?.rating}/5.0`
@@ -63,10 +65,10 @@ function MentorsProfile(props: MentorProfileProps) {
                         </div>
                         <div className="flex flex-col gap-[0.4rem] rounded-[0.8rem] bg-[#1A1A1A] p-[1rem]">
                             <p className="text-[1.4rem] font-medium">
-                                Experiences
+                                Kinh nghiệm
                             </p>
                             <p className="text-[1.2rem]">
-                                {maxExperienceYears} years
+                                {maxExperienceYears} năm
                             </p>
                         </div>
                     </div>
@@ -75,7 +77,7 @@ function MentorsProfile(props: MentorProfileProps) {
 
             <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-[rgba(0,0,0,0.5)] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <ButtonCustom outline path={`${paths.PROFILE}/${mentor?._id}`}>
-                    View profile
+                    Xem chi tiết
                 </ButtonCustom>
             </div>
         </div>

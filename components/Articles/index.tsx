@@ -28,7 +28,7 @@ function Articles() {
     if (blogs?.length === 0) return null;
     return (
         <>
-            <p className="text-[3.6rem] font-bold">Recent articles</p>
+            <p className="text-[3.6rem] font-bold">Bài viết nổi bật</p>
             <div className="flex items-center gap-[0.8rem]">
                 <div className="no-scrollbar flex gap-[0.8rem] overflow-x-auto">
                     <Swiper

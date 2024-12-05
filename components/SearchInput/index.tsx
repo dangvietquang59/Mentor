@@ -12,7 +12,7 @@ function SearchInput({ className, query, setQuery }: SearchInputProps) {
         >
             <Image src={icons.search} alt="icon" />
             <input
-                placeholder="Enter name user"
+                placeholder="Tìm kiếm..."
                 className="h-full grow bg-transparent p-[1rem] text-[1.4rem] focus-within:outline-none"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}

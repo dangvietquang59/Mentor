@@ -199,12 +199,12 @@ function FreetimeTag({
                 <div className="flex flex-col gap-[1.2rem]">
                     <div className="mb-[2.4rem]">
                         <h2 className="text-[2rem] font-bold text-[#5DD62C]">
-                            Available sessions
+                            Lịch học
                         </h2>
 
                         <span className="text-[1.6rem] font-bold text-[#6B7B8A]">
-                            Book 1:1 sessions from the options based on your
-                            needs
+                            Đặt các buổi học 1:1 từ các tùy chọn dựa trên nhu
+                            cầu của bạn
                         </span>
                     </div>
                     <div className="">

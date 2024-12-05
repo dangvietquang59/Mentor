@@ -54,7 +54,7 @@ function RecommendMentor() {
         <>
             <div className="flex items-center justify-between">
                 <h2 className="my-[1rem] text-[3.6rem] font-bold">
-                    Recommend for you
+                    Đề xuất cho bạn
                 </h2>
             </div>
             <div>

@@ -62,10 +62,10 @@ function Profiles() {
 
     const arrayTabs: TabType[] = [
         {
-            title: 'Overview',
+            title: 'Tổng quan',
         },
         {
-            title: 'Reviews',
+            title: 'Đánh giá từ người học',
         },
     ];
     const handleCreateChatOneVOne = async () => {
@@ -146,7 +146,7 @@ function Profiles() {
                                     >
                                         <Image src={icons.message} alt="icon" />
                                         <p className="text-[1.6rem] text-white">
-                                            Send message
+                                            Gửi tin nhắn
                                         </p>
                                     </button>
                                 </div>
@@ -169,7 +169,7 @@ function Profiles() {
                                         {profileUser &&
                                             profileUser?.technologies?.length >
                                                 0 &&
-                                            'Experiences'}
+                                            'Công nghệ sử dụng'}
                                     </h3>
 
                                     <ul className="mt-[1.2rem] grid grid-cols-4 gap-[0.8rem]">

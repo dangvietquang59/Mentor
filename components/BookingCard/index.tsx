@@ -202,9 +202,9 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
                             </h4>
                             <p className="text-[1.4rem] text-[#5DD62C]">
                                 {isMentor
-                                    ? 'Requested by you'
+                                    ? 'Yêu cầu tới bạn'
                                     : booking?.status !== 'Accepted'
-                                      ? 'Waiting for confirmation'
+                                      ? 'Chờ xác nhận từ cố vấn'
                                       : ''}
                             </p>
                         </div>

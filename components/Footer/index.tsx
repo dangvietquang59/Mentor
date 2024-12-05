@@ -29,19 +29,16 @@ function Footer() {
     ];
     const arrayLinks: ILinkItemProps[] = [
         {
-            title: 'About us',
+            title: 'Về chúng tôi',
             path: '',
         },
         {
-            title: 'Mentors',
+            title: 'Cố vấn',
             path: '',
         },
+
         {
-            title: 'Join as a mentor',
-            path: '',
-        },
-        {
-            title: 'Contact',
+            title: 'Liên hệ',
             path: '',
         },
     ];
@@ -76,13 +73,15 @@ function Footer() {
                 <div>
                     <div className="flex flex-col gap-[3rem]">
                         <h2 className=" text-[2.7rem] font-medium text-[#F8F8F8]">
-                            A website where IT professionals can find mentors
+                            Một trang web nơi các chuyên gia Công nghệ thông tin
+                            có thể tìm thấy người cố vấn
                         </h2>
                         <p className=" text-[1.8rem] font-normal text-[#F8F8F8]">
-                            Our goal is to provide mentees with opportunities to
-                            grow and learn from seasoned individuals, advancing
-                            both their professional and personal development. in
-                            the realm of potential fulfillment.
+                            Mục tiêu của chúng tôi là cung cấp cho những người
+                            được cố vấn cơ hội phát triển và học hỏi từ những cá
+                            nhân dày dạn kinh nghiệm, thúc đẩy sự phát triển cả
+                            về chuyên môn và cá nhân của họ. trong lĩnh vực thực
+                            hiện tiềm năng.
                         </p>
                     </div>
                     <div className="mt-[3rem]">
@@ -108,7 +107,7 @@ function Footer() {
                 </div>
                 <div>
                     <h2 className="text-justify text-[2.7rem] font-medium text-[#F8F8F8]">
-                        Links
+                        Trang thông tin
                     </h2>
                     <ul className="mt-[3rem] flex flex-col gap-[3rem]">
                         {arrayLinks.map((item, index) => (

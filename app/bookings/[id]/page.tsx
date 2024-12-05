@@ -32,7 +32,7 @@ function BookingDetail() {
     return (
         <div className="mx-[15%] mt-[2.4rem] min-h-[50rem] rounded-[0.8rem] bg-[#242526] p-[2rem]">
             <h2 className="text-[2.4rem] font-bold text-[#5DD62C]">
-                Booking List
+                Danh sách đặt lịch
             </h2>
             <div className="mt-[2.4rem] grid grid-cols-3 gap-[1.2rem]">
                 {booking.length > 0 &&

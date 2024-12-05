@@ -275,13 +275,13 @@ function EditProfile() {
                         <div className=" min-h-[50rem] rounded-[0.8rem] bg-[#242526]  p-[2rem]">
                             <div className="flex items-center justify-between">
                                 <h2 className="text-[2.4rem] font-bold text-[#5DD62C]">
-                                    Information
+                                    Thông tin cá nhân
                                 </h2>
                                 {!isEdit ? (
                                     <ButtonCustom
                                         onClick={() => setIsEdit(true)}
                                     >
-                                        Edit profile
+                                        Chỉnh sửa
                                     </ButtonCustom>
                                 ) : (
                                     <div className="flex items-center gap-[1.2rem]">
@@ -290,7 +290,7 @@ function EditProfile() {
                                             onClick={() => setIsEdit(false)}
                                             className="w-[10rem]"
                                         >
-                                            Cancel
+                                            Hủy
                                         </ButtonCustom>
                                         <ButtonCustom
                                             onClick={handleProfileSubmit(
@@ -298,7 +298,7 @@ function EditProfile() {
                                             )}
                                             className="w-[10rem]"
                                         >
-                                            Save
+                                            Lưu
                                         </ButtonCustom>
                                     </div>
                                 )}
@@ -314,8 +314,8 @@ function EditProfile() {
                                         <InputComponent
                                             control={profileControl}
                                             name="fullName"
-                                            label="Full name"
-                                            placeholder="Full name"
+                                            label="Họ và tên"
+                                            placeholder="Họ và tên"
                                             disabled={!isEdit}
                                         />
                                         <InputComponent
@@ -329,7 +329,7 @@ function EditProfile() {
                                     <SelectComponent
                                         name="bio"
                                         control={profileControl}
-                                        label="Job title"
+                                        label="Chức danh"
                                         options={
                                             jobTitles &&
                                             jobTitles.map((item) => ({
@@ -348,24 +348,24 @@ function EditProfile() {
                                         <InputComponent
                                             control={profileControl}
                                             name="role"
-                                            label="Role"
-                                            placeholder="Role"
+                                            label="Vai trò"
+                                            placeholder="Vai trò"
                                             className="w-full"
                                             disabled
                                         />
                                         <InputComponent
                                             control={profileControl}
                                             name="rating"
-                                            label="Rating"
-                                            placeholder="Rating"
+                                            label="Điểm đánh giá"
+                                            placeholder="Điểm đánh giá"
                                             disabled
                                             className="w-full"
                                         />
                                         <InputComponent
                                             control={profileControl}
                                             name="pricePerHour"
-                                            label="Price per hour"
-                                            placeholder="Price per hour"
+                                            label="Tiền thuê mỗi giờ"
+                                            placeholder="Tiền thuê mỗi giờ"
                                             disabled={!isEdit}
                                             className="w-full"
                                         />
@@ -374,7 +374,7 @@ function EditProfile() {
                             </div>
                             <div className="mt-[1.2rem] flex items-center gap-[2.4rem]">
                                 <h3 className="text-[1.8rem] font-medium text-[#5DD62C]">
-                                    Experience
+                                    Công nghệ sử dụng
                                 </h3>
                                 {isEdit && (
                                     <div
@@ -383,7 +383,7 @@ function EditProfile() {
                                     >
                                         <Image src={icons.plus} alt="icon" />
                                         <span className="text-[1.4rem]">
-                                            Add new{' '}
+                                            Thêm mới{' '}
                                         </span>
                                     </div>
                                 )}

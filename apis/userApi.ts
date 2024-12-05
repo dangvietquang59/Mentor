@@ -17,7 +17,7 @@ interface ParamsProps {
 
 const userApi = {
     async updateRating(
-        data: { newRating: string },
+        data: { newRating: number },
         userId: string,
         accessToken: string,
     ) {

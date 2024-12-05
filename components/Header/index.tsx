@@ -22,15 +22,15 @@ const Header = () => {
     const router = useRouter();
     const arrayPage: SiderType[] = [
         {
-            title: 'Home',
+            title: 'Trang chủ',
             url: paths.HOME,
         },
         {
-            title: 'Mentors',
+            title: 'Cố vấn',
             url: paths.MENTORS,
         },
         {
-            title: 'Blogs',
+            title: 'Bài viết',
             url: paths.BLOGS,
         },
     ];
@@ -103,10 +103,10 @@ const Header = () => {
                             ) : (
                                 <div className="flex gap-[1.2rem]">
                                     <ButtonCustom noBorder path={paths.SIGNIN}>
-                                        Sign in
+                                        Đăng nhập
                                     </ButtonCustom>
                                     <ButtonCustom path={paths.SIGNUP} outline>
-                                        Sign up
+                                        Đăng ký
                                     </ButtonCustom>
                                 </div>
                             )}

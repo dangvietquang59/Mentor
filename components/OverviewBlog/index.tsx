@@ -13,7 +13,7 @@ function OverviewBlog() {
             <div className="my-[25%] flex flex-col gap-[2.4rem]">
                 <div>
                     <p className="text-[4.7rem] font-bold">
-                        Become a mentor in
+                        Trở thành cố vấn tại
                     </p>
                     <span className="text-[4.7rem] font-bold text-[#5DD62C]">
                         Mentor systems
@@ -22,19 +22,20 @@ function OverviewBlog() {
                         !
                     </span>
                     <p className="text-justify text-[1.6rem] text-[#9F9F9F]">
-                        Join Mentor Systems as a mentor. This is your chance to
-                        mentor young learners and impart your insightful
-                        experiences. We urge you to create a vibrant network of
-                        mentors and to help one another advance professionally.
-                        Together, let's progress our careers and ensure the
-                        prosperity of upcoming generations!
+                        Tham gia Hệ thống Mentor với tư cách là người cố vấn.
+                        Đây là cơ hội để bạn cố vấn cho những người học trẻ tuổi
+                        và truyền đạt những kinh nghiệm sâu sắc của mình. Chúng
+                        tôi khuyến khích bạn tạo ra một mạng lưới cố vấn sôi
+                        động và giúp đỡ lẫn nhau thăng tiến về mặt chuyên môn.
+                        Cùng nhau, chúng ta hãy phát triển sự nghiệp và đảm bảo
+                        sự thịnh vượng cho các thế hệ mai sau!
                     </p>
                 </div>
                 <div className="grid grid-cols-2 gap-[1.6rem]">
                     <ButtonCustom className="text-white">
-                        Join as a mentor !
+                        Tham gia với tư cách cố vấn !
                     </ButtonCustom>
-                    <ButtonCustom outline>About us</ButtonCustom>
+                    <ButtonCustom outline>Về chúng tôi</ButtonCustom>
                 </div>
             </div>
         </div>

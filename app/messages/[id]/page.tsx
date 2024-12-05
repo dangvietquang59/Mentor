@@ -248,7 +248,6 @@ function Messages() {
             .flat()
             .filter((attachment) => attachment !== undefined) || [];
 
-    console.log(groups);
     return (
         <div className="mx-[1rem] mt-[1%] flex max-h-[85vh] min-h-[85vh] gap-[1.2rem]">
             <div className="w-[50rem] rounded-[0.8rem] bg-[#242526] p-[1rem] pt-[1rem]">
@@ -357,7 +356,7 @@ function Messages() {
                         )}
                         <div className="flex items-center gap-[0.8rem] rounded-[0.8rem] bg-[#3A3B3C] p-[1rem]">
                             <textarea
-                                placeholder="texting with mentor..."
+                                placeholder="nhắn tin với cố vấn..."
                                 className="h-full grow resize-none overflow-hidden bg-transparent text-[1.4rem] focus:outline-none"
                                 value={newMessage}
                                 rows={1}
@@ -399,7 +398,7 @@ function Messages() {
                 >
                     <div className="flex items-center gap-[0.8rem]">
                         <Image src={icons.photo} alt="icon" width={20} />
-                        <span className="text-[1.4rem]">Images</span>
+                        <span className="text-[1.4rem]">Hình ảnh</span>
                     </div>
                     <Image
                         src={icons.chevronDown}
@@ -424,7 +423,7 @@ function Messages() {
                                 ))}
                             </div>
                         ) : (
-                            <p>Not found</p>
+                            <p>Không có ảnh</p>
                         )}
                     </div>
                 )}
@@ -436,7 +435,7 @@ function Messages() {
                 >
                     <div className="flex items-center gap-[0.8rem]">
                         <Image src={icons.User} alt="icon" width={20} />
-                        <span className="text-[1.4rem]">Members</span>
+                        <span className="text-[1.4rem]">Thành viên</span>
                     </div>
                     <Image
                         src={icons.chevronDown}
@@ -468,15 +467,15 @@ function Messages() {
                         )}
                     </div>
                 )}
-                <button
+                {/* <button
                     className="flex h-[4rem] w-full items-center justify-between p-[1rem]"
                     // onClick={() => setOpenMembers(!openMembers)}
                 >
                     <div className="flex items-center gap-[0.8rem]">
                         <Image src={icons.logOut} alt="icon" width={20} />
-                        <span className="text-[1.4rem]">Remove room</span>
+                        <span className="text-[1.4rem]">Xóa nhóm chat</span>
                     </div>
-                </button>
+                </button> */}
             </div>
         </div>
     );

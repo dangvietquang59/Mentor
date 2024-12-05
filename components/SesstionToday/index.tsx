@@ -41,7 +41,9 @@ function SesionToday() {
                         alt="icon"
                         className="h-[1.5rem] w-[1.5rem]"
                     />
-                    <h2 className="text-[1.6rem] font-bold">Session today</h2>
+                    <h2 className="text-[1.6rem] font-bold">
+                        Lịch học hôm nay
+                    </h2>
                 </div>
             </div>
             <div className="mt-[2.4rem] flex flex-col gap-[2.4rem]">
