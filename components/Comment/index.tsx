@@ -39,11 +39,11 @@ function Comments({ comment, refeshData }: CommentsProps) {
                 .delete(selectedComment, token)
                 .then((res) => {
                     if (res) {
-                        toast.success('Delete comment successfull');
+                        toast.success('Xóa bình luận thành công');
                         refeshData();
                     }
                 })
-                .catch(() => toast.error('Delete comment failed'));
+                .catch(() => toast.error('Xóa bình luận thất bại'));
         }
     };
 

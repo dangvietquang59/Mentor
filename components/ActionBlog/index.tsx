@@ -110,12 +110,12 @@ function ActionBlog({ blog }: ActionBlogProp) {
                 .delete(blog?._id, token)
                 .then((res) => {
                     if (res) {
-                        toast.success('Delete blog successful');
+                        toast.success('Xóa bài viết thành công');
                         setIsModalOpen(false);
                         router.push(paths.BLOGS);
                     }
                 })
-                .catch(() => toast.error('Delete blog failed'));
+                .catch(() => toast.error('Xóa bài viết thất bại'));
         }
     };
     const contentAction = (

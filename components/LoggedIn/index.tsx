@@ -66,7 +66,7 @@ function LoggedIn() {
         Cookies.remove(variables.ACCESS_TOKEN);
         Cookies.remove(variables.PROFILE);
         router.push(paths.HOME);
-        toast.success('Logout successfull');
+        toast.success('Đăng xuất thành công');
     };
     const showModalCoin = () => {
         setOpenModalCoin(true);

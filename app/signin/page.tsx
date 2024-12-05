@@ -47,12 +47,12 @@ function Login() {
                             JSON.stringify(res.data),
                         );
                         Cookies.set(variables.ACCESS_TOKEN, res.accessToken);
-                        toast.success('Login successfull');
+                        toast.success('Đăng nhập thành công');
                     }
                 }
             })
             .catch(() => {
-                toast.error('Login failed');
+                toast.error('Đăng nhập thất bại');
             });
     };
     return (

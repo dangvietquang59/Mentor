@@ -57,7 +57,7 @@ function FreetimeTag({
         useState<FreeTimeDetailType | null>(null);
     const handleBooking = () => {
         if (!selectedSession) {
-            toast.error('You have choose sesstion before booking');
+            toast.error('Bạn phải chọn lịch trước khi đặt');
         }
         showModal();
     };
@@ -114,20 +114,20 @@ function FreetimeTag({
                             token,
                         );
                         if (transactions) {
-                            toast.success('Booking session successful');
+                            toast.success('Đặt lịch thành công');
                             handleOk();
                         }
                     }
                 } else {
-                    toast.error('Insufficient balance');
+                    toast.error('Số dư không đủ');
                 }
             } catch (error) {
                 console.log(error);
-                toast.error('Booking session failed');
+                toast.error('Đặt lịch thất bại');
             }
         } else {
             // Optionally handle the case where required variables aren't defined
-            toast.error('Required information is missing for booking');
+            toast.error('Thiếu thông tin bắt buộc để đặt chỗ');
         }
     };
 
@@ -153,12 +153,12 @@ function FreetimeTag({
                     setSessionData((prev) =>
                         prev.filter((item) => item._id !== id),
                     );
-                    toast.success('Delete free time session successful');
+                    toast.success('Xóa lịch thành công');
                 }
             })
             .catch((error) => {
                 console.log(error);
-                toast.error('Delete free time session failed');
+                toast.error('Xóa lịch thất bại');
             });
     };
     const handleClickSession = (item: SessionData) => {
@@ -237,7 +237,7 @@ function FreetimeTag({
                         <div className="mt-[2.4rem]">
                             <div className="flex items-center justify-between border-b-[0.1rem] border-b-[#ccc] p-[1rem]">
                                 <span className="text-[2rem] font-bold">
-                                    Available time slots
+                                    Thời gian
                                 </span>
                                 <div className="flex items-center gap-[0.8rem]">
                                     <button
@@ -297,7 +297,7 @@ function FreetimeTag({
                                     className="mt-[2.4rem] h-[7rem] w-full text-[2rem] text-white"
                                     onClick={handleBooking}
                                 >
-                                    Book session
+                                    Đặt lịch
                                 </ButtonCustom>
                             )}
                         </div>
@@ -313,11 +313,11 @@ function FreetimeTag({
                 >
                     <div className="flex flex-col gap-[2.4rem] text-white">
                         <h2 className="text-center text-[2rem] font-bold">
-                            Booking Information
+                            Thông tin đặt lịch
                         </h2>
                         <div className="flex flex-col gap-[1.2rem]">
                             <h3 className="text-[1.6rem] font-medium">
-                                Booking date:
+                                Ngày đặt:
                             </h3>
                             {selected && (
                                 <div className="flex items-center justify-between rounded-[0.8rem] bg-gradient-to-r from-[#03624c] to-[#5DD62C] p-[1rem]">
@@ -331,7 +331,9 @@ function FreetimeTag({
                             )}
                         </div>
                         <div className="flex flex-col gap-[1.2rem]">
-                            <h3 className="text-[1.6rem] font-medium">Time:</h3>
+                            <h3 className="text-[1.6rem] font-medium">
+                                Thời gian đặt:
+                            </h3>
                             {selectedSession && (
                                 <div className="flex items-center justify-between rounded-[0.8rem] bg-gradient-to-r from-[#03624c] to-[#5DD62C] p-[1rem]">
                                     <p className="text-[1.6rem] font-medium">
@@ -353,19 +355,19 @@ function FreetimeTag({
                             <div className="flex flex-col gap-[0.8rem]">
                                 <div className="flex items-center justify-between">
                                     <h3 className="text-[1.6rem] font-medium">
-                                        Total time :
+                                        Tổng thời gian thuê :
                                     </h3>
                                     <p className="text-[1.6rem] font-medium">
                                         {calculateTimeDifference(
                                             formatTime(selectedSession?.from),
                                             formatTime(selectedSession?.to),
                                         )}{' '}
-                                        hours
+                                        tiếng
                                     </p>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <h3 className="text-[1.6rem] font-medium">
-                                        Price per hour :
+                                        Giá cho mỗi giờ :
                                     </h3>
                                     <div className="flex items-center gap-[0.8rem]">
                                         <p className="text-[1.6rem] font-medium">
@@ -383,7 +385,7 @@ function FreetimeTag({
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <h3 className="text-[2rem] font-bold">
-                                        Total price :
+                                        Tổng tiền :
                                     </h3>
                                     <div className="flex items-center gap-[0.8rem]">
                                         <p className="text-[2rem] font-bold">
@@ -410,7 +412,7 @@ function FreetimeTag({
                             </div>
                         )}
                         <ButtonCustom onClick={handleBookingSession}>
-                            Book
+                            Đặt ngay
                         </ButtonCustom>
                     </div>
                 </Modal>

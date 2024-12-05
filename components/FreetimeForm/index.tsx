@@ -241,7 +241,7 @@ function FreetimeForm() {
                         .then((response) => {
                             if (response) {
                                 toast.success(
-                                    `Create session for ${date} successful`,
+                                    `Tạo lịch cho ${date} thành công`,
                                 );
                                 setSessions((prevData) => [
                                     ...prevData,
@@ -251,7 +251,7 @@ function FreetimeForm() {
                         })
                         .catch(() => {
                             toast.error(
-                                `The newly created date (${date}) overlaps with the previously created date`,
+                                `Ngày mới tạo (${date}) trùng với ngày đã tạo trước đó`,
                             );
                         });
                 });
@@ -277,13 +277,13 @@ function FreetimeForm() {
 
     const handleAddDetail = () => {
         if (!currentDetail.name || !currentDetail.from || !currentDetail.to) {
-            alert('Please fill all fields');
+            toast.error('Vui lòng điền vào tất cả các trường');
             return;
         }
 
         if (!isTimeSlotValid(currentDetail.from, currentDetail.to)) {
             toast.error(
-                'The time slot overlaps with existing sessions or is invalid',
+                'Khoảng thời gian trùng lặp với các phiên hiện có hoặc không hợp lệ',
             );
             return;
         }
@@ -298,10 +298,10 @@ function FreetimeForm() {
                 .deleteDetails(token, selectedFreetimeDetail)
                 .then((res) => {
                     if (res) {
-                        toast.success('Delete free time detail successfull');
+                        toast.success('Xóa lịch thành công');
                     }
                 })
-                .catch(() => toast.error('Delete free time detail failed'));
+                .catch(() => toast.error('Xóa lịch thất bại'));
         }
     };
     const handleDeleteSession = (index: number) => {

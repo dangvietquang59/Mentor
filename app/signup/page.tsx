@@ -51,7 +51,7 @@ function SignUp() {
             .register(newMember)
             .then((res) => {
                 if (res) {
-                    toast.success('Register successfull');
+                    toast.success('Đăng ký thành công');
                     router.push(paths.SIGNIN);
                 }
             })

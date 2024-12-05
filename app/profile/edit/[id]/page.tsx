@@ -162,7 +162,7 @@ function EditProfile() {
                         acessToken,
                     )
                     .then((res) => {
-                        toast.success('Upload image successful');
+                        toast.success('Tải ảnh lên thành cônng');
                         setSelectedImage(res.result.url);
                         console.log(res);
                         localStorage.setItem(variables.PROFILE, res.result.url);
@@ -171,7 +171,9 @@ function EditProfile() {
                         console.log(error);
                     });
             } else {
-                console.error('Upload succeeded but no secure URL found.');
+                console.error(
+                    'Tải lên thành công nhưng không tìm thấy URL an toàn.',
+                );
             }
 
             setIsModalImageOpen(false);
@@ -211,7 +213,7 @@ function EditProfile() {
     useEffect(() => {
         resetProfileForm({
             email: profileUser?.email || '',
-            bio: profileUser?.bio?._id,
+            bio: profileUser?.bio?.name,
             fullName: profileUser?.fullName || '',
             rating: profileUser?.rating || '',
             role: profileUser?.role || '',
@@ -235,7 +237,7 @@ function EditProfile() {
 
         try {
             await userApi.updateProfile(newProfileData, profileId, accessToken);
-            toast.success('Update profile successful');
+            toast.success('Cập nhật hồ sơ thành công');
             setIsEdit(false);
         } catch (error) {
             console.log('API Error:', error);

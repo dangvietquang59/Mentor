@@ -68,7 +68,7 @@ function BlogForm({ slug }: EditForm) {
 
     const onSubmit = async (data: BlogFromProps) => {
         if (!editorValue) {
-            toast.error('You need to enter content!');
+            toast.error('Bạn cần nhập nội dung để hoàn tất');
             return;
         }
         if (isEdit) {
@@ -81,11 +81,11 @@ function BlogForm({ slug }: EditForm) {
                     .update(blog?._id, updateData, token)
                     .then((res) => {
                         if (res) {
-                            toast.success('Update post successfull');
+                            toast.success('Cập nhật bài viết thành công');
                             router.push(paths.BLOGS);
                         }
                     })
-                    .catch(() => toast.error('Update post failed'));
+                    .catch(() => toast.error('Cập nhật bài viết lỗi'));
             }
             return;
         }
@@ -99,12 +99,13 @@ function BlogForm({ slug }: EditForm) {
                 .create(newData, token)
                 .then((res) => {
                     if (res) {
-                        toast.success('New blog created successfully');
+                        toast.success('Lưu thành công');
                         router.push(paths.BLOGS);
                     }
                 })
                 .catch((error) => {
                     console.error(error);
+                    toast.error('Lưu thất bại');
                 });
         }
     };

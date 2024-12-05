@@ -81,11 +81,11 @@ function ReviewModal({
                 .create(newData, token)
                 .then((res) => {
                     if (res) {
-                        toast.success('Review successful');
+                        toast.success('Phản hồi thành công');
                         handleOk();
                     }
                 })
-                .catch(() => toast.error('Review failed'));
+                .catch(() => toast.error('Phản hồi thất bại'));
         }
     };
 

@@ -64,10 +64,10 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
         const data = { status };
         try {
             await bookingApi.update(booking?._id, data, token);
-            toast.success('Update successful');
+            toast.success('Cập nhật thành công');
             refreshData();
         } catch {
-            toast.error('Update failed');
+            toast.error('Cập nhật thất bại');
         }
     };
 
