@@ -75,7 +75,7 @@ function SesionToday() {
                     ) : (
                         <div className="flex items-center justify-center">
                             <p className="text-[1.6rem]">
-                                No section booking found
+                                Không có lịch học hôm nay
                             </p>
                         </div>
                     )}

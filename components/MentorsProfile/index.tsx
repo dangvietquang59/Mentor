@@ -1,7 +1,8 @@
 import { UserType } from '@/types/user';
-import { Image } from 'antd';
-import ButtonCustom from '../ButtonCustom';
 import paths from '@/utils/constants/paths';
+import { Image } from 'antd';
+
+import { useRouter } from 'next/navigation';
 
 interface MentorProfileProps {
     mentor: UserType;
@@ -9,6 +10,7 @@ interface MentorProfileProps {
 
 function MentorsProfile(props: MentorProfileProps) {
     const { mentor } = props;
+    const router = useRouter();
 
     const maxExperienceYears = mentor?.technologies?.reduce(
         (max, tech) => Math.max(max, tech.experienceYears),
@@ -16,7 +18,10 @@ function MentorsProfile(props: MentorProfileProps) {
     );
 
     return (
-        <div className="group relative flex h-[45rem] w-full flex-col gap-[1.2rem] overflow-hidden rounded-[2.4rem] bg-[#242526]">
+        <div
+            className="group relative flex h-[45rem] w-full flex-col gap-[1.2rem] overflow-hidden rounded-[2.4rem] bg-[#242526] hover:cursor-pointer"
+            onClick={() => router.push(`${paths.PROFILE}/${mentor?._id}`)}
+        >
             <Image
                 src={mentor?.imageUrl}
                 alt={mentor?.fullName}
@@ -45,7 +50,7 @@ function MentorsProfile(props: MentorProfileProps) {
                                     ))}
                                 {mentor?.technologies.length > 2 && (
                                     <li className="rounded-[0.8rem] bg-[#1A1A1A] p-[0.5rem] text-[1.4rem] text-[#f1f1f1]">
-                                        + {mentor?.technologies.length - 2} more
+                                        + {mentor?.technologies.length - 2}
                                     </li>
                                 )}
                             </>
@@ -73,12 +78,6 @@ function MentorsProfile(props: MentorProfileProps) {
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-[rgba(0,0,0,0.5)] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <ButtonCustom outline path={`${paths.PROFILE}/${mentor?._id}`}>
-                    Xem chi tiết
-                </ButtonCustom>
             </div>
         </div>
     );

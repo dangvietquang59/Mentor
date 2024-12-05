@@ -133,7 +133,7 @@ function Messages() {
                         accessToken,
                     );
                     if (res) {
-                        const validMessages = res.filter((msg) => msg);
+                        const validMessages = res.filter((msg: any) => msg);
                         setMessages(validMessages);
                     }
                 } catch (error) {
@@ -240,13 +240,12 @@ function Messages() {
     }, [query, fetchGroupSearch]);
 
     const listImage: Attachments[] =
+        messages &&
         messages
             ?.filter(
                 (item) => item?.attachments && item?.attachments.length > 0,
             )
-            .map((item) => item.attachments)
-            .flat()
-            .filter((attachment) => attachment !== undefined) || [];
+            .flatMap((item) => item.attachments ?? []);
 
     return (
         <div className="mx-[1rem] mt-[1%] flex max-h-[85vh] min-h-[85vh] gap-[1.2rem]">

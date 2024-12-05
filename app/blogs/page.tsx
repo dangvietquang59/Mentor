@@ -30,7 +30,7 @@ const Blogs = () => {
     return (
         <div className="mx-[5%] mt-[2%] flex flex-col gap-[2.4rem]">
             <Link href={`${paths.BLOGS}/${paths.CREATE}`}>
-                <ButtonCustom outline>New Blog</ButtonCustom>
+                <ButtonCustom outline>Thêm bài viết</ButtonCustom>
             </Link>
 
             <div className="grid grid-cols-3 gap-[1.2rem]">

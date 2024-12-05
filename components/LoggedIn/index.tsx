@@ -123,11 +123,6 @@ function LoggedIn() {
     const RenderContentUser = () => {
         return (
             <ul className="text-white">
-                <li className="mb-[0.8rem] flex flex-col gap-[0.8rem] border-b-[0.1rem] p-[1rem]">
-                    <p className="text-[1.4rem] font-bold text-[#6B7B8A]">
-                        @{profile?.slug}
-                    </p>
-                </li>
                 <li
                     className="flex cursor-pointer items-center gap-[0.8rem] rounded-[0.8rem] p-[1rem] text-[1.6rem] font-normal duration-300 hover:bg-[#0F0F0F]"
                     onClick={() => {

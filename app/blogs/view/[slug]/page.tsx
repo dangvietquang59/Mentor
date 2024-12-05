@@ -31,7 +31,7 @@ const BlogDetails = async ({ params }: BlogDetailsProps) => {
                         {blog?.title}
                     </h2>
                     <div
-                        className="mt-[2.4rem] text-[1.6rem]"
+                        className="mt-[2.4rem] flex flex-col gap-[2.4rem] text-[1.6rem] leading-[2.4rem]"
                         dangerouslySetInnerHTML={{ __html: blog?.content }}
                     />
                 </div>

@@ -134,7 +134,7 @@ function Profiles() {
                                     >
                                         <Image src={icons.editPen} alt="icon" />
                                         <p className="text-[1.6rem] text-[#5DD52C]">
-                                            Edit profile
+                                            Chỉnh sửa
                                         </p>
                                     </button>
                                 </div>

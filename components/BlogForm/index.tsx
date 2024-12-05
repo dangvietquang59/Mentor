@@ -124,13 +124,13 @@ function BlogForm({ slug }: EditForm) {
             <InputComponent
                 control={control}
                 name="title"
-                label="Blog title"
-                placeholder="Blog title"
+                label="Tiêu đề bài viết"
+                placeholder="Tiêu đề bài viết"
                 rules={formValidation.blogTitle}
             />
 
             <div className="flex flex-col gap-[0.8rem]">
-                <p className="font-medium text-white">Content</p>
+                <p className="text-[1.4rem] font-medium text-white">Nội dung</p>
                 <Editor
                     value={editorValue}
                     onChange={handleEditorChange}

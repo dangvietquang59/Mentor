@@ -213,7 +213,7 @@ function EditProfile() {
     useEffect(() => {
         resetProfileForm({
             email: profileUser?.email || '',
-            bio: profileUser?.bio?.name,
+            bio: profileUser?.bio?._id,
             fullName: profileUser?.fullName || '',
             rating: profileUser?.rating || '',
             role: profileUser?.role || '',
@@ -431,9 +431,9 @@ function EditProfile() {
                         <button
                             type="button"
                             onClick={() => fileInputRef.current?.click()}
-                            className="mt-4 rounded bg-[#59C82C] p-[1rem_2rem] px-4 py-2 text-[1.6rem] text-black"
+                            className="mt-4 rounded bg-[#59C82C] p-[0.5rem_1rem] text-[1.6rem] text-black"
                         >
-                            Choose image
+                            Chọn ảnh
                         </button>
                     </div>
                 </div>
@@ -456,7 +456,7 @@ function EditProfile() {
                     className="mt-[2.4rem] w-full"
                     onClick={handleUpload}
                 >
-                    Upload image
+                    Cập nhật ảnh
                 </ButtonCustom>
             </Modal>
             <Modal
