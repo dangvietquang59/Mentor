@@ -118,34 +118,34 @@ function FreetimeForm() {
     const [showConfirm, setShowConfirm] = useState(false);
     const token = getAccessTokenClient();
 
-    const generateSessions = (
-        from: string,
-        to: string,
-    ): FreetimeSessionDetails[] => {
-        const sessions: FreetimeSessionDetails[] = [];
+    // const generateSessions = (
+    //     from: string,
+    //     to: string,
+    // ): FreetimeSessionDetails[] => {
+    //     const sessions: FreetimeSessionDetails[] = [];
 
-        // Chuyển từ chuỗi thời gian 'hh:mm' thành đối tượng Date
-        const fromTime = new Date(`1970-01-01T${from}:00`);
-        const toTime = new Date(`1970-01-01T${to}:00`);
+    //     // Chuyển từ chuỗi thời gian 'hh:mm' thành đối tượng Date
+    //     const fromTime = new Date(`1970-01-01T${from}:00`);
+    //     const toTime = new Date(`1970-01-01T${to}:00`);
 
-        let sessionIndex = 1;
-        while (fromTime < toTime) {
-            // Định dạng thời gian theo định dạng 24 giờ (HH:mm)
-            const startTime = fromTime.toTimeString().slice(0, 5); // Lấy 5 ký tự đầu "HH:mm"
-            fromTime.setHours(fromTime.getHours() + 1); // Tăng giờ lên 1
-            const endTime = fromTime.toTimeString().slice(0, 5); // Lấy 5 ký tự đầu "HH:mm"
+    //     let sessionIndex = 1;
+    //     while (fromTime < toTime) {
+    //         // Định dạng thời gian theo định dạng 24 giờ (HH:mm)
+    //         const startTime = fromTime.toTimeString().slice(0, 5); // Lấy 5 ký tự đầu "HH:mm"
+    //         fromTime.setHours(fromTime.getHours() + 1); // Tăng giờ lên 1
+    //         const endTime = fromTime.toTimeString().slice(0, 5); // Lấy 5 ký tự đầu "HH:mm"
 
-            sessions.push({
-                name: `Meeting ${startTime}-${endTime}`,
-                from: startTime,
-                to: endTime,
-            });
+    //         sessions.push({
+    //             name: `Meeting ${startTime}-${endTime}`,
+    //             from: startTime,
+    //             to: endTime,
+    //         });
 
-            sessionIndex++;
-        }
+    //         sessionIndex++;
+    //     }
 
-        return sessions;
-    };
+    //     return sessions;
+    // };
 
     const showConfirmModal = () => {
         setShowConfirm(true);
@@ -174,28 +174,23 @@ function FreetimeForm() {
     const params = {
         page: currentPage,
     };
-    useEffect(() => {
-        const fetchSessions = async () => {
-            if (token && userId) {
-                try {
-                    const res = await freetimeApi.getById(
-                        token,
-                        userId,
-                        params,
-                    );
-                    if (res && Array.isArray(res.freetime)) {
-                        setSessions(res.freetime);
-                    } else {
-                        console.error('Invalid response structure', res);
-                    }
-                } catch (error) {
-                    console.error('Error fetching sessions:', error);
+    const fetchSessions = async () => {
+        if (token && userId) {
+            try {
+                const res = await freetimeApi.getById(token, userId, params);
+                if (res && Array.isArray(res.freetime)) {
+                    setSessions(res.freetime);
+                } else {
+                    console.error('Invalid response structure', res);
                 }
-            } else {
-                console.warn('User ID or token is missing');
+            } catch (error) {
+                console.error('Error fetching sessions:', error);
             }
-        };
-
+        } else {
+            console.warn('User ID or token is missing');
+        }
+    };
+    useEffect(() => {
         fetchSessions();
     }, [currentPage]);
     const generateDaysInRange = (
@@ -219,9 +214,8 @@ function FreetimeForm() {
 
     const onSubmit = async (data: FreetimeSessions) => {
         if (token) {
-            const arrSessions = sessionDetail
-                .map((item) => generateSessions(item?.from, item?.to))
-                .flat();
+            const arrSessions = sessionDetail;
+
             const arrDate = dateRange
                 ? generateDaysInRange(
                       dateRange[0]?.toISOString() ?? '',
@@ -232,7 +226,7 @@ function FreetimeForm() {
             if (arrDate?.length > 0) {
                 const promises = arrDate.map((date) => {
                     const newData = {
-                        freeDate: date, // Dùng ngày trong arrDate
+                        freeDate: date,
                         freeTimeDetail: arrSessions,
                     };
 

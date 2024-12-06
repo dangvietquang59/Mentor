@@ -31,7 +31,7 @@ function ModalCoin({ open, handleCancel, handleOk }: ModalCoinProps) {
             >
                 <Image src={images.qCoin} alt="icon" width={50} height={50} />
                 <span className="text-lg font-medium">
-                    {formatNumeric(coin)} Coins
+                    {formatNumeric(coin)} đ
                 </span>
             </button>
         );
@@ -61,22 +61,22 @@ function ModalCoin({ open, handleCancel, handleOk }: ModalCoinProps) {
             onCancel={handleCancel}
             footer={null}
             closable={false}
+            centered
         >
             <div className="flex flex-col gap-6 p-6">
                 <h2 className="text-center text-2xl font-bold text-white">
-                    Deposit or Withdraw Funds
+                    Nạp tiền cá nhân
                 </h2>
                 <div className="grid grid-cols-4 gap-4">
                     {coins.map((coin, index) => (
                         <PriceCoin key={index} coin={coin} />
                     ))}
                 </div>
-                <p className="text-xl text-white">
-                    Amount to deposit/withdraw: {formatNumeric(selectedCoins)}{' '}
-                    coins
+                <p className="text-[1.4rem] text-white">
+                    Số tiền nạp: {formatNumeric(selectedCoins) || 0} đ
                 </p>
                 <ButtonCustom className="mt-4" onClick={handleDepositCoins}>
-                    Confirm
+                    Xác nhận
                 </ButtonCustom>
             </div>
         </Modal>

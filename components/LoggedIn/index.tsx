@@ -31,7 +31,7 @@ function LoggedIn() {
     const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
     const [isOpenNotification, setIsOpenNotification] =
         useState<boolean>(false);
-    const [isOpenMessage, setIsopenMessage] = useState<boolean>(false);
+    // const [isOpenMessage, setIsopenMessage] = useState<boolean>(false);
     const [isOpenSessionToday, setIsOpenSessionToday] =
         useState<boolean>(false);
     const [isOpenCoin, setOpenCoin] = useState<boolean>(false);

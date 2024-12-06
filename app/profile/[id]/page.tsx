@@ -195,7 +195,7 @@ function Profiles() {
                             )}
                             {selectedTab === 1 && (
                                 <>
-                                    <div className="mt-[1.2rem]">
+                                    <div className="mt-[1.2rem] flex flex-col gap-[1.2rem]">
                                         {reviews?.length > 0 ? (
                                             reviews?.map((review, index) => (
                                                 <ReviewCard
@@ -206,7 +206,7 @@ function Profiles() {
                                         ) : (
                                             <div className="flex h-[20rem] items-center justify-center">
                                                 <p className="text-[1.6rem] font-medium">
-                                                    No reviews founds
+                                                    Chưa có đánh giá
                                                 </p>
                                             </div>
                                         )}

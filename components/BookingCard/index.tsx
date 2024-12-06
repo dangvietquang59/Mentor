@@ -9,7 +9,6 @@ import { getProfile } from '@/utils/functions/getProfile';
 
 import { Avatar, Popover, Tag } from 'antd';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import ReviewModal from '../ReviewModal';
@@ -20,28 +19,17 @@ interface BookingCardProps {
     token: string;
     refreshData: () => void;
 }
+enum BookingStatus {
+    Pending = 'Pending',
+    Accepted = 'Accepted',
+    Canceled = 'Canceled',
+}
 
 function BookingCard({ booking, token, refreshData }: BookingCardProps) {
     const profile: UserType = getProfile();
     const isMentor = profile?._id === booking?.participants?.[0]?._id;
     const [openReview, setOpenReview] = useState(false);
     const router = useRouter();
-
-    const isAfter = isCurrentDateAfterBookingDate(
-        booking?.freetimeDetailId?.to,
-    );
-    function isCurrentDateAfterBookingDate(bookingDate: string) {
-        const currentDate = new Date();
-        const bookingDateObj = new Date(bookingDate);
-
-        if (currentDate.getTime() > bookingDateObj.getTime()) {
-            return true; // Ngày hiện tại sau ngày giờ đặt
-        } else if (currentDate.getTime() < bookingDateObj.getTime()) {
-            return false; // Ngày hiện tại trước ngày giờ đặt
-        } else {
-            return false; // Ngày giờ giống nhau
-        }
-    }
 
     const showReview = () => setOpenReview(true);
     const createReview = () => setOpenReview(true);
@@ -59,7 +47,18 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
                 return 'gray';
         }
     };
-
+    const getVNText = (status: string) => {
+        switch (status) {
+            case 'Pending':
+                return 'Chờ chấp nhận';
+            case 'Accepted':
+                return 'Đã chấp nhận';
+            case 'Refused':
+                return 'Từ chối';
+            default:
+                return 'Hủy';
+        }
+    };
     const handleUpdateBooking = async (status: string) => {
         const data = { status };
         try {
@@ -71,82 +70,53 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
         }
     };
 
-    const content = (
-        <div className="flex flex-col gap-[1.2rem]">
-            {booking?.status === 'Pending' && (
-                <>
-                    {booking?.participants?.[0]?._id === profile?._id ? (
-                        <>
-                            <button
-                                className="flex items-center gap-[0.8rem] rounded px-2 py-1 text-[1.6rem] font-medium text-white "
-                                onClick={() => handleUpdateBooking('Accepted')}
-                            >
-                                <Image
-                                    src={icons.check}
-                                    alt="check-icon"
-                                    className="w-[1.8rem]"
-                                />
-                                Accept
-                            </button>
-                            <button
-                                className="flex items-center gap-[0.8rem] rounded px-2 py-1 text-[1.6rem] font-medium text-white "
-                                onClick={() => handleUpdateBooking('Refused')}
-                            >
-                                <Image
-                                    src={icons.xIcon}
-                                    alt="check-icon"
-                                    className="w-[1.8rem]"
-                                />
-                                Refuse
-                            </button>
-                        </>
-                    ) : (
+    const RenderButton = () => {
+        return (
+            <>
+                {booking?.status === BookingStatus.Pending ? (
+                    <div className="flex space-x-4">
                         <button
-                            className="flex items-center gap-[0.8rem] rounded px-2 py-1 text-[1.6rem] font-medium text-white "
-                            onClick={() => handleUpdateBooking('Canceled')}
+                            className="rounded-lg bg-green-500 px-6 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
+                            onClick={() =>
+                                handleUpdateBooking(BookingStatus.Accepted)
+                            }
                         >
-                            <Image
-                                src={icons.xIcon}
-                                alt="cancel-icon"
-                                className="w-[1.8rem]"
-                            />
-                            Cancel
+                            Chấp nhận
                         </button>
-                    )}
-                </>
-            )}
-            {booking?.status === 'Accepted' && (
-                <>
-                    <button
-                        className="flex items-center gap-[0.8rem] rounded px-2 py-1 text-[1.6rem] font-medium text-white "
-                        onClick={showReview}
-                    >
-                        <Image
-                            src={icons.comment}
-                            alt="review-icon"
-                            className="w-[1.8rem]"
-                        />
-                        Review
-                    </button>
-                    <button
-                        className={`flex items-center gap-[0.8rem] rounded px-2 py-1 text-[1.6rem] font-medium text-white ${isAfter ? 'hidden' : 'block'}`}
-                        onClick={() =>
-                            router.push(`${paths.ROOM}/${booking?._id}`)
-                        }
-                        disabled={isAfter}
-                    >
-                        <Image
-                            src={icons.video}
-                            alt="view-icon"
-                            className="w-[1.8rem]"
-                        />
-                        View
-                    </button>
-                </>
-            )}
-        </div>
-    );
-
+                        <button
+                            className="rounded-lg bg-red-500 px-6 py-2 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
+                            onClick={() =>
+                                handleUpdateBooking(BookingStatus.Canceled)
+                            }
+                        >
+                            Hủy
+                        </button>
+                    </div>
+                ) : booking?.status === BookingStatus.Accepted ? (
+                    <div className="flex space-x-4">
+                        {profile?.role !== 'Mentor' && (
+                            <button
+                                className="rounded-lg bg-orange-500 px-6 py-2 text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
+                                onClick={showReview}
+                            >
+                                Đánh giá
+                            </button>
+                        )}
+                        <button
+                            className="rounded-lg bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                            onClick={() =>
+                                router.push(`${paths.ROOM}/${booking?._id}`)
+                            }
+                        >
+                            Vào phòng
+                        </button>
+                    </div>
+                ) : (
+                    <></>
+                )}
+            </>
+        );
+    };
     return (
         <>
             <div className="flex min-h-[18rem] w-full flex-col gap-[1.4rem] rounded-[1rem] bg-[#1E1E1E] p-[1.4rem] shadow-lg transition-all hover:shadow-2xl">
@@ -154,29 +124,17 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
                     <h3 className="text-[1.8rem] font-bold text-white">
                         {booking?.freetimeDetailId?.name}
                     </h3>
-                    <Popover
-                        content={booking?.status !== 'Refused' ? content : null}
-                        placement="bottomRight"
-                    >
-                        <button className="text-[1.8rem]">
-                            <Image
-                                src={icons.moreHorizontal}
-                                alt="menu"
-                                className="w-[2.4rem]"
-                            />
-                        </button>
-                    </Popover>
+
+                    <RenderButton />
                 </div>
 
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-[1rem]">
                         <p className="text-[1.4rem] text-white">
-                            {formatTime(booking?.freetimeDetailId?.from)}
+                            {booking?.from}
                         </p>
                         <span className="text-[1.4rem] text-white">-</span>
-                        <p className="text-[1.4rem] text-white">
-                            {formatTime(booking?.freetimeDetailId?.to)}
-                        </p>
+                        <p className="text-[1.4rem] text-white">{booking.to}</p>
                     </div>
                     <p className="text-[1.4rem] text-[#A1A1A1]">
                         {formatDate(booking?.freetimeDetailId?.from)}
@@ -213,7 +171,7 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
                         color={getStatusColor(booking?.status)}
                         className="w-fit text-[1.4rem] font-medium"
                     >
-                        {booking?.status}
+                        {getVNText(booking?.status)}
                     </Tag>
                 </div>
             </div>

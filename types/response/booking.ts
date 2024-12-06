@@ -25,4 +25,7 @@ export type BookingGetResponeType = {
     status: string;
     createdAt: string;
     updatedAt: string;
+    from: string;
+    to: string;
+    amount: number;
 };

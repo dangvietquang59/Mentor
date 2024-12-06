@@ -33,15 +33,15 @@ const Blogs = () => {
                 <ButtonCustom outline>Thêm bài viết</ButtonCustom>
             </Link>
 
-            <div className="grid grid-cols-3 gap-[1.2rem]">
+            <div className="grid grid-cols-1 gap-[1.2rem]">
                 {blogs.length > 0 ? (
                     blogs.map((blog, index) => (
                         <BlogCard key={index} blog={blog} />
                     ))
                 ) : (
-                    <div className="flex items-center justify-center">
+                    <div className="flex w-full items-center justify-center">
                         <p className="text-center text-[2rem] font-bold">
-                            No blogs available
+                            Không có bài viết
                         </p>
                     </div>
                 )}

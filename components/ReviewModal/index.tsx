@@ -102,7 +102,7 @@ function ReviewModal({
                 onSubmit={handleSubmit(onSubmitReply)}
             >
                 <h2 className="text-center text-[2rem] font-bold">
-                    Review your mentor
+                    Đánh giá cố vấn của bạn
                 </h2>
                 <div className="flex items-center gap-[0.8rem]">
                     <Avatar
@@ -112,7 +112,7 @@ function ReviewModal({
                     />
                     <div className="flex flex-col">
                         <h3>{mentor?.fullName || 'Mentor'}</h3>
-                        <h4>{mentor?.bio?.name || 'Job title'}</h4>
+                        <h4>{mentor?.bio?.name || ''}</h4>
                     </div>
                 </div>
                 {/* <div className="flex flex-wrap items-center gap-[0.8rem]">
@@ -141,7 +141,7 @@ function ReviewModal({
                 <SelectComponent
                     name="technologies"
                     control={control}
-                    label="Technologies"
+                    label="Công nghệ sử dụng"
                     options={
                         technologies &&
                         technologies?.map((item) => ({
@@ -156,15 +156,15 @@ function ReviewModal({
                     isRequired
                     name="content"
                     control={control}
-                    placeholder="Write your review..."
+                    placeholder="Viết đánh giá của bạn..."
                     rules={formValidation.content}
                 />
                 <div className="grid grid-cols-2 gap-[1.2rem]">
                     <ButtonCustom outline onClick={handleCancel}>
-                        Cancel
+                        Hủy
                     </ButtonCustom>
                     <ButtonCustom onClick={handleOk} type="submit">
-                        Submit Review
+                        Đánh giá
                     </ButtonCustom>
                 </div>
             </form>

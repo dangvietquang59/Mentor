@@ -5,7 +5,7 @@ import { getFormattedDate } from '@/utils/functions/getFormattedDate';
 import freetimeApi from '@/apis/freetimeApi';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
-import { Modal, Pagination } from 'antd';
+import { Modal, Pagination, Select } from 'antd';
 import ButtonCustom from '../ButtonCustom';
 import { formatTime } from '@/utils/functions/formatTime';
 import { UserType } from '@/types/user';
@@ -17,6 +17,12 @@ import bookingApi from '@/apis/bookingApi';
 import images from '@/assets/img';
 import transactionsApi from '@/apis/transactionsApi';
 import userApi from '@/apis/userApi';
+import { generateHours } from '@/utils/functions/generateHours';
+import { CiCirclePlus } from 'react-icons/ci';
+import ModalCoin from '@/components/ModalCoin';
+import { parseNumber } from '@/utils/functions/parseNumber';
+import groupChatApi from '@/apis/groupChatApi';
+import { useChatStore } from '@/stores/useChatStore';
 
 interface FreetimeTagProps {
     sessions: FreeTimeType[];
@@ -52,9 +58,14 @@ function FreetimeTag({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const profile: UserType = getProfile();
     const [me, setMe] = useState<UserType>();
+    const [fromTime, setFromTime] = useState<string>('');
+    const [toTime, setToTime] = useState<string>('');
     const [selected, setSelected] = useState<SessionData | null>(null);
     const [selectedSession, setSelectedSession] =
         useState<FreeTimeDetailType | null>(null);
+    const [openDispostit, setOpenDisposit] = useState(false);
+    const { toggleChat } = useChatStore();
+
     const handleBooking = () => {
         if (!selectedSession) {
             toast.error('Bạn phải chọn lịch trước khi đặt');
@@ -96,19 +107,33 @@ function FreetimeTag({
                 const amount =
                     formatNumeric(
                         user?.pricePerHour *
-                            calculateTimeDifference(
-                                formatTime(selectedSession?.from),
-                                formatTime(selectedSession?.to),
-                            ),
-                    ) || 0;
-                if (me?.coin > Number(amount) * 1000) {
-                    const res = await bookingApi.create(data, token);
+                            calculateTimeDifference(fromTime, toTime),
+                    ) || '0';
+
+                if (me?.coin > parseNumber(amount)) {
+                    const newData = {
+                        ...data,
+                        amount: parseNumber(amount),
+                        from: fromTime,
+                        to: toTime,
+                    };
+                    const res = await bookingApi.create(newData, token);
                     if (res) {
                         const transactionData = {
                             userId: me._id,
-                            recipientId: user._id,
-                            amount: Number(amount) * 1000,
+                            recipientId: user?._id,
+                            amount: parseNumber(amount),
+                            bookingId: res?._id,
                         };
+                        const chatData = {
+                            name: user?.fullName,
+                            members: [user?._id, me?._id],
+                        };
+                        // const group = await groupChatApi.create(
+                        //     chatData,
+                        //     token,
+                        // );
+
                         const transactions = await transactionsApi.transfer(
                             transactionData,
                             token,
@@ -116,6 +141,7 @@ function FreetimeTag({
                         if (transactions) {
                             toast.success('Đặt lịch thành công');
                             handleOk();
+                            toggleChat();
                         }
                     }
                 } else {
@@ -193,6 +219,24 @@ function FreetimeTag({
             setCurrentPage(currentPage - 1);
         }
     };
+    let arrOptions: any[] = [];
+    if (selectedSession) {
+        arrOptions = generateHours(
+            formatTime(selectedSession?.from),
+            formatTime(selectedSession?.to),
+        );
+    }
+    const handleChangeFrom = (value: string) => {
+        setFromTime(value);
+    };
+    const handleChangeTo = (value: string) => {
+        setToTime(value);
+    };
+    const showModalCoin = () => {
+        setOpenDisposit(true);
+        console.log('abc');
+    };
+
     if (forBooking) {
         return (
             <>
@@ -207,7 +251,7 @@ function FreetimeTag({
                             cầu của bạn
                         </span>
                     </div>
-                    <div className="">
+                    <div>
                         <div className="grid grid-cols-4 gap-[0.8rem]">
                             {sessionData?.length > 0 &&
                                 sessionData.map((item, index) => (
@@ -311,60 +355,62 @@ function FreetimeTag({
                     closable={false}
                     centered
                 >
-                    <div className="flex flex-col gap-[2.4rem] text-white">
-                        <h2 className="text-center text-[2rem] font-bold">
+                    <div className="flex flex-col gap-[1.2rem] text-white">
+                        <h2 className="border-b py-[1rem] text-center text-[2rem] font-bold">
                             Thông tin đặt lịch
                         </h2>
-                        <div className="flex flex-col gap-[1.2rem]">
+                        <div className="grid grid-cols-2 items-center gap-[1.2rem]">
                             <h3 className="text-[1.6rem] font-medium">
                                 Ngày đặt:
                             </h3>
                             {selected && (
-                                <div className="flex items-center justify-between rounded-[0.8rem] bg-gradient-to-r from-[#03624c] to-[#5DD62C] p-[1rem]">
+                                <div className="flex items-center justify-between p-[1rem]">
                                     <p className="text-[1.6rem] font-medium">
                                         {selected?.formattedDate?.dayOfWeek}
                                     </p>
+                                    {'-'}
                                     <p className="text-[1.4rem]">
                                         {formatDate(selected?.freeDate)}
                                     </p>
                                 </div>
                             )}
                         </div>
-                        <div className="flex flex-col gap-[1.2rem]">
+                        <div className="grid grid-cols-2 gap-[1.2rem]">
                             <h3 className="text-[1.6rem] font-medium">
                                 Thời gian đặt:
                             </h3>
                             {selectedSession && (
-                                <div className="flex items-center justify-between rounded-[0.8rem] bg-gradient-to-r from-[#03624c] to-[#5DD62C] p-[1rem]">
-                                    <p className="text-[1.6rem] font-medium">
-                                        {selectedSession?.name}
-                                    </p>
-                                    <div className="flex items-center gap-[0.8rem]">
-                                        <p className="text-[1.4rem]">
-                                            {formatTime(selectedSession?.from)}
-                                        </p>
-                                        <span>-</span>
-                                        <p className="text-[1.4rem]">
-                                            {formatTime(selectedSession?.to)}
-                                        </p>
-                                    </div>
+                                <div className="flex items-center gap-[1rem]">
+                                    <Select
+                                        className="w-full"
+                                        onChange={handleChangeFrom}
+                                        options={
+                                            arrOptions?.length > 0
+                                                ? arrOptions.map((item) => ({
+                                                      value: item,
+                                                      label: item,
+                                                  }))
+                                                : []
+                                        }
+                                    />
+                                    <span>-</span>
+                                    <Select
+                                        className="w-full"
+                                        onChange={handleChangeTo}
+                                        options={
+                                            arrOptions?.length > 0
+                                                ? arrOptions.map((item) => ({
+                                                      value: item,
+                                                      label: item,
+                                                  }))
+                                                : []
+                                        }
+                                    />
                                 </div>
                             )}
                         </div>
                         {selectedSession && (
-                            <div className="flex flex-col gap-[0.8rem]">
-                                <div className="flex items-center justify-between">
-                                    <h3 className="text-[1.6rem] font-medium">
-                                        Tổng thời gian thuê :
-                                    </h3>
-                                    <p className="text-[1.6rem] font-medium">
-                                        {calculateTimeDifference(
-                                            formatTime(selectedSession?.from),
-                                            formatTime(selectedSession?.to),
-                                        )}{' '}
-                                        tiếng
-                                    </p>
-                                </div>
+                            <div className="flex flex-col gap-[1.2rem]">
                                 <div className="flex items-center justify-between">
                                     <h3 className="text-[1.6rem] font-medium">
                                         Giá cho mỗi giờ :
@@ -384,22 +430,41 @@ function FreetimeTag({
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-between">
+                                    <h3 className="text-[1.6rem] font-medium">
+                                        Số dư hiện tại :
+                                    </h3>
+                                    <div className="flex items-center gap-[0.8rem]">
+                                        <button onClick={showModalCoin}>
+                                            <CiCirclePlus className="size-[2rem]" />
+                                        </button>
+                                        <p className="text-[1.6rem] font-medium">
+                                            {(me && formatNumeric(me?.coin)) ||
+                                                0}
+                                        </p>
+                                        <Image
+                                            src={images.qCoin}
+                                            alt="coin"
+                                            width={20}
+                                            height={20}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between">
                                     <h3 className="text-[2rem] font-bold">
                                         Tổng tiền :
                                     </h3>
                                     <div className="flex items-center gap-[0.8rem]">
                                         <p className="text-[2rem] font-bold">
-                                            {formatNumeric(
-                                                user?.pricePerHour *
-                                                    calculateTimeDifference(
-                                                        formatTime(
-                                                            selectedSession?.from,
+                                            {(fromTime &&
+                                                toTime &&
+                                                formatNumeric(
+                                                    user?.pricePerHour *
+                                                        calculateTimeDifference(
+                                                            fromTime,
+                                                            toTime,
                                                         ),
-                                                        formatTime(
-                                                            selectedSession?.to,
-                                                        ),
-                                                    ),
-                                            ) || 0}
+                                                )) ||
+                                                0}
                                         </p>
                                         <Image
                                             src={images.qCoin}
@@ -416,6 +481,13 @@ function FreetimeTag({
                         </ButtonCustom>
                     </div>
                 </Modal>
+                <ModalCoin
+                    open={openDispostit}
+                    handleCancel={() => {
+                        setOpenDisposit(false);
+                    }}
+                    handleOk={() => setOpenDisposit(true)}
+                />
             </>
         );
     }

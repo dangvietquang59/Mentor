@@ -41,6 +41,7 @@ function EditProfile() {
     const [totalPageJobTitle, setTotalPageJobTitle] = useState<number>(0);
     const [totalPageTech, setTotalPageTech] = useState<number>(0);
     const pathname = usePathname();
+    const [isUploadSuccess, setIsUploadSuccess] = useState(false);
     const profileId = pathname.split('/profile/')[1]?.split('/')[1];
     const [profileUser, setProfileUser] = useState<UserType | null | undefined>(
         null,
@@ -87,7 +88,7 @@ function EditProfile() {
             };
             fetchProfile();
         }
-    }, [profileId]);
+    }, [profileId, isUploadSuccess]);
     const fetchJobTittle = async () => {
         await jobTitleApi
             .getAll(currentPageJobTitle)
@@ -162,9 +163,9 @@ function EditProfile() {
                         acessToken,
                     )
                     .then((res) => {
-                        toast.success('Tải ảnh lên thành cônng');
+                        toast.success('Tải ảnh lên thành công');
+                        setIsUploadSuccess(!isUploadSuccess);
                         setSelectedImage(res.result.url);
-                        console.log(res);
                         localStorage.setItem(variables.PROFILE, res.result.url);
                     })
                     .catch((error) => {
@@ -487,7 +488,7 @@ function EditProfile() {
                                 <SelectComponent
                                     name="technology"
                                     control={experienceControl}
-                                    label="Technology"
+                                    label="Công nghệ"
                                     options={
                                         technologies &&
                                         technologies.map((item) => ({
@@ -503,7 +504,7 @@ function EditProfile() {
                                 <InputComponent
                                     control={experienceControl}
                                     name="experienceYears"
-                                    label="Experience years"
+                                    label="Năm kinh nghiệm"
                                     placeholder="Enter your experience year"
                                     type="number"
                                     errors={experienceErrors.experienceYears}
@@ -513,7 +514,7 @@ function EditProfile() {
                                     className="mt-[1.2rem]"
                                     type="submit"
                                 >
-                                    Save
+                                    Lưu
                                 </ButtonCustom>
                             </form>
                         </div>

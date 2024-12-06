@@ -11,8 +11,10 @@ import paths from '@/utils/constants/paths';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { useMounted } from '@/utils/hooks/useMounted';
 import icons from '@/assets/icons';
-import { Avatar, Drawer } from 'antd';
-
+import { Avatar, Drawer, Tooltip } from 'antd';
+import { FaHome } from 'react-icons/fa';
+import { SiCodementor } from 'react-icons/si';
+import { BsFillPostcardHeartFill } from 'react-icons/bs';
 const Header = () => {
     const isMounted = useMounted();
     const [isSelectedPage, setIsSelectedPage] = useState<number>(0);
@@ -24,14 +26,17 @@ const Header = () => {
         {
             title: 'Trang chủ',
             url: paths.HOME,
+            icon: <FaHome />,
         },
         {
             title: 'Cố vấn',
             url: paths.MENTORS,
+            icon: <SiCodementor />,
         },
         {
             title: 'Bài viết',
             url: paths.BLOGS,
+            icon: <BsFillPostcardHeartFill />,
         },
     ];
 
@@ -75,28 +80,25 @@ const Header = () => {
                                 alt="logo"
                                 className="size-[6rem] object-cover"
                             />
-                            <div>
-                                <ul className="flex gap-[1.2rem]">
-                                    {arrayPage.map((page, index) => (
-                                        <Link href={page.url} key={page.url}>
-                                            <li
-                                                className={`px-[1rem] text-[2rem] font-[500] ${
-                                                    isSelectedPage === index
-                                                        ? 'border-b-[0.1rem] border-b-[#5DD62C] text-[#5DD62C]'
-                                                        : 'text-[#F8F8F8]'
-                                                }`}
-                                                onClick={() =>
-                                                    setIsSelectedPage(index)
-                                                }
-                                            >
-                                                {page.title}
-                                            </li>
-                                        </Link>
-                                    ))}
-                                </ul>
-                            </div>
                         </div>
-
+                        <ul className="flex flex-1 items-center justify-center gap-[1.2rem] pl-[20rem]">
+                            {arrayPage.map((page, index) => (
+                                <Link href={page.url} key={page.url}>
+                                    <li
+                                        className={`rounded-full bg-[#484848] p-[1rem] px-[1rem] text-[2rem] font-[500] ${
+                                            isSelectedPage === index
+                                                ? ' text-[#5DD62C]'
+                                                : 'text-[#F8F8F8]'
+                                        }`}
+                                        onClick={() => setIsSelectedPage(index)}
+                                    >
+                                        <Tooltip title={page?.title}>
+                                            {page.icon}
+                                        </Tooltip>
+                                    </li>
+                                </Link>
+                            ))}
+                        </ul>
                         <div className="flex items-center">
                             {isLOggedIn ? (
                                 <LoggedIn />

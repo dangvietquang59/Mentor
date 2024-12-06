@@ -1,5 +1,7 @@
+import { ReactNode } from 'react';
+
 export type SiderType = {
-    icon?: string;
+    icon?: ReactNode;
     activeIcon?: string;
     title: string;
     url: string;

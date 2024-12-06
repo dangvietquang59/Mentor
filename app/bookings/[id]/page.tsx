@@ -25,7 +25,6 @@ function BookingDetail() {
                 .catch((errors) => console.log(errors));
         }
     };
-    console.log(booking);
     useEffect(() => {
         fetchBooking();
     }, []);
@@ -34,8 +33,8 @@ function BookingDetail() {
             <h2 className="text-[2.4rem] font-bold text-[#5DD62C]">
                 Danh sách đặt lịch
             </h2>
-            <div className="mt-[2.4rem] grid grid-cols-3 gap-[1.2rem]">
-                {booking.length > 0 &&
+            <div className="mt-[2.4rem] grid grid-cols-1 gap-[1.2rem]">
+                {booking.length > 0 ? (
                     token &&
                     booking?.map((item, index) => (
                         <BookingCard
@@ -44,7 +43,12 @@ function BookingDetail() {
                             token={token}
                             refreshData={fetchBooking}
                         />
-                    ))}
+                    ))
+                ) : (
+                    <div className="flex h-full w-full items-center justify-center">
+                        <p className="text-[1.8rem]">Chưa có lịch đặt</p>
+                    </div>
+                )}
             </div>
         </div>
     );
