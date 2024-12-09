@@ -1,14 +1,11 @@
 import bookingApi from '@/apis/bookingApi';
-import icons from '@/assets/icons';
 import { BookingGetResponeType } from '@/types/response/booking';
 import { UserType } from '@/types/user';
 import paths from '@/utils/constants/paths';
 import { formatDate } from '@/utils/functions/formatDate';
-import { formatTime } from '@/utils/functions/formatTime';
 import { getProfile } from '@/utils/functions/getProfile';
 
 import { Avatar, Popover, Tag } from 'antd';
-import Image from 'next/image';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import ReviewModal from '../ReviewModal';
@@ -32,7 +29,7 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
     const router = useRouter();
 
     const showReview = () => setOpenReview(true);
-    const createReview = () => setOpenReview(true);
+    const createReview = () => setOpenReview(false);
     const cancelReview = () => setOpenReview(false);
 
     const getStatusColor = (status: string) => {
@@ -60,7 +57,7 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
         }
     };
     const handleUpdateBooking = async (status: string) => {
-        const data = { status };
+        const data = { status, userId: profile?._id };
         try {
             await bookingApi.update(booking?._id, data, token);
             toast.success('Cập nhật thành công');
@@ -75,14 +72,16 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
             <>
                 {booking?.status === BookingStatus.Pending ? (
                     <div className="flex space-x-4">
-                        <button
-                            className="rounded-lg bg-green-500 px-6 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
-                            onClick={() =>
-                                handleUpdateBooking(BookingStatus.Accepted)
-                            }
-                        >
-                            Chấp nhận
-                        </button>
+                        {profile?.role === 'Mentor' && (
+                            <button
+                                className="rounded-lg bg-green-500 px-6 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
+                                onClick={() =>
+                                    handleUpdateBooking(BookingStatus.Accepted)
+                                }
+                            >
+                                Chấp nhận
+                            </button>
+                        )}
                         <button
                             className="rounded-lg bg-red-500 px-6 py-2 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
                             onClick={() =>

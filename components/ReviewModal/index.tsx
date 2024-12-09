@@ -37,9 +37,7 @@ function ReviewModal({
 }: ReviewModalProps) {
     const profile: UserType = getProfile();
     const token = getAccessTokenClient();
-    const { control, handleSubmit } = useForm<FormProps>();
-    const [selectedPoint, setSelectedPoint] = useState<string>('');
-    // const points = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+    const { control, handleSubmit, reset } = useForm<FormProps>();
     const [technologies, setTechnologies] = useState<TechnologiesType[]>([]);
     const [rating, setRating] = useState(0);
 
@@ -83,6 +81,7 @@ function ReviewModal({
                     if (res) {
                         toast.success('Phản hồi thành công');
                         handleOk();
+                        reset();
                     }
                 })
                 .catch(() => toast.error('Phản hồi thất bại'));
@@ -115,18 +114,7 @@ function ReviewModal({
                         <h4>{mentor?.bio?.name || ''}</h4>
                     </div>
                 </div>
-                {/* <div className="flex flex-wrap items-center gap-[0.8rem]">
-                    {points.map((item, index) => (
-                        <button
-                            key={index}
-                            className={`h-[3rem] w-[5rem] rounded-[0.8rem] border ${selectedPoint === item.toString() ? 'border-[#52BA29] text-[#52BA29]' : 'border-[#ccc]'} `}
-                            onClick={() => setSelectedPoint(item.toString())}
-                            type="button"
-                        >
-                            {item}
-                        </button>
-                    ))}
-                </div> */}
+
                 <div className="flex items-center justify-center">
                     <StarRatings
                         rating={rating}

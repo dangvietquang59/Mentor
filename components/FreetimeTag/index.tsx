@@ -119,30 +119,30 @@ function FreetimeTag({
                     };
                     const res = await bookingApi.create(newData, token);
                     if (res) {
-                        const transactionData = {
-                            userId: me._id,
-                            recipientId: user?._id,
-                            amount: parseNumber(amount),
-                            bookingId: res?._id,
-                        };
-                        const chatData = {
-                            name: user?.fullName,
-                            members: [user?._id, me?._id],
-                        };
+                        // const transactionData = {
+                        //     userId: me._id,
+                        //     recipientId: user?._id,
+                        //     amount: parseNumber(amount),
+                        //     bookingId: res?._id,
+                        // };
+                        // const chatData = {
+                        //     name: user?.fullName,
+                        //     members: [user?._id, me?._id],
+                        // };
                         // const group = await groupChatApi.create(
                         //     chatData,
                         //     token,
                         // );
 
-                        const transactions = await transactionsApi.transfer(
-                            transactionData,
-                            token,
-                        );
-                        if (transactions) {
-                            toast.success('Đặt lịch thành công');
-                            handleOk();
-                            toggleChat();
-                        }
+                        // const transactions = await transactionsApi.transfer(
+                        //     transactionData,
+                        //     token,
+                        // );
+                        // if (transactions) {
+                        toast.success('Đặt lịch thành công');
+                        handleOk();
+                        toggleChat();
+                        // }
                     }
                 } else {
                     toast.error('Số dư không đủ');

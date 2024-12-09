@@ -21,6 +21,7 @@ import SearchInput from '@/components/SearchInput';
 import { IoCodeSlash } from 'react-icons/io5';
 import { PiSubtitles } from 'react-icons/pi';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
+import { useMounted } from '@/utils/hooks/useMounted';
 interface FilterProps {
     experiencesYear: number;
     jobtitle: string[];
@@ -61,7 +62,7 @@ function Mentors() {
         jobtitle: [],
         technology: [],
     });
-
+    const mounted = useMounted();
     // const {
     //     control,
     //     handleSubmit,
@@ -234,130 +235,140 @@ function Mentors() {
     //     }
     // };
     return (
-        <div className="grid grid-cols-[20%_80%] bg-[#1A1A1A] py-[2rem]">
-            <div className="flex flex-col gap-[2.4rem] rounded-lg p-[1rem] shadow-lg">
-                <SearchInput setQuery={setQuery} query={query} />
+        <>
+            {mounted && (
+                <div className="grid grid-cols-[20%_80%] bg-[#1A1A1A] py-[2rem]">
+                    <div className="flex flex-col gap-[2.4rem] rounded-lg p-[1rem] shadow-lg">
+                        <SearchInput setQuery={setQuery} query={query} />
 
-                <div className="flex flex-col gap-[0.8rem]">
-                    <div className="flex flex-col gap-[1.2rem]">
-                        <button
-                            onClick={handleToggleTechnologies}
-                            className="flex w-full items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-indigo-700 px-4 py-3 hover:bg-[#444444]"
-                        >
-                            <div className="flex items-center gap-[1rem]">
-                                <IoCodeSlash className="h-[2rem] w-[2rem] text-[#FFFFFF]" />
-                                <span className="text-[1.6rem] text-[#F0F0F0]">
-                                    Công nghệ sử dụng
-                                </span>
+                        <div className="flex flex-col gap-[0.8rem]">
+                            <div className="flex flex-col gap-[1.2rem]">
+                                <button
+                                    onClick={handleToggleTechnologies}
+                                    className="flex w-full items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-indigo-700 px-4 py-3 hover:bg-[#444444]"
+                                >
+                                    <div className="flex items-center gap-[1rem]">
+                                        <IoCodeSlash className="h-[2rem] w-[2rem] text-[#FFFFFF]" />
+                                        <span className="text-[1.6rem] text-[#F0F0F0]">
+                                            Công nghệ sử dụng
+                                        </span>
+                                    </div>
+                                    <IoChevronUp
+                                        className={`h-[2rem] w-[2rem] text-[#F0F0F0] transition-transform duration-300 ${isTechnologiesOpen ? 'rotate-180' : 'rotate-0'}`}
+                                    />
+                                </button>
+
+                                <div
+                                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                                        isTechnologiesOpen
+                                            ? 'max-h-[500px]'
+                                            : 'max-h-0'
+                                    }`}
+                                >
+                                    <div className="grid max-h-[200px] grid-cols-2 gap-[0.4rem] overflow-y-auto">
+                                        {technologies?.length > 0 &&
+                                            technologies.map((item, index) => (
+                                                <Checkbox
+                                                    key={index}
+                                                    onChange={onChange}
+                                                    className=" text-white [&_.ant-checkbox-inner]:bg-transparent"
+                                                >
+                                                    {item?.name}
+                                                </Checkbox>
+                                            ))}
+                                    </div>
+                                </div>
                             </div>
-                            <IoChevronUp
-                                className={`h-[2rem] w-[2rem] text-[#F0F0F0] transition-transform duration-300 ${isTechnologiesOpen ? 'rotate-180' : 'rotate-0'}`}
-                            />
-                        </button>
 
-                        <div
-                            className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                                isTechnologiesOpen ? 'max-h-[500px]' : 'max-h-0'
-                            }`}
-                        >
-                            <div className="grid max-h-[200px] grid-cols-2 gap-[0.4rem] overflow-y-auto">
-                                {technologies?.length > 0 &&
-                                    technologies.map((item, index) => (
-                                        <Checkbox
-                                            key={index}
-                                            onChange={onChange}
-                                            className="text-white"
-                                        >
-                                            {item?.name}
-                                        </Checkbox>
-                                    ))}
+                            <div>
+                                <button
+                                    onClick={handleToggleJobTitles}
+                                    className="flex w-full items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-indigo-700 px-4 py-3 hover:bg-[#444444]"
+                                >
+                                    <div className="flex items-center gap-[1rem]">
+                                        <PiSubtitles className="h-[2rem] w-[2rem] text-[#FFFFFF]" />
+                                        <span className="text-[1.6rem] text-[#F0F0F0]">
+                                            Chức danh
+                                        </span>
+                                    </div>
+                                    <IoChevronUp
+                                        className={`h-[2rem] w-[2rem] text-[#F0F0F0] transition-transform duration-300 ${isJobTitlesOpen ? 'rotate-180' : 'rotate-0'}`}
+                                    />
+                                </button>
+
+                                <div
+                                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                                        isJobTitlesOpen
+                                            ? 'max-h-[500px]'
+                                            : 'max-h-0'
+                                    }`}
+                                >
+                                    <div className="flex max-h-[200px] flex-col gap-[0.4rem] overflow-y-auto">
+                                        {jobTitles?.length > 0 &&
+                                            jobTitles.map((item, index) => (
+                                                <Checkbox
+                                                    key={index}
+                                                    onChange={onChange}
+                                                    className="text-white [&_.ant-checkbox-inner]:bg-transparent"
+                                                >
+                                                    {item?.name}
+                                                </Checkbox>
+                                            ))}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <button
-                            onClick={handleToggleJobTitles}
-                            className="flex w-full items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-indigo-700 px-4 py-3 hover:bg-[#444444]"
-                        >
-                            <div className="flex items-center gap-[1rem]">
-                                <PiSubtitles className="h-[2rem] w-[2rem] text-[#FFFFFF]" />
-                                <span className="text-[1.6rem] text-[#F0F0F0]">
-                                    Chức danh
-                                </span>
-                            </div>
-                            <IoChevronUp
-                                className={`h-[2rem] w-[2rem] text-[#F0F0F0] transition-transform duration-300 ${isJobTitlesOpen ? 'rotate-180' : 'rotate-0'}`}
+                        <div className="flex flex-col gap-[1rem]">
+                            <span className="text-[1.4rem] text-[#F0F0F0]">
+                                Năm kinh nghiệm
+                            </span>
+                            <Slider
+                                defaultValue={30}
+                                tooltip={{ open: true }}
+                                className="flex-grow"
                             />
-                        </button>
+                        </div>
 
-                        <div
-                            className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                                isJobTitlesOpen ? 'max-h-[500px]' : 'max-h-0'
-                            }`}
-                        >
-                            <div className="flex max-h-[200px] flex-col gap-[0.4rem] overflow-y-auto">
-                                {jobTitles?.length > 0 &&
-                                    jobTitles.map((item, index) => (
-                                        <Checkbox
-                                            key={index}
-                                            onChange={onChange}
-                                            className="text-white"
-                                        >
-                                            {item?.name}
-                                        </Checkbox>
-                                    ))}
-                            </div>
+                        <div className="grid grid-cols-2 gap-[1rem]">
+                            <ButtonCustom onClick={handleReset} outline>
+                                Đặt lại
+                            </ButtonCustom>
+                            <ButtonCustom onClick={handleSubmit}>
+                                Lọc
+                            </ButtonCustom>
                         </div>
                     </div>
-                </div>
+                    <div className="p-[1rem]">
+                        {mentors?.length > 0 ? (
+                            <>
+                                <ul className="grid grid-cols-1 gap-[1.6rem] md:grid-cols-2 lg:grid-cols-4">
+                                    {mentors.map((mentor, index) => (
+                                        <li key={index}>
+                                            <MentorsProfile mentor={mentor} />
+                                        </li>
+                                    ))}
+                                </ul>
 
-                <div className="flex flex-col gap-[1rem]">
-                    <span className="text-[1.4rem] text-[#F0F0F0]">
-                        Năm kinh nghiệm
-                    </span>
-                    <Slider
-                        defaultValue={30}
-                        tooltip={{ open: true }}
-                        className="flex-grow"
-                    />
-                </div>
-
-                <div className="grid grid-cols-2 gap-[1rem]">
-                    <ButtonCustom onClick={handleReset} outline>
-                        Đặt lại
-                    </ButtonCustom>
-                    <ButtonCustom onClick={handleSubmit}>Lọc</ButtonCustom>
-                </div>
-            </div>
-            <div className="p-[1rem]">
-                {mentors?.length > 0 ? (
-                    <>
-                        <ul className="grid grid-cols-1 gap-[1.6rem] md:grid-cols-2 lg:grid-cols-4">
-                            {mentors.map((mentor, index) => (
-                                <li key={index}>
-                                    <MentorsProfile mentor={mentor} />
-                                </li>
-                            ))}
-                        </ul>
-
-                        <Pagination
-                            defaultCurrent={currentPage}
-                            total={totalUsers}
-                            pageSize={12}
-                            align="center"
-                            onChange={(page) => setCurrentPage(page)}
-                        />
-                    </>
-                ) : (
-                    <div className="flex h-[40rem] items-center justify-center">
-                        <p className="text-[2.4rem] font-bold">
-                            Không có cố vấn nào phù hợp
-                        </p>
+                                <Pagination
+                                    defaultCurrent={currentPage}
+                                    total={totalUsers}
+                                    pageSize={12}
+                                    align="center"
+                                    onChange={(page) => setCurrentPage(page)}
+                                />
+                            </>
+                        ) : (
+                            <div className="flex h-[40rem] items-center justify-center">
+                                <p className="text-[2.4rem] font-bold">
+                                    Không có cố vấn nào phù hợp
+                                </p>
+                            </div>
+                        )}
                     </div>
-                )}
-            </div>
-        </div>
+                </div>
+            )}
+        </>
     );
 }
 

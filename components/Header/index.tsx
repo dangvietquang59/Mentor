@@ -8,19 +8,22 @@ import LoggedIn from '../LoggedIn';
 import { usePathname, useRouter } from 'next/navigation';
 import ButtonCustom from '../ButtonCustom';
 import paths from '@/utils/constants/paths';
-import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
 import { useMounted } from '@/utils/hooks/useMounted';
 import icons from '@/assets/icons';
 import { Avatar, Drawer, Tooltip } from 'antd';
 import { FaHome } from 'react-icons/fa';
 import { SiCodementor } from 'react-icons/si';
 import { BsFillPostcardHeartFill } from 'react-icons/bs';
+import { useUserStore } from '@/stores/useAuthStore';
+import { getProfile } from '@/utils/functions/getProfile';
+import { UserType } from '@/types/user';
 const Header = () => {
     const isMounted = useMounted();
     const [isSelectedPage, setIsSelectedPage] = useState<number>(0);
     const [mounted, setMounted] = useState<boolean>(false);
     const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-    const isLOggedIn = getAccessTokenClient();
+    const { user } = useUserStore();
+    const profile: UserType = getProfile();
     const router = useRouter();
     const arrayPage: SiderType[] = [
         {
@@ -100,7 +103,7 @@ const Header = () => {
                             ))}
                         </ul>
                         <div className="flex items-center">
-                            {isLOggedIn ? (
+                            {user || profile ? (
                                 <LoggedIn />
                             ) : (
                                 <div className="flex gap-[1.2rem]">

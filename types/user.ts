@@ -18,7 +18,7 @@ export type UserType = {
     imageUrl: string;
     bio: Bio;
     slug: string;
-    rating?: string;
+    rating: string;
     createdAt: string | Date;
     updatedAt: string | Date;
     technologies: Technologies[];

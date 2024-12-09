@@ -25,6 +25,7 @@ import { NotificationType } from '@/types/response/notification';
 import ModalCoin from '@/components/ModalCoin';
 import authApi from '@/apis/authApi';
 import userApi from '@/apis/userApi';
+import { useUserStore } from '@/stores/useAuthStore';
 
 function LoggedIn() {
     const router = useRouter();
@@ -46,7 +47,7 @@ function LoggedIn() {
     const profile: UserType = getProfile() || {};
     const [groups, setGroups] = useState<GroupChatResponseType[]>([]);
     const accessToken = getAccessTokenClient();
-
+    const { logout: logoutFunction, user } = useUserStore();
     const fetchMe = async () => {
         if (accessToken) {
             await userApi
@@ -67,6 +68,7 @@ function LoggedIn() {
         Cookies.remove(variables.PROFILE);
         router.push(paths.HOME);
         toast.success('Đăng xuất thành công');
+        logoutFunction();
     };
     const showModalCoin = () => {
         setOpenModalCoin(true);
@@ -321,9 +323,9 @@ function LoggedIn() {
                     onOpenChange={() => setIsOpenInfo(!isOpenInfo)}
                     overlayStyle={{ width: '25rem' }}
                 >
-                    {profile ? (
+                    {user ? (
                         <Avatar
-                            src={profile?.imageUrl}
+                            src={user?.imageUrl}
                             className="relative cursor-pointer"
                             size={40}
                         />
@@ -341,12 +343,12 @@ function LoggedIn() {
                     )}
                 </Popover>
 
-                {selectedUser && (
+                {/* {selectedUser && (
                     <SingleChat
                         user={selectedUser}
                         onClose={() => setSelectedUser(null)}
                     />
-                )}
+                )} */}
             </div>
             <ModalCoin
                 open={openModalCoin}

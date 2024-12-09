@@ -11,7 +11,7 @@ interface GroupChatProps {
 const groupChatApi = {
     async create(data: GroupChatProps, accessToken: string) {
         try {
-            const res = await fetchData<GroupChatType>(
+            const res = await fetchData<GroupChatResponseType>(
                 `${urls.GROUP_CHAT}`,
                 accessToken,
                 'POST',

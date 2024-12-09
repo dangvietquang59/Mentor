@@ -12,6 +12,7 @@ import variables from '@/utils/constants/variables';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { getAccessTokenClient } from '@/utils/functions/getAccessTokenClient';
+import { useUserStore } from '@/stores/useAuthStore';
 
 interface ILoginType {
     email: string;
@@ -20,6 +21,7 @@ interface ILoginType {
 function Login() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
+    const { setUser } = useUserStore();
 
     const isLoggedIn = getAccessTokenClient();
     useEffect(() => {
@@ -47,8 +49,10 @@ function Login() {
                             JSON.stringify(res.data),
                         );
                         Cookies.set(variables.ACCESS_TOKEN, res.accessToken);
+                        setUser(res?.data);
                         toast.success('Đăng nhập thành công');
                     }
+                    console.log('🚀 ~ .then ~ res?.data:', res?.data);
                 }
             })
             .catch(() => {

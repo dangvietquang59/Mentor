@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { TabType } from '../../../types/tab';
 import Tabs from '../../../components/Tabs';
 import BookingTime from '../../../components/BookingTime';
-import { Avatar } from 'antd';
+import { Avatar, Tooltip } from 'antd';
 import images from '@/assets/img';
 import { useMounted } from '@/utils/hooks/useMounted';
 import { usePathname, useRouter } from 'next/navigation';
@@ -19,6 +19,9 @@ import groupChatApi from '@/apis/groupChatApi';
 import reviewApi from '@/apis/reviewApi';
 import { ReviewType } from '@/types/response/review';
 import ReviewCard from '@/components/ReviewCard';
+import { useChatStore } from '@/stores/useChatStore';
+import { useRoomStore } from '@/stores/useRoomStore';
+import { useArrRoomStore } from '@/stores/useArrRoomStore';
 
 function Profiles() {
     const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -68,25 +71,50 @@ function Profiles() {
             title: 'Đánh giá từ người học',
         },
     ];
+    const { toggleChat } = useChatStore();
+    const { setSelectedRoom } = useRoomStore();
+    const { addRoom } = useArrRoomStore();
     const handleCreateChatOneVOne = async () => {
         if (profileUser && profile) {
             const dataChat = {
                 name: profileUser?.fullName,
                 members: [profileUser?._id, profile?._id],
             };
-            await groupChatApi
-                .create(dataChat, accessToken)
-                .then((res) => {
-                    if (res) {
-                        console.log(res);
-                        router.push(`${paths.MESSAGES}/${profile?._id}`);
+
+            try {
+                const res = await groupChatApi.getById(
+                    accessToken,
+                    profile?._id,
+                );
+                if (res) {
+                    const room = res?.find((item) =>
+                        item?.members?.some(
+                            (member) => member?._id === profileUser?._id,
+                        ),
+                    );
+
+                    if (room) {
+                        toggleChat();
+                        setSelectedRoom(room);
+                        addRoom(room);
+                    } else {
+                        const createdRoom = await groupChatApi.create(
+                            dataChat,
+                            accessToken,
+                        );
+                        if (createdRoom) {
+                            toggleChat();
+                            setSelectedRoom(createdRoom);
+                            addRoom(createdRoom);
+                        }
                     }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+                }
+            } catch (error) {
+                console.error('Lỗi khi kiểm tra hoặc tạo phòng chat:', error);
+            }
         }
     };
+
     return (
         <>
             {mounted && (
@@ -140,15 +168,17 @@ function Profiles() {
                                 </div>
                             ) : (
                                 <div className="px-[2rem]">
-                                    <button
-                                        className="flex items-center gap-[1.6rem] rounded-[0.8rem] bg-[#5CD22C] p-[10px_20px]"
-                                        onClick={handleCreateChatOneVOne}
-                                    >
-                                        <Image src={icons.message} alt="icon" />
-                                        <p className="text-[1.6rem] text-white">
-                                            Gửi tin nhắn
-                                        </p>
-                                    </button>
+                                    <Tooltip title="Gửi tin nhắn">
+                                        <button
+                                            className="flex items-center gap-[1.6rem] rounded-[0.8rem] bg-[#5CD22C] p-[10px_20px]"
+                                            onClick={handleCreateChatOneVOne}
+                                        >
+                                            <Image
+                                                src={icons.message}
+                                                alt="icon"
+                                            />
+                                        </button>
+                                    </Tooltip>
                                 </div>
                             )}
                         </div>

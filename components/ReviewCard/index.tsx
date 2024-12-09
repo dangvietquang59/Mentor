@@ -1,10 +1,12 @@
 import { ReviewType } from '@/types/response/review';
 import { formatDate } from '@/utils/functions/formatDate';
 import { Avatar } from 'antd';
+import StarRatings from 'react-star-ratings';
 
 interface ReviewCardProps {
     review: ReviewType;
 }
+
 function ReviewCard({ review }: ReviewCardProps) {
     return (
         <div className="w-full rounded-[0.8rem] border border-[#ccc] p-[2rem]">
@@ -25,9 +27,17 @@ function ReviewCard({ review }: ReviewCardProps) {
                     </div>
                 </div>
                 <div>
-                    <p className="rounded-[0.8rem] p-[1rem] text-[2.4rem] font-bold text-[#5DD62C]">
-                        3.2/5.0
-                    </p>
+                    {/* <p className="rounded-[0.8rem] p-[1rem] text-[2.4rem] font-bold text-[#5DD62C]">
+                        {review?.point}/5.0
+                    </p> */}
+                    <StarRatings
+                        rating={Number(review?.point)}
+                        starRatedColor="green"
+                        numberOfStars={5}
+                        name="rating"
+                        starDimension="20px"
+                        starSpacing="5px"
+                    />
                 </div>
             </div>
             <p className="mt-[2.4rem] text-justify text-[1.4rem]">
