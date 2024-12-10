@@ -8,6 +8,8 @@ import ButtonCustom from '../ButtonCustom';
 import paths from '@/utils/constants/paths';
 import { getProfile } from '@/utils/functions/getProfile';
 import { UserType } from '@/types/user';
+import { BookingGetResponeType } from '@/types/response/booking';
+import bookingApi from '@/apis/bookingApi';
 
 interface BookingTimeProps {
     id: string;
@@ -22,6 +24,22 @@ function BookingTime({ id, user }: BookingTimeProps) {
     const params = {
         page: currentPage,
     };
+    const [bookings, setBookings] = useState<BookingGetResponeType[]>([]);
+
+    const fetchBookings = async () => {
+        await bookingApi
+            ?.getByUserId(id, accessToken)
+            .then((res) => {
+                if (res) {
+                    console.log(res);
+                    setBookings(res);
+                }
+            })
+            .catch((err) => console.log(err));
+    };
+    useEffect(() => {
+        fetchBookings();
+    }, [id]);
     useEffect(() => {
         const fetchFreetime = async () => {
             if (accessToken && id) {
@@ -76,6 +94,8 @@ function BookingTime({ id, user }: BookingTimeProps) {
                         page={currentPage}
                         user={user}
                         forBooking
+                        bookings={bookings}
+                        mentorId={id}
                     />
                 </div>
             </div>

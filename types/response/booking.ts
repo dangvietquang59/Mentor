@@ -8,6 +8,14 @@ export type BookingCreateResponeType = {
     createdAt: string;
     updatedAt: string;
 };
+export type FreeTimeType = {
+    _id: string;
+    userId: string;
+    freeDate: string;
+    freeTimeDetail: string[];
+    createdAt: string;
+    updatedAt: string;
+};
 export type FreetimeDetailType = {
     _id: string;
     freeTimeId: string;

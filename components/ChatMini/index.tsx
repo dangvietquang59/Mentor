@@ -226,7 +226,7 @@ function ChatMini() {
                         <div>
                             {selectedRoom ? (
                                 <div className="flex h-full flex-col rounded-r-lg bg-[#1D1D1D]">
-                                    <div className="flex w-full items-center justify-between gap-[1rem] rounded-t-lg bg-gradient-to-r from-purple-600 to-indigo-700 p-[1rem]">
+                                    <div className="flex w-full items-center justify-between gap-[1rem] rounded-tr-lg bg-gradient-to-r from-purple-600 to-indigo-700 p-[1rem]">
                                         <div className="flex items-center gap-[1rem]">
                                             <Avatar
                                                 src={

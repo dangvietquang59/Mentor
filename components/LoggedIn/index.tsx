@@ -36,10 +36,10 @@ function LoggedIn() {
     const [isOpenSessionToday, setIsOpenSessionToday] =
         useState<boolean>(false);
     const [isOpenCoin, setOpenCoin] = useState<boolean>(false);
-    const [selectedUser, setSelectedUser] = useState<{
-        id: string;
-        name: string;
-    } | null>(null);
+    // const [selectedUser, setSelectedUser] = useState<{
+    //     id: string;
+    //     name: string;
+    // } | null>(null);
     const [openModalCoin, setOpenModalCoin] = useState(false);
     const [me, setMe] = useState<UserType>();
     const [notis, setNotis] = useState<NotificationType[]>([]);
@@ -47,7 +47,7 @@ function LoggedIn() {
     const profile: UserType = getProfile() || {};
     const [groups, setGroups] = useState<GroupChatResponseType[]>([]);
     const accessToken = getAccessTokenClient();
-    const { logout: logoutFunction, user } = useUserStore();
+    const { logout: logoutFunction, user, setUser } = useUserStore();
     const fetchMe = async () => {
         if (accessToken) {
             await userApi
@@ -55,6 +55,7 @@ function LoggedIn() {
                 .then((res) => {
                     if (res) {
                         setMe(res);
+                        setUser(res);
                     }
                 })
                 .catch((err) => console.log(err));
@@ -82,7 +83,6 @@ function LoggedIn() {
                 );
                 if (res) {
                     setNotis(res?.notifications);
-                    console.log(res);
                     setCountRead(res?.unreadCount);
                 }
             } catch (error) {
@@ -259,7 +259,9 @@ function LoggedIn() {
                                 className="size-[3rem]"
                             />
                             <span className="text-[1.4rem] font-bold">
-                                {formatNumeric(me?.coin || profile?.coin) || 0}
+                                {formatNumeric(
+                                    user?.coin || me?.coin || profile?.coin,
+                                ) || 0}
                             </span>
                         </div>
                         <Image

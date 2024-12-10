@@ -1,5 +1,7 @@
+import images from '@/assets/img';
 import { UserType } from '@/types/user';
 import paths from '@/utils/constants/paths';
+import { formatNumeric } from '@/utils/functions/formatNumeric';
 import { Image } from 'antd';
 
 import { useRouter } from 'next/navigation';
@@ -19,20 +21,35 @@ function MentorsProfile(props: MentorProfileProps) {
 
     return (
         <div
-            className="group relative flex h-[45rem] w-full flex-col gap-[1.2rem] overflow-hidden rounded-[2.4rem] bg-[#242526] hover:cursor-pointer"
+            className="group flex h-[45rem] w-full flex-col gap-[1.2rem] overflow-hidden rounded-[2.4rem] bg-[#242526] hover:cursor-pointer"
             onClick={() => router.push(`${paths.PROFILE}/${mentor?._id}`)}
         >
             <Image
                 src={mentor?.imageUrl}
                 alt={mentor?.fullName}
                 preview={false}
-                className="w-full object-cover"
+                className="w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 height={250}
             />
             <div className="h-full px-[1rem]">
-                <h3 className="text-[1.8rem] font-medium">
-                    {mentor?.fullName}
-                </h3>
+                <div className="flex items-center justify-between gap-[1rem]">
+                    <h3 className="text-[1.8rem] font-medium">
+                        {mentor?.fullName}
+                    </h3>
+                    <div className="flex items-center gap-[0.4rem]">
+                        <span className="bottom-[0.4rem] right-[0.1rem] rounded-[0.4rem] p-[0.4rem] text-[1.4rem]">
+                            {formatNumeric(mentor?.pricePerHour)}/h
+                        </span>
+                        <Image
+                            src={images.qCoin.src}
+                            alt={mentor?.fullName}
+                            preview={false}
+                            className="w-full object-cover"
+                            width={20}
+                            height={20}
+                        />
+                    </div>
+                </div>
                 <div className="mt-[1.2rem] flex h-full flex-col gap-[0.8rem]">
                     <p className="text-[1.4rem]">{mentor?.bio?.name}</p>
                     <ul className="flex flex-wrap items-center gap-[0.8rem]">

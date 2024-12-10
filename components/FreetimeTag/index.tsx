@@ -15,14 +15,16 @@ import { calculateTimeDifference } from '@/utils/functions/calculateTimeDifferen
 import { formatNumeric } from '@/utils/functions/formatNumeric';
 import bookingApi from '@/apis/bookingApi';
 import images from '@/assets/img';
-import transactionsApi from '@/apis/transactionsApi';
 import userApi from '@/apis/userApi';
 import { generateHours } from '@/utils/functions/generateHours';
 import { CiCirclePlus } from 'react-icons/ci';
 import ModalCoin from '@/components/ModalCoin';
 import { parseNumber } from '@/utils/functions/parseNumber';
-import groupChatApi from '@/apis/groupChatApi';
 import { useChatStore } from '@/stores/useChatStore';
+import { BookingGetResponeType } from '@/types/response/booking';
+import groupChatApi from '@/apis/groupChatApi';
+import { useRoomStore } from '@/stores/useRoomStore';
+import { useArrRoomStore } from '@/stores/useArrRoomStore';
 
 interface FreetimeTagProps {
     sessions: FreeTimeType[];
@@ -33,6 +35,8 @@ interface FreetimeTagProps {
     canEdit?: boolean;
     forBooking?: boolean;
     user: UserType;
+    bookings?: BookingGetResponeType[];
+    mentorId?: string;
 }
 
 interface SessionData extends FreeTimeType {
@@ -53,6 +57,8 @@ function FreetimeTag({
     canEdit = true,
     forBooking = false,
     user,
+    bookings,
+    mentorId,
 }: FreetimeTagProps) {
     const [sessionData, setSessionData] = useState<SessionData[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,6 +67,7 @@ function FreetimeTag({
     const [fromTime, setFromTime] = useState<string>('');
     const [toTime, setToTime] = useState<string>('');
     const [selected, setSelected] = useState<SessionData | null>(null);
+
     const [selectedSession, setSelectedSession] =
         useState<FreeTimeDetailType | null>(null);
     const [openDispostit, setOpenDisposit] = useState(false);
@@ -96,6 +103,9 @@ function FreetimeTag({
     useEffect(() => {
         fetchMe();
     }, [selectedSession]);
+    const { setSelectedRoom } = useRoomStore();
+    const { addRoom } = useArrRoomStore();
+
     const handleBookingSession = async () => {
         if (selectedSession && profile && user && me) {
             const data = {
@@ -119,30 +129,52 @@ function FreetimeTag({
                     };
                     const res = await bookingApi.create(newData, token);
                     if (res) {
-                        // const transactionData = {
-                        //     userId: me._id,
-                        //     recipientId: user?._id,
-                        //     amount: parseNumber(amount),
-                        //     bookingId: res?._id,
-                        // };
-                        // const chatData = {
-                        //     name: user?.fullName,
-                        //     members: [user?._id, me?._id],
-                        // };
-                        // const group = await groupChatApi.create(
-                        //     chatData,
-                        //     token,
-                        // );
+                        if (mentorId && profile) return;
+                        const dataChat = {
+                            name: '',
+                            members: [mentorId, profile?._id].filter(
+                                (id) => id !== undefined,
+                            ) as string[], // Lọc bỏ undefined
+                        };
 
-                        // const transactions = await transactionsApi.transfer(
-                        //     transactionData,
-                        //     token,
-                        // );
-                        // if (transactions) {
+                        try {
+                            const res = await groupChatApi.getById(
+                                token,
+                                profile?._id,
+                            );
+                            if (res) {
+                                const room = res?.find((item) =>
+                                    item?.members?.some(
+                                        (member) => member?._id === mentorId,
+                                    ),
+                                );
+
+                                if (room) {
+                                    toggleChat();
+                                    setSelectedRoom(room);
+                                    addRoom(room);
+                                } else {
+                                    const createdRoom =
+                                        await groupChatApi.create(
+                                            dataChat,
+                                            token,
+                                        );
+                                    if (createdRoom) {
+                                        toggleChat();
+                                        setSelectedRoom(createdRoom);
+                                        addRoom(createdRoom);
+                                    }
+                                }
+                            }
+                        } catch (error) {
+                            console.error(
+                                'Lỗi khi kiểm tra hoặc tạo phòng chat:',
+                                error,
+                            );
+                        }
                         toast.success('Đặt lịch thành công');
                         handleOk();
                         toggleChat();
-                        // }
                     }
                 } else {
                     toast.error('Số dư không đủ');

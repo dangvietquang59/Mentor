@@ -215,6 +215,7 @@ function FreetimeForm() {
     const onSubmit = async (data: FreetimeSessions) => {
         if (token) {
             const arrSessions = sessionDetail;
+            console.log('🚀 ~ onSubmit ~ arrSessions:', arrSessions);
 
             const arrDate = dateRange
                 ? generateDaysInRange(
@@ -325,6 +326,7 @@ function FreetimeForm() {
             setCurrentPage(currentPage - 1);
         }
     };
+    console.log('sessions', sessions);
     return (
         <>
             <div className="flex max-h-[50rem] min-h-[40rem] flex-col gap-[2.4rem] overflow-y-auto rounded-[0.8rem] bg-[#242526] p-[2rem]">
@@ -351,7 +353,7 @@ function FreetimeForm() {
                     ))}
             </div>
             <ConfirmDeleteModal
-                content="Would you like to delete this free time section?"
+                content="Bạn có muốn xóa lịch học này không?"
                 isModalOpen={showConfirm}
                 handleCancel={cancelConfirmModal}
                 handleOk={handleRemoveDetail}
@@ -478,7 +480,7 @@ function FreetimeForm() {
                             >
                                 <Image src={icons.plus} alt="icon" />
                                 <span className="text-[1.6rem]">
-                                    Add to list
+                                    Thêm vào danh sách
                                 </span>
                             </button>
                         </div>

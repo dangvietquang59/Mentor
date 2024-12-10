@@ -2,26 +2,20 @@
 import jobTitleApi from '@/apis/jobTitleApi';
 import technologiesApi from '@/apis/technologiesApi';
 import userApi from '@/apis/userApi';
-import icons from '@/assets/icons';
 import ButtonCustom from '@/components/ButtonCustom';
-import InputComponent from '@/components/Input';
 import MentorsProfile from '@/components/MentorsProfile';
-import SelectComponent from '@/components/Select';
 import { JobTitleType } from '@/types/response/jobTitle';
 import { TechnologiesType } from '@/types/response/technologies';
 import { UserType } from '@/types/user';
-import { formValidation } from '@/utils/constants/formValidation';
-import { Checkbox, CheckboxProps, Pagination, Slider } from 'antd';
-import Image from 'next/image';
+import { Checkbox, InputNumber, Pagination, Slider, Spin } from 'antd';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import paths from '@/utils/constants/paths';
 import SearchInput from '@/components/SearchInput';
 import { IoCodeSlash } from 'react-icons/io5';
 import { PiSubtitles } from 'react-icons/pi';
-import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
+import { IoChevronUp } from 'react-icons/io5';
 import { useMounted } from '@/utils/hooks/useMounted';
+
 interface FilterProps {
     experiencesYear: number;
     jobtitle: string[];
@@ -41,8 +35,6 @@ interface ParamsType {
 }
 
 function Mentors() {
-    const router = useRouter();
-    const [query, setQuery] = useState<string>('');
     const [jobTitles, setJobTitles] = useState<JobTitleType[]>([]);
     const [technologies, setTechnologies] = useState<TechnologiesType[]>([]);
     const [mentors, setMentors] = useState<UserType[]>([]);
@@ -51,195 +43,169 @@ function Mentors() {
     const [currentPageTitleJob, setCurrentPageTitleJob] = useState<number>(1);
     const [currentPageTechnologies, setCurrebtTechnologies] =
         useState<number>(1);
-    // const [totalPageJobtitle, setTotalPageJobTitle] = useState<number>(0);
-    // const [totalPageTech, setTotalPageTech] = useState<number>(0);
-    const [params, setParams] = useState<ParamsType>({
-        role: 'Mentor',
-        page: currentPage,
-        search: '',
-        rating: 'ASC',
-        experiencesYear: undefined,
+    const [loading, setLoading] = useState(false);
+    const [sliderValue, setSliderValue] = useState<[number, number]>([0, 100]);
+
+    // State for filters
+    const [listCheckbox, setListCheckBox] = useState<string[]>([]);
+    const [filters, setFilters] = useState<FilterProps>({
+        experiencesYear: 0,
         jobtitle: [],
         technology: [],
+        search: '',
+        rating: 'ASC',
     });
-    const mounted = useMounted();
-    // const {
-    //     control,
-    //     handleSubmit,
-    //     reset,
-    //     setValue,
-    //     watch,
-    //     formState: { errors },
-    // } = useForm<FilterProps>();
 
-    // const searchValue = watch('search');
+    const mounted = useMounted();
+
+    // Params to send in API request
+    const params: ParamsType = {
+        role: 'Mentor',
+        page: currentPage,
+        search: filters.search,
+        rating: filters.rating,
+        experiencesYear: filters.experiencesYear || undefined,
+        jobtitle: filters.jobtitle.length > 0 ? filters.jobtitle : undefined,
+        technology:
+            filters.technology.length > 0 ? filters.technology : undefined,
+    };
 
     useEffect(() => {
         const fetchMentors = async () => {
+            setLoading(true);
+
             await userApi
                 .getAll(params)
                 .then((res) => {
                     if (res) {
+                        setLoading(false);
+
                         setMentors(res?.users);
                         setCurrentPage(Number(res?.currentPage));
                         setTotalUser(res?.totalUsers);
                     }
                 })
-                .catch((error) => console.log(error));
+                .catch((error) => {
+                    console.log(error);
+                    setLoading(true);
+                });
         };
         fetchMentors();
-    }, [params]);
+    }, [filters, currentPage]);
+
     const fetchJobTitle = async () => {
         await jobTitleApi
             .getAll(currentPageTitleJob)
             .then((res) => {
                 if (res) {
-                    // setTotalPageJobTitle(res?.totalPages);
                     setJobTitles(res?.jobs);
                 }
             })
-            .catch((error) => {
-                console.log(error);
-            });
+            .catch((error) => console.log(error));
     };
+
     const fetchTechnologies = async () => {
         await technologiesApi
             .getAll(currentPageTechnologies)
             .then((res) => {
                 if (res) {
-                    // setTotalPageTech(res?.totalPages);
                     setTechnologies(res?.technologies);
                 }
             })
-            .catch((error) => {
-                console.log(error);
-            });
+            .catch((error) => console.log(error));
     };
+
     useEffect(() => {
         fetchJobTitle();
         fetchTechnologies();
     }, [currentPageTechnologies, currentPageTitleJob]);
-    const onChange: CheckboxProps['onChange'] = (e) => {
-        console.log(`checked = ${e.target.checked}`);
-    };
+
+    // Toggle functions for collapsible sections
     const [isTechnologiesOpen, setTechnologiesOpen] = useState(true);
     const [isJobTitlesOpen, setJobTitlesOpen] = useState(true);
 
     const handleToggleTechnologies = () => {
         setTechnologiesOpen(!isTechnologiesOpen);
     };
+
     const handleToggleJobTitles = () => {
         setJobTitlesOpen(!isJobTitlesOpen);
     };
-    const handleReset = () => {
-        setQuery('');
-        // Reset any other filters if necessary
+
+    // Handle changes for the slider (Experience Year)
+    const onChangeInputExperience = (value: number | number[]) => {
+        if (Array.isArray(value)) {
+            setSliderValue(value as [number, number]);
+            setFilters((prev) => ({
+                ...prev,
+                experiencesYear: value[0],
+            }));
+        } else {
+            setSliderValue([value, sliderValue[0]]);
+            setFilters((prev) => ({
+                ...prev,
+                experiencesYear: value,
+            }));
+        }
     };
 
-    const handleSubmit = () => {
-        // Handle form submission or filter apply logic
-        console.log('Filters applied');
+    // Handle changes for search input
+    const handleSearchChange = (value: string) => {
+        setFilters((prev) => ({
+            ...prev,
+            search: value,
+        }));
     };
-    // const onSubmit = async (data: FilterProps) => {
-    //     const newParams: ParamsType = {
-    //         role: 'Mentor',
-    //         page: 1,
-    //         experiencesYear: data.experiencesYear || undefined,
-    //         jobtitle: data.jobtitle.length > 0 ? data.jobtitle : undefined,
-    //         technology:
-    //             data.technology.length > 0 ? data.technology : undefined,
-    //         search: data.search || undefined,
-    //         rating: data.rating || undefined,
-    //     };
 
-    //     setParams(newParams);
+    // Handle checkbox selection for job titles and technologies
+    const handleCheckboxChange = (e: any, type: 'jobtitle' | 'technology') => {
+        const value = e.target.name;
+        const checked = e.target.checked;
 
-    //     const queryParams = new URLSearchParams();
+        // Cập nhật danh sách checkbox đã chọn
+        setListCheckBox((prevList) => {
+            let updatedList;
+            if (checked) {
+                // Thêm giá trị vào listCheckbox nếu checkbox được chọn
+                updatedList = [...prevList, value];
+            } else {
+                // Loại bỏ giá trị khỏi listCheckbox nếu checkbox bị bỏ chọn
+                updatedList = prevList.filter((item) => item !== value);
+            }
 
-    //     if (data.experiencesYear) {
-    //         queryParams.append(
-    //             'experiencesYear',
-    //             data.experiencesYear.toString(),
-    //         );
-    //     }
+            // Cập nhật lại filter với danh sách checkbox đã chọn
+            setFilters((prevFilters) => ({
+                ...prevFilters,
+                [type]: updatedList,
+            }));
 
-    //     if (data.jobtitle.length > 0) {
-    //         queryParams.append('jobtitle', data.jobtitle.join(','));
-    //     }
+            return updatedList; // trả về danh sách đã cập nhật
+        });
+    };
 
-    //     if (data.technology.length > 0) {
-    //         queryParams.append('technology', data.technology.join(','));
-    //     }
+    // Clear all filters
+    const clearFilters = () => {
+        setListCheckBox([]);
+        setFilters({
+            experiencesYear: 0,
+            jobtitle: [], // reset jobtitle
+            technology: [], // reset technology
+            search: '', // reset search query
+            rating: 'ASC', // reset rating
+        });
+        setSliderValue([0, 100]); // reset slider
+        setCurrentPage(1); // reset to the first page
+    };
 
-    //     if (data.search) {
-    //         queryParams.append('search', data.search);
-    //     }
-
-    //     if (data.rating) {
-    //         queryParams.append('rating', data.rating);
-    //     }
-
-    //     router.push(`${paths.MENTORS}?${queryParams.toString()}`);
-    // };
-
-    // const clearSearch = () => {
-    //     setValue('search', ''); // Clears the search field
-    //     handleSubmit(onSubmit)(); // Resubmits the form with cleared search
-    // };
-
-    // useEffect(() => {
-    //     const queryString = window.location.search;
-    //     const urlParams = new URLSearchParams(queryString);
-
-    //     reset({
-    //         experiencesYear: Number(urlParams.get('experiencesYear')) || 0,
-    //         jobtitle: urlParams.get('jobtitle')
-    //             ? urlParams.get('jobtitle')?.split(',')
-    //             : [],
-    //         technology: urlParams.get('technology')
-    //             ? urlParams.get('technology')?.split(',')
-    //             : [],
-    //         search: urlParams.get('search') || '',
-    //         rating: (urlParams.get('rating') as 'ASC' | 'DESC') || undefined,
-    //     });
-    // }, [reset]);
-    // const resetForm = () => {
-    //     reset({
-    //         search: '',
-    //         rating: 'ASC',
-    //         experiencesYear: undefined,
-    //         jobtitle: [],
-    //         technology: [],
-    //     });
-    // };
-    // const handleScrollPopUpJobTitle = (e: React.UIEvent<HTMLDivElement>) => {
-    //     if (e && e.currentTarget) {
-    //         const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-    //         if (
-    //             scrollTop + clientHeight >= scrollHeight &&
-    //             currentPageTitleJob < (totalPageJobtitle || 1)
-    //         ) {
-    //             setCurrentPageTitleJob((prevPage) => prevPage + 1);
-    //         }
-    //     }
-    // };
-    // const handleScrollPopUpTech = (e: React.UIEvent<HTMLDivElement>) => {
-    //     if (e && e.currentTarget) {
-    //         const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-    //         if (
-    //             scrollTop + clientHeight >= scrollHeight &&
-    //             currentPageTechnologies < (totalPageTech || 1)
-    //         ) {
-    //             setCurrebtTechnologies((prevPage) => prevPage + 1);
-    //         }
-    //     }
-    // };
     return (
         <>
             {mounted && (
                 <div className="grid grid-cols-[20%_80%] bg-[#1A1A1A] py-[2rem]">
                     <div className="flex flex-col gap-[2.4rem] rounded-lg p-[1rem] shadow-lg">
-                        <SearchInput setQuery={setQuery} query={query} />
+                        <SearchInput
+                            setQuery={handleSearchChange}
+                            query={filters.search}
+                        />
 
                         <div className="flex flex-col gap-[0.8rem]">
                             <div className="flex flex-col gap-[1.2rem]">
@@ -250,7 +216,7 @@ function Mentors() {
                                     <div className="flex items-center gap-[1rem]">
                                         <IoCodeSlash className="h-[2rem] w-[2rem] text-[#FFFFFF]" />
                                         <span className="text-[1.6rem] text-[#F0F0F0]">
-                                            Công nghệ sử dụng
+                                            Công nghệ
                                         </span>
                                     </div>
                                     <IoChevronUp
@@ -259,28 +225,33 @@ function Mentors() {
                                 </button>
 
                                 <div
-                                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                                        isTechnologiesOpen
-                                            ? 'max-h-[500px]'
-                                            : 'max-h-0'
-                                    }`}
+                                    className={`overflow-hidden transition-all duration-300 ease-in-out ${isTechnologiesOpen ? 'max-h-[500px]' : 'max-h-0'}`}
                                 >
                                     <div className="grid max-h-[200px] grid-cols-2 gap-[0.4rem] overflow-y-auto">
                                         {technologies?.length > 0 &&
                                             technologies.map((item, index) => (
                                                 <Checkbox
                                                     key={index}
-                                                    onChange={onChange}
-                                                    className=" text-white [&_.ant-checkbox-inner]:bg-transparent"
+                                                    checked={listCheckbox.includes(
+                                                        item._id,
+                                                    )}
+                                                    onChange={(e) =>
+                                                        handleCheckboxChange(
+                                                            e,
+                                                            'technology',
+                                                        )
+                                                    }
+                                                    name={item._id}
+                                                    className="text-white [&_.ant-checkbox-inner]:bg-transparent"
                                                 >
-                                                    {item?.name}
+                                                    {item.name}
                                                 </Checkbox>
                                             ))}
                                     </div>
                                 </div>
                             </div>
 
-                            <div>
+                            <div className="flex flex-col gap-[1.2rem]">
                                 <button
                                     onClick={handleToggleJobTitles}
                                     className="flex w-full items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-indigo-700 px-4 py-3 hover:bg-[#444444]"
@@ -297,21 +268,26 @@ function Mentors() {
                                 </button>
 
                                 <div
-                                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                                        isJobTitlesOpen
-                                            ? 'max-h-[500px]'
-                                            : 'max-h-0'
-                                    }`}
+                                    className={`overflow-hidden transition-all duration-300 ease-in-out ${isJobTitlesOpen ? 'max-h-[500px]' : 'max-h-0'}`}
                                 >
                                     <div className="flex max-h-[200px] flex-col gap-[0.4rem] overflow-y-auto">
                                         {jobTitles?.length > 0 &&
                                             jobTitles.map((item, index) => (
                                                 <Checkbox
                                                     key={index}
-                                                    onChange={onChange}
+                                                    checked={listCheckbox.includes(
+                                                        item._id,
+                                                    )}
+                                                    onChange={(e) =>
+                                                        handleCheckboxChange(
+                                                            e,
+                                                            'jobtitle',
+                                                        )
+                                                    }
+                                                    name={item._id}
                                                     className="text-white [&_.ant-checkbox-inner]:bg-transparent"
                                                 >
-                                                    {item?.name}
+                                                    {item.name}
                                                 </Checkbox>
                                             ))}
                                     </div>
@@ -320,35 +296,58 @@ function Mentors() {
                         </div>
 
                         <div className="flex flex-col gap-[1rem]">
-                            <span className="text-[1.4rem] text-[#F0F0F0]">
-                                Năm kinh nghiệm
-                            </span>
+                            <div className="flex w-full items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-indigo-700 px-4 py-3 hover:bg-[#444444]">
+                                <span className="text-[1.6rem] text-[#F0F0F0]">
+                                    Số năm kinh nghiệm
+                                </span>
+                            </div>
+                            <div className="grid grid-cols-2 items-center gap-[1.2rem]">
+                                <InputNumber
+                                    value={sliderValue[0]}
+                                    className="w-full !text-white"
+                                    disabled
+                                />
+                                <InputNumber
+                                    value={sliderValue[1]}
+                                    className="w-full !text-white"
+                                    disabled
+                                />
+                            </div>
                             <Slider
-                                defaultValue={30}
-                                tooltip={{ open: true }}
-                                className="flex-grow"
+                                range
+                                step={1}
+                                defaultValue={sliderValue}
+                                onChange={onChangeInputExperience}
                             />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-[1rem]">
-                            <ButtonCustom onClick={handleReset} outline>
-                                Đặt lại
-                            </ButtonCustom>
-                            <ButtonCustom onClick={handleSubmit}>
-                                Lọc
-                            </ButtonCustom>
-                        </div>
+                        <ButtonCustom
+                            onClick={clearFilters}
+                            type="button"
+                            outline
+                        >
+                            Xóa bộ lọc
+                        </ButtonCustom>
                     </div>
+
                     <div className="p-[1rem]">
                         {mentors?.length > 0 ? (
                             <>
-                                <ul className="grid grid-cols-1 gap-[1.6rem] md:grid-cols-2 lg:grid-cols-4">
-                                    {mentors.map((mentor, index) => (
-                                        <li key={index}>
-                                            <MentorsProfile mentor={mentor} />
-                                        </li>
-                                    ))}
-                                </ul>
+                                {!loading ? (
+                                    <ul className="grid grid-cols-1 gap-[1.6rem] md:grid-cols-2 lg:grid-cols-4">
+                                        {mentors.map((mentor, index) => (
+                                            <li key={index}>
+                                                <MentorsProfile
+                                                    mentor={mentor}
+                                                />
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div className="flex h-full items-center justify-center">
+                                        <Spin />
+                                    </div>
+                                )}
 
                                 <Pagination
                                     defaultCurrent={currentPage}

@@ -22,6 +22,7 @@ import ReviewCard from '@/components/ReviewCard';
 import { useChatStore } from '@/stores/useChatStore';
 import { useRoomStore } from '@/stores/useRoomStore';
 import { useArrRoomStore } from '@/stores/useArrRoomStore';
+import { formatNumeric } from '@/utils/functions/formatNumeric';
 
 function Profiles() {
     const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -195,6 +196,19 @@ function Profiles() {
                             </div>
                             {selectedTab === 0 && (
                                 <>
+                                    {profileUser && (
+                                        <div className="flex flex-col">
+                                            <h3 className="text-[2rem] font-medium">
+                                                Tiền thuê
+                                            </h3>
+                                            <span className="text-[2.4rem]">
+                                                {formatNumeric(
+                                                    profileUser?.pricePerHour,
+                                                )}
+                                                đ / 1 giờ
+                                            </span>
+                                        </div>
+                                    )}
                                     <h3 className="text-[2rem] font-medium">
                                         {profileUser &&
                                             profileUser?.technologies?.length >
