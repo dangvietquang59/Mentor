@@ -261,7 +261,7 @@ function ChatMini() {
                                     ) : (
                                         <div className="flex-grow overflow-y-auto rounded-b-lg bg-[#1F1F1F] p-[1rem]">
                                             <div
-                                                className="flex max-h-[35rem] min-h-[30rem] flex-col gap-[2.4rem] overflow-hidden overflow-y-auto p-[1rem]"
+                                                className="flex max-h-[35rem] min-h-[30rem] flex-col gap-[1rem] overflow-hidden overflow-y-auto p-[1rem]"
                                                 ref={messagesEndRef}
                                             >
                                                 {messages.map((item, index) => (

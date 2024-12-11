@@ -5,7 +5,7 @@ import { getFormattedDate } from '@/utils/functions/getFormattedDate';
 import freetimeApi from '@/apis/freetimeApi';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
-import { Modal, Pagination, Select } from 'antd';
+import { Avatar, Modal, Pagination, Select } from 'antd';
 import ButtonCustom from '../ButtonCustom';
 import { formatTime } from '@/utils/functions/formatTime';
 import { UserType } from '@/types/user';
@@ -25,6 +25,8 @@ import { BookingGetResponeType } from '@/types/response/booking';
 import groupChatApi from '@/apis/groupChatApi';
 import { useRoomStore } from '@/stores/useRoomStore';
 import { useArrRoomStore } from '@/stores/useArrRoomStore';
+import { usePathname } from 'next/navigation';
+import paths from '@/utils/constants/paths';
 
 interface FreetimeTagProps {
     sessions: FreeTimeType[];
@@ -36,7 +38,6 @@ interface FreetimeTagProps {
     forBooking?: boolean;
     user: UserType;
     bookings?: BookingGetResponeType[];
-    mentorId?: string;
 }
 
 interface SessionData extends FreeTimeType {
@@ -58,7 +59,6 @@ function FreetimeTag({
     forBooking = false,
     user,
     bookings,
-    mentorId,
 }: FreetimeTagProps) {
     const [sessionData, setSessionData] = useState<SessionData[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -67,7 +67,10 @@ function FreetimeTag({
     const [fromTime, setFromTime] = useState<string>('');
     const [toTime, setToTime] = useState<string>('');
     const [selected, setSelected] = useState<SessionData | null>(null);
+    const pathname = usePathname();
+    const mentorId = pathname.split(`${paths.PROFILE}/`)[1];
 
+    console.log('🚀 ~ mentorId:', mentorId);
     const [selectedSession, setSelectedSession] =
         useState<FreeTimeDetailType | null>(null);
     const [openDispostit, setOpenDisposit] = useState(false);
@@ -129,12 +132,13 @@ function FreetimeTag({
                     };
                     const res = await bookingApi.create(newData, token);
                     if (res) {
-                        if (mentorId && profile) return;
+                        toast.success('Đặt lịch thành công!');
+                        if (!mentorId && !profile) return;
                         const dataChat = {
                             name: '',
                             members: [mentorId, profile?._id].filter(
                                 (id) => id !== undefined,
-                            ) as string[], // Lọc bỏ undefined
+                            ) as string[],
                         };
 
                         try {
@@ -142,6 +146,7 @@ function FreetimeTag({
                                 token,
                                 profile?._id,
                             );
+
                             if (res) {
                                 const room = res?.find((item) =>
                                     item?.members?.some(
@@ -391,6 +396,10 @@ function FreetimeTag({
                         <h2 className="border-b py-[1rem] text-center text-[2rem] font-bold">
                             Thông tin đặt lịch
                         </h2>
+                        <div className="flex items-center gap-[1rem]">
+                            <Avatar src={user?.imageUrl} size={50} />
+                            <span>{user?.fullName}</span>
+                        </div>
                         <div className="grid grid-cols-2 items-center gap-[1.2rem]">
                             <h3 className="text-[1.6rem] font-medium">
                                 Ngày đặt:
@@ -407,6 +416,7 @@ function FreetimeTag({
                                 </div>
                             )}
                         </div>
+
                         <div className="grid grid-cols-2 gap-[1.2rem]">
                             <h3 className="text-[1.6rem] font-medium">
                                 Thời gian đặt:

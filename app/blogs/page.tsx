@@ -33,10 +33,10 @@ const Blogs = () => {
                 <ButtonCustom outline>Thêm bài viết</ButtonCustom>
             </Link>
 
-            <div className="grid grid-cols-1 gap-[1.2rem]">
+            <div className="grid grid-cols-[70%_30%] gap-[1.2rem]">
                 {blogs.length > 0 ? (
                     blogs.map((blog, index) => (
-                        <BlogCard key={index} blog={blog} />
+                        <BlogCard key={index} blog={blog} page="blogs" />
                     ))
                 ) : (
                     <div className="flex w-full items-center justify-center">

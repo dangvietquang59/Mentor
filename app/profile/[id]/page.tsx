@@ -21,7 +21,6 @@ import { ReviewType } from '@/types/response/review';
 import ReviewCard from '@/components/ReviewCard';
 import { useChatStore } from '@/stores/useChatStore';
 import { useRoomStore } from '@/stores/useRoomStore';
-import { useArrRoomStore } from '@/stores/useArrRoomStore';
 import { formatNumeric } from '@/utils/functions/formatNumeric';
 
 function Profiles() {
@@ -74,7 +73,6 @@ function Profiles() {
     ];
     const { toggleChat } = useChatStore();
     const { setSelectedRoom } = useRoomStore();
-    const { addRoom } = useArrRoomStore();
 
     const handleCreateChatOneVOne = async () => {
         if (profileUser && profile) {
@@ -106,7 +104,6 @@ function Profiles() {
                         if (createdRoom) {
                             toggleChat();
                             setSelectedRoom(createdRoom);
-                            addRoom(createdRoom);
                         }
                     }
                 }

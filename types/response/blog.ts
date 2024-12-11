@@ -1,7 +1,15 @@
 import { UserType } from '../user';
 
+export type TagType = {
+    _id: string;
+    name: string;
+    slug: string;
+    description: string;
+    createdAt: string;
+    updatedAt: string;
+};
 export type BlogType = {
-    tags: any[];
+    tags: TagType[];
     likes: [];
     comments: [];
     _id: string;

@@ -189,7 +189,7 @@ function ActionBlog({ blog }: ActionBlogProp) {
             </div>
 
             <Drawer
-                title={`Comments (${commnetCount})`}
+                title={`Bình luận (${commnetCount})`}
                 onClose={onClose}
                 open={open}
                 width={600}

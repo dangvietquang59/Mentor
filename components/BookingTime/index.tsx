@@ -95,7 +95,6 @@ function BookingTime({ id, user }: BookingTimeProps) {
                         user={user}
                         forBooking
                         bookings={bookings}
-                        mentorId={id}
                     />
                 </div>
             </div>

@@ -10,9 +10,9 @@ function MessageItem({ msg, time, user, id, attachments }: MessageType) {
     if (user && id !== user?._id) {
         return (
             <div className="flex justify-start gap-[0.8rem]">
-                <div className="w-[5rem]">
+                {/* <div className="w-[5rem]">
                     <Avatar src={user?.imageUrl} size={40} />
-                </div>
+                </div> */}
                 <div className="flex flex-col gap-[0.8rem]">
                     {attachments.length > 0 && (
                         <div className="flex items-center justify-center gap-[0.5rem]">
@@ -107,7 +107,7 @@ function MessageItem({ msg, time, user, id, attachments }: MessageType) {
                     )}
                     {msg !== '' && (
                         <div
-                            className={`flex max-w-[50%] flex-col gap-[0.8rem] rounded-[0.8rem] bg-[#191818] p-[1rem]`}
+                            className={`flex max-w-[50%] flex-col gap-[0.8rem] rounded-[0.8rem] bg-[#454545] p-[1rem]`}
                         >
                             <p className="overflow-wrap break-words text-[1.6rem]">
                                 {msg}

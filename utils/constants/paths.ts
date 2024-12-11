@@ -12,6 +12,7 @@ const paths = {
     CREATE: 'create',
     VIEW: 'view',
     BOOKINGS: '/bookings',
+    NOT_FOUND: '/not-found',
 };
 
 export default paths;
