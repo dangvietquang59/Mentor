@@ -26,6 +26,7 @@ import { JobTitleType } from '@/types/response/jobTitle';
 import jobTitleApi from '@/apis/jobTitleApi';
 import useRequireAuth from '@/utils/hooks/useRequireAuth';
 import { UserTypeRequest } from '@/types/request/user';
+import { checkIdOrName } from '@/utils/functions/checkIdOrName';
 
 function EditProfile() {
     const mounted = useMounted();
@@ -214,15 +215,17 @@ function EditProfile() {
     useEffect(() => {
         resetProfileForm({
             email: profileUser?.email || '',
-            bio: profileUser?.bio?._id,
+            bio: profileUser?.bio?.name,
             fullName: profileUser?.fullName || '',
-            rating: profileUser?.rating || '',
+            rating: profileUser?.rating || '0/5.0',
             role: profileUser?.role || '',
             pricePerHour: profileUser?.pricePerHour || 0,
         });
     }, [profileUser, resetProfileForm]);
 
     const onSubmitProfile = async (data: UserTypeRequest) => {
+        const isName = checkIdOrName(data?.bio);
+
         const formatedExperiences =
             experiences.length > 0
                 ? experiences.map((item) => ({
@@ -230,9 +233,23 @@ function EditProfile() {
                       experienceYears: Number(item?.experienceYears) || 0,
                   }))
                 : [];
+        let idBio = '';
 
-        const newProfileData = {
+        if (isName?.type === 'id') {
+            idBio = isName?.value;
+        } else {
+            const job = await jobTitleApi?.getByName(isName?.value);
+
+            if (job && job._id) {
+                idBio = job._id;
+            } else {
+                idBio = '';
+            }
+        }
+
+        let newProfileData = {
             ...data,
+            bio: idBio,
             experience: formatedExperiences,
         };
 
@@ -453,12 +470,22 @@ function EditProfile() {
                         className="w-full"
                     />
                 </div>
-                <ButtonCustom
-                    className="mt-[2.4rem] w-full"
-                    onClick={handleUpload}
-                >
-                    Cập nhật ảnh
-                </ButtonCustom>
+                <div className="grid grid-cols-2 gap-[1rem]">
+                    <ButtonCustom
+                        className="mt-[2.4rem] w-full"
+                        onClick={() => setIsModalImageOpen(false)}
+                        outline
+                        type="button"
+                    >
+                        Hủy
+                    </ButtonCustom>
+                    <ButtonCustom
+                        className="mt-[2.4rem] w-full"
+                        onClick={handleUpload}
+                    >
+                        Cập nhật ảnh
+                    </ButtonCustom>
+                </div>
             </Modal>
             <Modal
                 open={isModalOpen}
