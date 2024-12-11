@@ -5,7 +5,7 @@ import paths from '@/utils/constants/paths';
 import { formatDate } from '@/utils/functions/formatDate';
 import { getProfile } from '@/utils/functions/getProfile';
 
-import { Avatar, Popover, Tag } from 'antd';
+import { Avatar, Tag } from 'antd';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import ReviewModal from '../ReviewModal';

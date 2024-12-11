@@ -18,9 +18,11 @@ function SesionToday() {
     const token = getAccessTokenClient();
     useEffect(() => {
         if (token) {
+            const today = new Date().toISOString();
+            const status = 'Accepted';
             const fetchSessions = async () => {
                 await bookingApi
-                    .getByUserId(profile?._id, token)
+                    .getByUserId(profile?._id, token, today, status)
                     .then((res) => {
                         if (res) {
                             setSessions(res);
@@ -46,7 +48,7 @@ function SesionToday() {
                     </h2>
                 </div>
             </div>
-            <div className="mt-[2.4rem] flex flex-col gap-[2.4rem]">
+            <div className="mt-[2.4rem] flex max-h-[30rem] flex-col gap-[2.4rem] overflow-y-auto">
                 <ul className="flex flex-col gap-[1.2rem]">
                     {sessions && sessions?.length > 0 ? (
                         sessions.map((item, index) => (

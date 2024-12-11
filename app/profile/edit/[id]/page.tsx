@@ -477,7 +477,7 @@ function EditProfile() {
                     {mounted && (
                         <div className="max-h-[50rem] overflow-auto p-[1rem]">
                             <h2 className="mb-[2.4rem] text-[2rem] font-bold text-white">
-                                Create new experience
+                                Kinh nghiệm
                             </h2>
                             <form
                                 onSubmit={handleExperienceSubmit(

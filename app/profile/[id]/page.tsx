@@ -75,6 +75,7 @@ function Profiles() {
     const { toggleChat } = useChatStore();
     const { setSelectedRoom } = useRoomStore();
     const { addRoom } = useArrRoomStore();
+
     const handleCreateChatOneVOne = async () => {
         if (profileUser && profile) {
             const dataChat = {
@@ -97,7 +98,6 @@ function Profiles() {
                     if (room) {
                         toggleChat();
                         setSelectedRoom(room);
-                        addRoom(room);
                     } else {
                         const createdRoom = await groupChatApi.create(
                             dataChat,
@@ -198,7 +198,7 @@ function Profiles() {
                                 <>
                                     {profileUser && (
                                         <div className="flex flex-col">
-                                            <h3 className="text-[2rem] font-medium">
+                                            <h3 className="text-[1.4rem] font-medium">
                                                 Tiền thuê
                                             </h3>
                                             <span className="text-[2.4rem]">

@@ -45,10 +45,18 @@ const bookingApi = {
             throw new Error('Error calling booking API');
         }
     },
-    async getByUserId(id: string, token: string) {
+    async getByUserId(
+        id: string,
+        token: string,
+        date?: string,
+        status?: string,
+    ) {
         try {
+            const newUrl = date
+                ? `${urls.BOOKING}/${urls.USER}/${id}?date=${date}&status=${status}`
+                : `${urls.BOOKING}/${urls.USER}/${id}`;
             const res = await fetchData<BookingGetResponeType[]>(
-                `${urls.BOOKING}/${urls.USER}/${id}`,
+                `${newUrl}`,
                 token,
                 'GET',
             );
