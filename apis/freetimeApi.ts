@@ -5,6 +5,7 @@ import { fetchData } from '@/utils/functions/fetchData';
 interface FreetimeProps {
     freeDate: string;
     freeTimeDetail: FreetimeSessionDetails[];
+    repeatDays: number[];
 }
 const freetimeApi = {
     async create(data: FreetimeProps, accessToken: string) {

@@ -95,6 +95,7 @@ function FreetimeForm() {
     const [sessionDetail, setSessionDetail] = useState<
         FreetimeSessionDetails[]
     >([]);
+
     const [dateRange, setDateRange] = useState<
         [Dayjs | null, Dayjs | null] | null
     >(null);
@@ -109,6 +110,25 @@ function FreetimeForm() {
         from: '',
         to: '',
     });
+    const [selectedDays, setSelectedDays] = useState<number[]>([]);
+    const daysOfWeek = [
+        { label: 'Chủ Nhật', value: 0 },
+        { label: 'Thứ Hai', value: 1 },
+        { label: 'Thứ Ba', value: 2 },
+        { label: 'Thứ Tư', value: 3 },
+        { label: 'Thứ Năm', value: 4 },
+        { label: 'Thứ Sáu', value: 5 },
+        { label: 'Thứ Bảy', value: 6 },
+    ];
+    const toggleDaySelection = (day: number) => {
+        setSelectedDays(
+            (prev) =>
+                prev.includes(day)
+                    ? prev.filter((d) => d !== day) // Bỏ chọn ngày nếu đã được chọn
+                    : [...prev, day], // Thêm ngày nếu chưa được chọn
+        );
+    };
+    const isDaySelected = (day: number) => selectedDays.includes(day);
     const handleDateChange: RangePickerProps['onChange'] = (
         dates,
         dateStrings,
@@ -229,6 +249,7 @@ function FreetimeForm() {
                     const newData = {
                         freeDate: date,
                         freeTimeDetail: arrSessions,
+                        repeatDays: selectedDays || [],
                     };
 
                     return freetimeApi
@@ -472,7 +493,6 @@ function FreetimeForm() {
                                     />
                                 </div>
                             </div>
-
                             <button
                                 type="button"
                                 onClick={handleAddDetail}
@@ -498,8 +518,24 @@ function FreetimeForm() {
                             </span>
                         </button>
                     )}
-
-                    <ButtonCustom type="submit">Save</ButtonCustom>
+                    <h3 className="text-white">Lặp lại theo ngày trong tuần</h3>
+                    <div className="grid grid-cols-4 gap-[0.8rem]">
+                        {daysOfWeek.map((day) => (
+                            <button
+                                key={day.value}
+                                type="button"
+                                onClick={() => toggleDaySelection(day.value)}
+                                className={`rounded-lg px-4 py-2 text-white ${
+                                    isDaySelected(day.value)
+                                        ? 'bg-green-500'
+                                        : 'bg-gray-500'
+                                } hover:bg-green-600`}
+                            >
+                                {day.label}
+                            </button>
+                        ))}
+                    </div>
+                    <ButtonCustom type="submit">Lưu</ButtonCustom>
                 </form>
             </Modal>
         </>
