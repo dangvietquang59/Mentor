@@ -21,6 +21,7 @@ interface ReviewModalProps {
     bookingId: string;
     handleOk: () => void;
     handleCancel: () => void;
+    mutate: () => void;
 }
 
 interface FormProps {
@@ -34,6 +35,7 @@ function ReviewModal({
     bookingId,
     handleOk,
     handleCancel,
+    mutate,
 }: ReviewModalProps) {
     const profile: UserType = getProfile();
     const token = getAccessTokenClient();
@@ -82,6 +84,7 @@ function ReviewModal({
                         toast.success('Phản hồi thành công');
                         handleOk();
                         reset();
+                        mutate();
                     }
                 })
                 .catch(() => toast.error('Phản hồi thất bại'));

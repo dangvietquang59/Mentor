@@ -177,7 +177,7 @@ function ChatMini() {
         return (
             <div className="relative">
                 <div
-                    className="fixed bottom-10 right-10 cursor-pointer rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 p-4 shadow-lg transition-all duration-300 ease-in-out hover:scale-110"
+                    className="fixed bottom-10 right-10 cursor-pointer rounded-full bg-gradient-to-r from-[#355429] to-[#5dd62c] p-4 shadow-lg transition-all duration-300 ease-in-out hover:scale-110"
                     onClick={toggleChat}
                 >
                     <AiOutlineMessage className="h-[3rem] w-[3rem] text-white" />
@@ -226,7 +226,7 @@ function ChatMini() {
                         <div>
                             {selectedRoom ? (
                                 <div className="flex h-full flex-col rounded-r-lg bg-[#1D1D1D]">
-                                    <div className="flex w-full items-center justify-between gap-[1rem] rounded-tr-lg bg-gradient-to-r from-purple-600 to-indigo-700 p-[1rem]">
+                                    <div className="flex w-full items-center justify-between gap-[1rem] rounded-tr-lg bg-gradient-to-r from-[#355429] to-[#5dd62c] p-[1rem]">
                                         <div className="flex items-center gap-[1rem]">
                                             <Avatar
                                                 src={

@@ -6,10 +6,12 @@ import { formatDate } from '@/utils/functions/formatDate';
 import { getProfile } from '@/utils/functions/getProfile';
 
 import { Avatar, Tag } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import ReviewModal from '../ReviewModal';
 import { useRouter } from 'next/navigation';
+import { ReviewType } from '@/types/response/review';
+import reviewApi from '@/apis/reviewApi';
 
 interface BookingCardProps {
     booking: BookingGetResponeType;
@@ -27,7 +29,24 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
     const isMentor = profile?._id === booking?.participants?.[0]?._id;
     const [openReview, setOpenReview] = useState(false);
     const router = useRouter();
+    const [reviews, setReviews] = useState<ReviewType[]>([]);
 
+    useEffect(() => {
+        const fetchReview = async () => {
+            await reviewApi
+                .getByUserId(profile?._id, token)
+                .then((res) => {
+                    if (res) {
+                        setReviews(res?.reviews);
+                    }
+                })
+                .catch((err) => console.log(err));
+        };
+        fetchReview();
+    }, []);
+    const isReview = reviews?.some(
+        (item) => item?.bookingId?._id === booking?._id,
+    );
     const showReview = () => setOpenReview(true);
     const createReview = () => setOpenReview(false);
     const cancelReview = () => setOpenReview(false);
@@ -93,7 +112,7 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
                     </div>
                 ) : booking?.status === BookingStatus.Accepted ? (
                     <div className="flex space-x-4">
-                        {profile?.role !== 'Mentor' && (
+                        {profile?.role !== 'Mentor' && !isReview && (
                             <button
                                 className="rounded-lg bg-orange-500 px-6 py-2 text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
                                 onClick={showReview}
@@ -181,6 +200,7 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
                 open={openReview}
                 handleOk={createReview}
                 handleCancel={cancelReview}
+                mutate={refreshData}
             />
         </>
     );

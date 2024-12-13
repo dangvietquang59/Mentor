@@ -195,7 +195,7 @@ function Mentors() {
                 <div className="grid grid-cols-[20%_80%] bg-[#1A1A1A] py-[2rem]">
                     <div className="flex flex-col gap-[2.4rem] rounded-lg p-[1rem] shadow-lg">
                         <SearchInput
-                            setQuery={debouncedSearchChange} // Debounced search input
+                            setQuery={debouncedSearchChange}
                             query={filters.search}
                         />
 
@@ -203,7 +203,7 @@ function Mentors() {
                             <div className="flex flex-col gap-[1.2rem]">
                                 <button
                                     onClick={handleToggleTechnologies}
-                                    className="flex w-full items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-indigo-700 px-4 py-3 hover:bg-[#444444]"
+                                    className="flex w-full items-center justify-between rounded-lg bg-gradient-to-r from-[#355429] to-[#5dd62c] px-4 py-3 hover:bg-[#444444]"
                                 >
                                     <div className="flex items-center gap-[1rem]">
                                         <IoCodeSlash className="h-[2rem] w-[2rem] text-[#FFFFFF]" />
@@ -256,7 +256,7 @@ function Mentors() {
                             <div className="flex flex-col gap-[1.2rem]">
                                 <button
                                     onClick={handleToggleJobTitles}
-                                    className="flex w-full items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-indigo-700 px-4 py-3 hover:bg-[#444444]"
+                                    className="flex w-full items-center justify-between rounded-lg bg-gradient-to-r from-[#355429] to-[#5dd62c] px-4 py-3 hover:bg-[#444444]"
                                 >
                                     <div className="flex items-center gap-[1rem]">
                                         <PiSubtitles className="h-[2rem] w-[2rem] text-[#FFFFFF]" />
@@ -306,7 +306,7 @@ function Mentors() {
                                 </div>
                             </div>
                             <div className="flex flex-col gap-[1rem]">
-                                <div className="flex w-full items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-indigo-700 px-4 py-3 hover:bg-[#444444]">
+                                <div className="flex w-full items-center justify-between rounded-lg bg-gradient-to-r from-[#355429] to-[#5dd62c] px-4 py-3 hover:bg-[#444444]">
                                     <span className="text-[1.6rem] text-[#F0F0F0]">
                                         Số năm kinh nghiệm
                                     </span>
