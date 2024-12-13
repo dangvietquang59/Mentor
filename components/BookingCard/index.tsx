@@ -30,7 +30,53 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
     const [openReview, setOpenReview] = useState(false);
     const router = useRouter();
     const [reviews, setReviews] = useState<ReviewType[]>([]);
+    const [canJoin, setCanJoin] = useState<boolean>(false);
+    const [timeLeft, setTimeLeft] = useState<number | null>(null);
+    const [canReview, setCanReview] = useState<boolean>(false);
 
+    useEffect(() => {
+        if (booking?.to) {
+            const now = new Date();
+            const toTime = new Date(`${now.toDateString()} ${booking.to}`);
+
+            if (now >= toTime) {
+                setCanReview(true);
+            } else {
+                setCanReview(false);
+            }
+        }
+    }, [booking]);
+    useEffect(() => {
+        if (booking) {
+            const now = new Date();
+            const fromTime = new Date(`${now.toDateString()} ${booking.from}`);
+            const toTime = new Date(`${now.toDateString()} ${booking.to}`);
+
+            const diff = Math.floor(
+                (fromTime.getTime() - now.getTime()) / 1000,
+            );
+
+            if (diff > 0) {
+                setTimeLeft(diff);
+                setCanJoin(false);
+            } else if (now >= fromTime && now <= toTime) {
+                setCanJoin(true);
+                setTimeLeft(null);
+            }
+        }
+    }, [booking]);
+    useEffect(() => {
+        let interval: NodeJS.Timeout | undefined;
+        if (timeLeft !== null && timeLeft > 0) {
+            interval = setInterval(() => {
+                setTimeLeft((prev) => (prev ? prev - 1 : 0));
+            }, 1000);
+        }
+
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+    }, [timeLeft]);
     useEffect(() => {
         const fetchReview = async () => {
             await reviewApi
@@ -50,6 +96,17 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
     const showReview = () => setOpenReview(true);
     const createReview = () => setOpenReview(false);
     const cancelReview = () => setOpenReview(false);
+    // Hàm chuyển đổi giây thành định dạng HH:mm:ss
+    const formatTime = (time: number): string => {
+        const hours = Math.floor(time / 3600); // Tính giờ
+        const minutes = Math.floor((time % 3600) / 60); // Tính phút
+        const seconds = time % 60; // Tính giây
+
+        // Trả về chuỗi định dạng HH:mm:ss
+        return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds
+            .toString()
+            .padStart(2, '0')}`;
+    };
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -112,21 +169,30 @@ function BookingCard({ booking, token, refreshData }: BookingCardProps) {
                     </div>
                 ) : booking?.status === BookingStatus.Accepted ? (
                     <div className="flex space-x-4">
-                        {profile?.role !== 'Mentor' && !isReview && (
-                            <button
-                                className="rounded-lg bg-orange-500 px-6 py-2 text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
-                                onClick={showReview}
-                            >
-                                Đánh giá
-                            </button>
-                        )}
+                        {profile?.role !== 'Mentor' &&
+                            !isReview &&
+                            canReview && (
+                                <button
+                                    className="rounded-lg bg-orange-500 px-6 py-2 text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
+                                    onClick={showReview}
+                                >
+                                    Đánh giá
+                                </button>
+                            )}
                         <button
-                            className="rounded-lg bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                            onClick={() =>
-                                router.push(`${paths.ROOM}/${booking?._id}`)
-                            }
+                            className={`rounded-lg px-6 py-2 text-white focus:outline-none focus:ring-2 ${
+                                canJoin
+                                    ? 'bg-blue-500 hover:bg-blue-600 focus:ring-blue-300'
+                                    : 'bg-gray-400 focus:cursor-not-allowed'
+                            }`}
+                            onClick={() => router.push(`/room/${booking?._id}`)}
+                            disabled={!canJoin}
                         >
-                            Vào phòng
+                            {canJoin
+                                ? 'Vào phòng'
+                                : timeLeft !== null
+                                  ? `Còn lại: ${formatTime(timeLeft)} để vào phòng`
+                                  : 'Chưa đến giờ vào phòng'}
                         </button>
                     </div>
                 ) : (

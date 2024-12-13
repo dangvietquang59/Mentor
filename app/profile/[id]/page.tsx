@@ -63,14 +63,17 @@ function Profiles() {
         fetchReviews();
     }, [profileId]);
 
-    const arrayTabs: TabType[] = [
-        {
-            title: 'Tổng quan',
-        },
-        {
-            title: 'Đánh giá từ người học',
-        },
-    ];
+    const arrayTabs: TabType[] =
+        profile?._id !== profileId
+            ? [
+                  {
+                      title: 'Tổng quan',
+                  },
+                  {
+                      title: 'Đánh giá từ người học',
+                  },
+              ]
+            : [];
     const { toggleChat } = useChatStore();
     const { setSelectedRoom } = useRoomStore();
 
@@ -184,28 +187,31 @@ function Profiles() {
 
                     <div className="mt-[2.4rem] flex w-full gap-[2.4rem]">
                         <div className="flex w-[60%] flex-col gap-[2.4rem] rounded-[0.4rem] bg-[#242526] p-[2rem]">
-                            <div className="flex items-center">
-                                <Tabs
-                                    arrayTabs={arrayTabs}
-                                    onSelectTab={setSelectedTab}
-                                    className="text-[1.8rem]"
-                                />
-                            </div>
+                            {arrayTabs?.length > 0 && (
+                                <div className="flex items-center">
+                                    <Tabs
+                                        arrayTabs={arrayTabs}
+                                        onSelectTab={setSelectedTab}
+                                        className="text-[1.8rem]"
+                                    />
+                                </div>
+                            )}
                             {selectedTab === 0 && (
                                 <>
-                                    {profileUser && (
-                                        <div className="flex flex-col">
-                                            <h3 className="text-[1.4rem] font-medium">
-                                                Tiền thuê
-                                            </h3>
-                                            <span className="text-[2.4rem]">
-                                                {formatNumeric(
-                                                    profileUser?.pricePerHour,
-                                                )}
-                                                đ / 1 giờ
-                                            </span>
-                                        </div>
-                                    )}
+                                    {profileUser &&
+                                        profile?.role === 'Mentor' && (
+                                            <div className="flex flex-col">
+                                                <h3 className="text-[1.4rem] font-medium">
+                                                    Tiền thuê
+                                                </h3>
+                                                <span className="text-[2.4rem]">
+                                                    {formatNumeric(
+                                                        profileUser?.pricePerHour,
+                                                    )}
+                                                    đ / 1 giờ
+                                                </span>
+                                            </div>
+                                        )}
                                     <h3 className="text-[2rem] font-medium">
                                         {profileUser &&
                                             profileUser?.technologies?.length >
@@ -242,6 +248,7 @@ function Profiles() {
                                                 <ReviewCard
                                                     key={index}
                                                     review={review}
+                                                    mentorId={profileId}
                                                 />
                                             ))
                                         ) : (

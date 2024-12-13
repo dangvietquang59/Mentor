@@ -7,6 +7,10 @@ export type FreeTimeDetailType = {
     status: string;
     createdAt: string;
     updatedAt: string;
+    availableTimes: {
+        from: string;
+        to: string;
+    }[];
 };
 export type FreeTimeType = {
     _id: string;

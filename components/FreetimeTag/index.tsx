@@ -37,7 +37,6 @@ interface FreetimeTagProps {
     canEdit?: boolean;
     forBooking?: boolean;
     user: UserType;
-    bookings?: BookingGetResponeType[];
 }
 
 interface SessionData extends FreeTimeType {
@@ -58,7 +57,6 @@ function FreetimeTag({
     canEdit = true,
     forBooking = false,
     user,
-    bookings,
 }: FreetimeTagProps) {
     const [sessionData, setSessionData] = useState<SessionData[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,7 +68,6 @@ function FreetimeTag({
     const pathname = usePathname();
     const mentorId = pathname.split(`${paths.PROFILE}/`)[1];
 
-    console.log('🚀 ~ mentorId:', mentorId);
     const [selectedSession, setSelectedSession] =
         useState<FreeTimeDetailType | null>(null);
     const [openDispostit, setOpenDisposit] = useState(false);
@@ -271,49 +268,59 @@ function FreetimeTag({
     };
     const showModalCoin = () => {
         setOpenDisposit(true);
-        console.log('abc');
     };
 
     if (forBooking) {
         return (
             <>
                 <div className="flex flex-col gap-[1.2rem]">
-                    <div className="mb-[2.4rem]">
-                        <h2 className="text-[2rem] font-bold text-[#5DD62C]">
-                            Lịch học
-                        </h2>
-
-                        <span className="text-[1.6rem] font-bold text-[#6B7B8A]">
-                            Đặt các buổi học 1:1 từ các tùy chọn dựa trên nhu
-                            cầu của bạn
-                        </span>
-                    </div>
-                    <div>
-                        <div className="grid grid-cols-4 gap-[0.8rem]">
-                            {sessionData?.length > 0 &&
-                                sessionData.map((item, index) => (
-                                    <div
-                                        className={`flex w-full cursor-pointer flex-col items-center justify-between rounded-[0.8rem] p-[1rem] ${selected?._id === item?._id ? 'border-[#5CD22C] bg-[#5CD22C] text-black' : 'border-[#ccc]'} border-[0.1rem] duration-300 hover:border-[#5CD22C] `}
-                                        key={index}
-                                        onClick={() => handleClickSession(item)}
-                                    >
-                                        <p className="text-[2rem] font-bold">
-                                            {item?.formattedDate?.dayOfWeek}
-                                        </p>
-                                        <p className="text-[1.6rem] font-medium">
-                                            {`${item?.formattedDate?.day} ${item?.formattedDate?.month} ${item?.formattedDate?.year}`}
-                                        </p>
-                                    </div>
-                                ))}
+                    {user?.role === 'Mentor' && (
+                        <div className="mb-[2.4rem]">
+                            <h2 className="text-[2rem] font-bold text-[#5DD62C]">
+                                Lịch học
+                            </h2>
+                            <span className="text-[1.6rem] font-bold text-[#6B7B8A]">
+                                Đặt các buổi học 1:1 từ các tùy chọn dựa trên
+                                nhu cầu của bạn
+                            </span>
+                            <div>
+                                <div className="grid grid-cols-4 gap-[0.8rem]">
+                                    {sessionData?.length > 0 &&
+                                        sessionData.map((item, index) => (
+                                            <div
+                                                className={`flex w-full cursor-pointer flex-col items-center justify-between rounded-[0.8rem] p-[1rem] ${
+                                                    selected?._id === item?._id
+                                                        ? 'border-[#5CD22C] bg-[#5CD22C] text-black'
+                                                        : 'border-[#ccc]'
+                                                } border-[0.1rem] duration-300 hover:border-[#5CD22C]`}
+                                                key={index}
+                                                onClick={() =>
+                                                    handleClickSession(item)
+                                                }
+                                            >
+                                                <p className="text-[2rem] font-bold">
+                                                    {
+                                                        item?.formattedDate
+                                                            ?.dayOfWeek
+                                                    }
+                                                </p>
+                                                <p className="text-[1.6rem] font-medium">
+                                                    {`${item?.formattedDate?.day} ${item?.formattedDate?.month} ${item?.formattedDate?.year}`}
+                                                </p>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+                            <Pagination
+                                defaultCurrent={page}
+                                total={totalPages}
+                                pageSize={12}
+                                align="center"
+                                onChange={(page) => setPage(page)}
+                            />
                         </div>
-                    </div>
-                    <Pagination
-                        defaultCurrent={page}
-                        total={totalPages}
-                        pageSize={12}
-                        align="center"
-                        onChange={(page) => setPage(page)}
-                    />
+                    )}
+
                     {selected && (
                         <div className="mt-[2.4rem]">
                             <div className="flex items-center justify-between border-b-[0.1rem] border-b-[#ccc] p-[1rem]">
@@ -357,7 +364,7 @@ function FreetimeTag({
                                                 item?._id
                                                     ? 'bg-[#5dd62c] text-black'
                                                     : 'border'
-                                            }`}
+                                            } ${item?.availableTimes?.length > 0 ? 'block' : 'hidden'}`}
                                             onClick={() =>
                                                 setSelectedSession(item)
                                             }
@@ -365,10 +372,21 @@ function FreetimeTag({
                                             <p className="text-[1.8rem] font-bold">
                                                 {item?.name}
                                             </p>
-                                            <p className="text-[1.4rem] font-medium">
-                                                {formatTime(item?.from)} -{' '}
-                                                {formatTime(item?.to)}
-                                            </p>
+                                            {item?.availableTimes?.length > 0 &&
+                                                item?.availableTimes?.map(
+                                                    (itemAvailabel, index1) => (
+                                                        <p
+                                                            className="text-[1.4rem] font-medium"
+                                                            key={index1}
+                                                        >
+                                                            {
+                                                                itemAvailabel?.from
+                                                            }{' '}
+                                                            -{' '}
+                                                            {itemAvailabel?.to}
+                                                        </p>
+                                                    ),
+                                                )}
                                         </div>
                                     ))}
                             </div>

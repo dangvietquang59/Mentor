@@ -63,7 +63,7 @@ function BookingTime({ id, user }: BookingTimeProps) {
 
         fetchFreetime();
     }, [currentPage]);
-    if (arraySession?.length === 0) {
+    if (arraySession?.length === 0 && user?.role === 'Mentor') {
         return (
             <div className="flex min-h-[40rem] items-center justify-center rounded-[0.4rem] bg-[#242526] p-[2rem]">
                 <div className="flex flex-col items-center justify-center gap-[1.2rem]">
@@ -94,7 +94,6 @@ function BookingTime({ id, user }: BookingTimeProps) {
                         page={currentPage}
                         user={user}
                         forBooking
-                        bookings={bookings}
                     />
                 </div>
             </div>
