@@ -18,6 +18,7 @@ import ConfirmDeleteModal from '../ConfirmDeleteModal';
 import { FaTrashAlt } from 'react-icons/fa';
 import { RangePickerProps } from 'antd/es/date-picker';
 import dayjs, { Dayjs } from 'dayjs';
+import { FaPenToSquare } from 'react-icons/fa6';
 // Function to generate a list of 24-hour time slots
 export function generate24Hours(): string[] {
     const hours: string[] = [];
@@ -361,9 +362,15 @@ function FreetimeForm() {
                 {sessions?.length > 0 &&
                     sessions?.map((item, index) => (
                         <div className="flex flex-col gap-[1.2rem]">
-                            <span className="text-[2rem] font-medium">
-                                {item?.freeDate && formatDate(item?.freeDate)}
-                            </span>
+                            <div className="flex items-center justify-between">
+                                <span className="text-[2rem] font-medium">
+                                    {item?.freeDate &&
+                                        formatDate(item?.freeDate)}
+                                </span>
+                                <button className="duration-300 hover:opacity-70">
+                                    <FaPenToSquare className="size-[2rem]" />
+                                </button>
+                            </div>
                             <FreeTimeSections
                                 sections={item}
                                 key={index}

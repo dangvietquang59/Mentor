@@ -37,6 +37,7 @@ const urls = {
     TRANSFER: 'transfer',
     TRANSACTIONS: 'transactions',
     TITLE: 'title',
+    TAGS: 'tags',
 };
 
 export default urls;

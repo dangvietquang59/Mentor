@@ -184,7 +184,7 @@ function ChatMini() {
                 </div>
 
                 <div
-                    className={`fixed bottom-10 right-[6%] h-[50rem] w-[80rem] transform rounded-lg bg-[#2F2F2F] shadow-2xl transition-all duration-500 ease-in-out ${
+                    className={`fixed bottom-10 right-[6%] z-[100] h-[50rem] w-[80rem] transform rounded-lg bg-[#2F2F2F] shadow-2xl transition-all duration-500 ease-in-out ${
                         isOpen ? 'block translate-x-0' : 'hidden translate-x-20'
                     }`}
                 >
