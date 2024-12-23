@@ -54,10 +54,10 @@ const blogApi = {
             throw new Error('Error calling blog API');
         }
     },
-    async getAll() {
+    async getAll(page: number, search: string, tagIds: string[]) {
         try {
             const res = await fetchData<BlogResponseType>(
-                `${urls.POSTS}/${urls.GET_ALL_BLOG}`,
+                `${urls.POSTS}/${urls.GET_ALL_BLOG}?search=${search}&page=${page}&tagIds=${tagIds}`,
                 null,
                 'GET',
             );

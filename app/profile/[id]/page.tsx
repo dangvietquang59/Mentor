@@ -199,7 +199,8 @@ function Profiles() {
                             {selectedTab === 0 && (
                                 <>
                                     {profileUser &&
-                                        profile?.role === 'Mentor' && (
+                                        profile?.role === 'Mentor' &&
+                                        profile?.coin > 0 && (
                                             <div className="flex flex-col">
                                                 <h3 className="text-[1.4rem] font-medium">
                                                     Tiền thuê

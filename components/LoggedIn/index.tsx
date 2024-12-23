@@ -229,7 +229,7 @@ function LoggedIn() {
                         <p>Nạp tiền</p>
                     </button>
                 </li>
-                <li>
+                {/* <li>
                     <button
                         className="flex w-full items-center gap-[1.6rem]"
                         onClick={showModalCoin}
@@ -237,7 +237,7 @@ function LoggedIn() {
                         <Image src={icons.minus} alt="icon" width={16} />
                         <p>Rút tiền</p>
                     </button>
-                </li>
+                </li> */}
             </ul>
         );
     };
